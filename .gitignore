@@ -1,3 +1,12 @@
+
+.env
+.env.*
+x/
+sysdata/
+data/
+
+
+
 *.gem
 *.rbc
 /.config
@@ -11,7 +20,6 @@
 /tmp/
 
 # Used by dotenv library to load environment variables.
-# .env
 
 # Ignore Byebug command history file.
 .byebug_history
@@ -35,7 +43,7 @@ build-iPhoneSimulator/
 ## Documentation cache and generated files:
 /.yardoc/
 /_yardoc/
-/doc/
+###### /doc/
 /rdoc/
 
 ## Environment normalization:
