@@ -1,0 +1,18 @@
+$('#time_log-form').html("<%= j (render 'new_time_log_partial') %>");
+$('#time_log-form').slideDown(0);
+
+$(".dgselect2").select2({
+    });	
+    
+
+$('.bootstrapdatepicker').datepicker(
+    {
+        daysOfWeekDisabled: "0,6",
+        calendarWeeks: true,
+        autoclose: true,
+        todayHighlight: true,
+        todayBtn: true,
+        clearBtn: true
+    });
+
+    

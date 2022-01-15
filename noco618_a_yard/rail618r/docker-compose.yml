@@ -1,0 +1,130 @@
+# ref..
+# https://gist.github.com/satendra02/1b335b06bfc5921df486f26bd98e0e89
+# https://www.reddit.com/r/docker/comments/7zjbe4/docker_rails_puma_nginx_postgres/
+# https://itnext.io/docker-rails-puma-nginx-postgres-999cd8866b18
+
+version: "3.6"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/app.Dockerfile
+      args:
+        - RACK_ENV=development
+        - RAKE_ENV=development
+        - RAILS_ENV=development
+    volumes:
+      - ./apprails:/app
+      - bundle_cache:/usr/local/bundle/
+    environment:
+      # APP_NAME can be used for cookie names, and any other needs to name something uniquely project specific
+      - APP_NAME=projtrac535
+      - APPHOSTNAME=${HOSTNAME}
+      #
+      - RACK_ENV=development
+      - RAKE_ENV=development
+      - RAILS_ENV=development
+      # - RAILS_LOG_TO_STDOUT=1
+    expose:
+      - 3000
+    ports:
+      - 6533:3000
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    networks:
+      - net535 
+
+
+  dbm:
+    image: mysql:5.7
+    ports: 
+      - 6534:3306
+    restart: unless-stopped  
+    env_file:
+      - .env
+    volumes:
+      # folder for mysql's internal data files.
+      # - mysqldata:/var/lib/mysql
+      # - ../datasys/mysql${PWD}:/var/lib/mysql/  
+      - ../sysdata/mysql_data:/var/lib/mysql/ 
+      # init data scripts..
+      - ./mysql-init/:/docker-entrypoint-initdb.d/
+      # folder for scripts, etc.
+      - ./script:/script
+      # folder for exported/imported data, etc.
+      - ../data/mydat/:/mydat
+    command: --default-authentication-plugin=mysql_native_password
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100k"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", ping", "-c 2", "localhost"]
+      interval: 1m30s
+      timeout: 20s
+      retries: 3
+      start_period: 60s
+    networks:
+      - net535 
+
+
+  adminer:
+    # http://10.4.1.231:6535/
+    image: adminer:4.7
+    restart: unless-stopped
+    ports:
+      - 6535:8080
+    environment:
+      - ADMINER_DEFAULT_SERVER=dbm
+      # - ADMINER_PLUGINS='tables-filter tinymce'
+    networks:
+      - net535
+
+  mb:
+    # image: metabase/metabase:v0.26.2
+    # image: metabase/metabase:v0.30.4
+    image: metabase/metabase:v0.41.4
+    restart: unless-stopped
+    ports:
+      - "6536:3000"
+    volumes:
+      - ../data/mbdata:/mbdata
+    env_file:
+      - .env
+    depends_on:
+      - dbm
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "6"
+    networks:
+      - net535
+  
+networks:
+  net535:
+    name: net535
+   
+
+  #
+  # command: bash -c  "bundle check || bundle install --jobs 40 --retry 5 \
+  # && bundle exec puma -C config/puma.rb -p 3000  "
+  #
+
+  # db:
+  # image: postgres
+  # volumes:
+  # - postgres_data:/var/lib/postgresql/data
+  # web:
+  # build:
+  # context: .
+  # dockerfile: ./docker/web.Dockerfile
+  # depends_on:
+  # - app
+  # ports:
+  # - 6032:80
+
+volumes:
+  bundle_cache:
+  mysqldata:

@@ -1,0 +1,29 @@
+
+<p>
+  <strong>Project:</strong>
+  <%= @favorite_project.project %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @favorite_project.user %>
+</p>
+
+<p>
+  <strong>Fave num:</strong>
+  <%= @favorite_project.fave_num %>
+</p>
+
+<p>
+  <strong>Sort order:</strong>
+  <%= @favorite_project.sort_order %>
+</p>
+
+<p>
+  <strong>Active status:</strong>
+  <%= @favorite_project.active_status %>
+</p>
+
+<br>
+<%= link_to 'Edit', edit_favorite_project_path(@favorite_project), class: "btn btn-primary", :style=>'color:#FFFFFF;' %> &nbsp &nbsp
+<%= link_to 'Back', favorite_projects_path, class: "btn btn-default" %>

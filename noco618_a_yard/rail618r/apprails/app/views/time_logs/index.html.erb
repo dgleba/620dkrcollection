@@ -1,0 +1,57 @@
+<row class="row h-25 is-table-row"  style="height: 22px; background-color: rgba(255,0,0,0.1);">
+ 
+<div class="col-sm-3 h-25 ">
+
+<%= page_entries_info @time_logs, :entry_name => 'item' %>
+</div>
+
+<div class="col-sm-4 h-25">
+<%= paginate @time_logs %>
+</div>
+
+<div class="col-sm-3 h-25 ">
+  This week:
+  <%= number_with_precision(TimeLog.this_week_hours(current_user) , :precision => 1) %>
+  </div>
+  
+  <div class="col-sm-2 h-25">
+    <%= link_to 'New Time [On a fresh page]', new_time_log_path %>
+  </div>
+</row>
+
+
+<%
+=begin%>
+    Comment:
+    Show new button and create form..
+<%
+=end%>
+
+<span>
+<%= link_to new_time_log_path, remote: true do %>
+  <button class="btn btn-success">New</button>
+<% end %>
+</span>
+
+<span id="time_log-form"></span>
+
+
+<table class="table table-striped" id="time_log-tbl">
+  <thead>
+    <tr>
+      <th colspan="1"></th>
+      <th>Project -- (Sorted by name for-each date - Except `New-Time(here)` inserts at top)</th>
+      <th>Log date</th>
+      <th>Log hours</th>
+      <th>SumHrs(date)</th>
+      <th>User</th>
+    </tr>
+  </thead>
+
+  <tbody>
+     <%= render  @time_logs %>
+  </tbody>
+  
+</table>
+
+<br>

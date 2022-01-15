@@ -1,0 +1,108 @@
+
+
+From: Dave Gleba 
+Sent: Friday, August 10, 2018 11:51 AM
+To: Dave Clark
+Subject: asset lookup lukup howto
+
+1.
+Attached assest sql export
+
+2.
+I will update view in 4. To be like view in 3. Then use asset_title as the ‘asset’ lookup.
+
+3.
+MySQL » Server » prod367db » vw_eam_assets » Alter view
+
+select 
+  `lukup`.`asset_eam`.`id` AS `id`, 
+  `lukup`.`asset_eam`.`Asset` AS `Asset`, 
+  `lukup`.`asset_eam`.`Description` AS `Description`, 
+  `lukup`.`asset_eam`.`Location` AS `Location`, 
+  `lukup`.`asset_eam`.`Manufacturer` AS `Manufacturer`, 
+  `lukup`.`asset_eam`.`Model` AS `Model`, 
+  `lukup`.`asset_eam`.`Serial Number` AS `Serial Number`, 
+  `lukup`.`asset_eam`.`Supplier` AS `Supplier`, 
+  `lukup`.`asset_eam`.`Category` AS `Category`, 
+  `lukup`.`asset_eam`.`Cell` AS `Cell`, 
+  `lukup`.`asset_eam`.`Change Notice` AS `Change Notice`, 
+  `lukup`.`asset_eam`.`Class` AS `Class`, 
+  `lukup`.`asset_eam`.`Commission Date` AS `Commission Date`, 
+  `lukup`.`asset_eam`.`Contract Equipment` AS `Contract Equipment`, 
+  `lukup`.`asset_eam`.`Criticality` AS `Criticality`, 
+  `lukup`.`asset_eam`.`Currency` AS `Currency`, 
+  `lukup`.`asset_eam`.`Customer` AS `Customer`, 
+  `lukup`.`asset_eam`.`Department` AS `Department`, 
+  `lukup`.`asset_eam`.`Dependent` AS `Dependent`, 
+  `lukup`.`asset_eam`.`Dormant End` AS `Dormant End`, 
+  `lukup`.`asset_eam`.`Dormant Start` AS `Dormant Start`, 
+  `lukup`.`asset_eam`.`Eligible for Energy Star Label` AS `Eligible for Energy Star Label`, 
+  `lukup`.`asset_eam`.`Latest Install Date` AS `Latest Install Date`, 
+  `lukup`.`asset_eam`.`Latest Receipt Date` AS `Latest Receipt Date`, 
+  `lukup`.`asset_eam`.`Lock Reliability Ranking Values` AS `Lock Reliability Ranking Values`, 
+  `lukup`.`asset_eam`.`Organization` AS `Organization`, 
+  `lukup`.`asset_eam`.`Original Install Date` AS `Original Install Date`, 
+  `lukup`.`asset_eam`.`Original Receipt Date` AS `Original Receipt Date`, 
+  `lukup`.`asset_eam`.`Out of Service` AS `Out of Service`, 
+  `lukup`.`asset_eam`.`PO# / IPP#` AS `PO# / IPP#`, 
+  `lukup`.`asset_eam`.`Parent Asset` AS `Parent Asset`, 
+  `lukup`.`asset_eam`.`Prevent non-PM WO Completion` AS `Prevent non-PM WO Completion`, 
+  `lukup`.`asset_eam`.`Primary Use` AS `Primary Use`, 
+  concat(
+    `lukup`.`asset_eam`.`Asset`, ', ', 
+    `lukup`.`asset_eam`.`Description`, 
+    ', Dpt:', `lukup`.`asset_eam`.`Department`, 
+    ', Col:', `lukup`.`asset_eam`.`Location`
+  ) AS `asset_title` 
+from 
+  `lukup`.`asset_eam`
+
+4.
+MySQL » Server » lukup_pub » vw_asset_eam_lp » Alter view
+
+select 
+  `lukup`.`asset_eam`.`id` AS `id`, 
+  `lukup`.`asset_eam`.`Asset` AS `Asset`, 
+  `lukup`.`asset_eam`.`Description` AS `Description`, 
+  `lukup`.`asset_eam`.`Location` AS `Location`, 
+  `lukup`.`asset_eam`.`Manufacturer` AS `Manufacturer`, 
+  `lukup`.`asset_eam`.`Model` AS `Model`, 
+  `lukup`.`asset_eam`.`Serial Number` AS `Serial Number`, 
+  `lukup`.`asset_eam`.`Supplier` AS `Supplier`, 
+  `lukup`.`asset_eam`.`Category` AS `Category`, 
+  `lukup`.`asset_eam`.`Cell` AS `Cell`, 
+  `lukup`.`asset_eam`.`Change Notice` AS `Change Notice`, 
+  `lukup`.`asset_eam`.`Class` AS `Class`, 
+  `lukup`.`asset_eam`.`Commission Date` AS `Commission Date`, 
+  `lukup`.`asset_eam`.`Contract Equipment` AS `Contract Equipment`, 
+  `lukup`.`asset_eam`.`Criticality` AS `Criticality`, 
+  `lukup`.`asset_eam`.`Currency` AS `Currency`, 
+  `lukup`.`asset_eam`.`Customer` AS `Customer`, 
+  `lukup`.`asset_eam`.`Department` AS `Department`, 
+  `lukup`.`asset_eam`.`Dependent` AS `Dependent`, 
+  `lukup`.`asset_eam`.`Dormant End` AS `Dormant End`, 
+  `lukup`.`asset_eam`.`Dormant Start` AS `Dormant Start`, 
+  `lukup`.`asset_eam`.`Eligible for Energy Star Label` AS `Eligible for Energy Star Label`, 
+  `lukup`.`asset_eam`.`Latest Install Date` AS `Latest Install Date`, 
+  `lukup`.`asset_eam`.`Latest Receipt Date` AS `Latest Receipt Date`, 
+  `lukup`.`asset_eam`.`Lock Reliability Ranking Values` AS `Lock Reliability Ranking Values`, 
+  `lukup`.`asset_eam`.`Organization` AS `Organization`, 
+  `lukup`.`asset_eam`.`Original Install Date` AS `Original Install Date`, 
+  `lukup`.`asset_eam`.`Original Receipt Date` AS `Original Receipt Date`, 
+  `lukup`.`asset_eam`.`Out of Service` AS `Out of Service`, 
+  `lukup`.`asset_eam`.`Parent Asset` AS `Parent Asset`, 
+  `lukup`.`asset_eam`.`Prevent non-PM WO Completion` AS `Prevent non-PM WO Completion`, 
+  `lukup`.`asset_eam`.`Primary Use` AS `Primary Use` 
+from 
+  `lukup`.`asset_eam`
+
+
+
+ 
+David Gleba P.Eng. | Facilities Engineer
+Stackpole International | 128 Monteith | Stratford, ON N5A 2P5 | Canada
+C:  +1 226.921.7316     |    T: +1 519.271.6060 Ext. 7232   |     F: +1 519.271.7560
+dgleba@stackpole.com | www.stackpole.com
+This e-mail message is being sent solely for use by the intended recipient(s) and may contain confidential information. Any unauthorized review, use, disclosure or distribution is prohibited. If you are not the intended recipient, please contact the sender by phone or reply by e-mail, delete the original message and destroy all copies. Thank you.
+
+
