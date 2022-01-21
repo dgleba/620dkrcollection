@@ -79,6 +79,7 @@ services:
   adminer:
     # http://192.168.88.60:6602/  use dbm or ip:port for server while logging in.
     # http://10.4.1.232:6607/  use dbm or ip:port for server while logging in.
+    # http://10.4.1.232:6607/  use dbm or ip:port for server while logging in.
     image: adminer:4.7
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -108,6 +109,6 @@ services:
     networks:
       - sister
 
-volumes:
-  mysqldatastore:
+# volumes:
+#   mysqldatastore:
 

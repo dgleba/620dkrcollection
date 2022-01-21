@@ -5,6 +5,7 @@
 version: "3.6"
 services:
   # Ignition Gateway
+  # http://10.4.1.232:9088/
   ign:
     image: inductiveautomation/ignition:8.1.8
     ports:
