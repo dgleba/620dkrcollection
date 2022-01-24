@@ -9,7 +9,8 @@ nukemysql:
 	docker-compose  run --rm dbm  bash -c 'chmod -R 777 /var/lib/mysql/; \
 			chown -R 1000:33 /var/lib/mysql; '
 			# may have to remove the files from the host. this said device busy.
-			docker-compose  run --rm dbm  bash -c 'rm -rf  /var/lib/mysql/*;'
+			docker-compose  run --rm dbm  bash -c 'rm -rf  /var/lib/mysql/*; echo mysql_ls ; ls -l /var/lib/mysql; \
+			echo varlib_ls ; ls -l /var/lib;'
 	
 
 
@@ -18,6 +19,11 @@ permd:
 	docker-compose exec dbm \
 	bash -c "export fold=/crib; chmod -R ug+rws,o-rwx /crib; chown -R 1000:1000 /crib; \
 		export fold=/in-out; chmod -R ug+rws,o-rwx /in-out; chown -R 1000:1000 /in-out "
+
+perm-myfix:  
+	docker-compose exec dbm \
+	bash -c " chown -R 999:999 /var/lib/mysql/"; 
+
 
 pp:  
 	docker-compose run --rm dbm sh -c 'chmod -R 777 /in-out ;  chmod -R 777 /crib'
