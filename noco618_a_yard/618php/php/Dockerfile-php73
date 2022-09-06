@@ -1,6 +1,6 @@
 # ref. https://github.com/vesica/php73
 
-FROM php:7.3-apache
+FROM php:8.1-apache
 
 # Setup Debian
 RUN apt-get upgrade && apt-get update && ACCEPT_EULA=Y && apt-get install -y \
@@ -35,25 +35,29 @@ RUN apt-get upgrade && apt-get update && ACCEPT_EULA=Y && apt-get install -y \
 #        git 
 
 
-
+# 2022-06-30 commented out a bunch of stuff due to errors below from lines 40-60.
 
 # Install PECLs
-RUN pecl install redis 
+# RUN pecl install redis 
 # geoip not reachable from csd
     # RUN  pecl install geoip-1.1.1 
-RUN  pecl install apcu 
-RUN  pecl install memcached 
-RUN  pecl install timezonedb
+# RUN  pecl install apcu 
+# RUN  pecl install memcached 
+# RUN  pecl install timezonedb
 
-RUN docker-php-ext-install -j$(nproc) calendar iconv bcmath xml gd mbstring pdo tidy gettext intl pdo_mysql mysqli \
-     fileinfo simplexml tokenizer xml xsl xmlwriter zip opcache exif \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-gd --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-configure zip --with-libzip \
-    && docker-php-ext-enable redis apcu memcached timezonedb
+run pwd; whoami
+
+RUN docker-php-ext-install  pdo   
+# RUN docker-php-ext-install -j$(nproc) calendar iconv bcmath xml gd mbstring pdo tidy gettext intl pdo_mysql mysqli 
+# RUN docker-php-ext-install -j$(nproc)      fileinfo simplexml tokenizer xml xsl xmlwriter zip opcache exif \
+#     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-gd --with-jpeg-dir=/usr/include/ \
+#     && docker-php-ext-configure zip --with-libzip 
+    # && docker-php-ext-enable redis apcu memcached timezonedb
     # && docker-php-ext-enable redis geoip apcu memcached timezonedb
 
-RUN  docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/  \
-      && docker-php-ext-install ldap
+# RUN  docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/  \
+#       && docker-php-ext-install ldap
+
 
 # Enable PHP error logging to stdout
 RUN printf "log_errors = On \nerror_log = /dev/stderr\n" > /usr/local/etc/php/conf.d/php-logs.ini

@@ -21,7 +21,7 @@ services:
     ports:
       - 6611:80
     volumes:
-      - ../htmldata605o/html01:/var/www/html
+      - ../618phphtml/html01:/var/www/html
       - ./php/apache_allow.conf:/etc/apache2/conf-enabled/apache_allow.conf
       # This wipes out the files in the container... - ../data/c-php483b_etc_apache2:/etc/apache2
       # this noworky either..
