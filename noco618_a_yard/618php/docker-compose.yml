@@ -17,7 +17,7 @@ services:
     # image: php:7.3-apache
     build:
       context: ./php
-      dockerfile: Dockerfile-php73
+      dockerfile: Dockerfile-04
     ports:
       - 6611:80
     volumes:
@@ -33,10 +33,10 @@ services:
       # - ./apache2.conf:/etc/apache2/apache2.conf
     environment:
       - APACHE_DOCUMENT_ROOT=/var/www/html
-      - VIRTUAL_HOST=php.198.144.183.160.nip.io
-      - VIRTUAL_PORT=80
-      - LETSENCRYPT_HOST=php.198.144.183.160.nip.io
-      - LETSENCRYPT_EMAIL=dgleba@gmail.com
+      # - VIRTUAL_HOST=php.198.144.183.160.nip.io
+      # - VIRTUAL_PORT=80
+      # - LETSENCRYPT_HOST=php.198.144.183.160.nip.io
+      # - LETSENCRYPT_EMAIL=dgleba@gmail.com
     networks:
       - sister
 
