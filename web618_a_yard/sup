@@ -1,7 +1,7 @@
 
 # sftp://10.4.1.232/srv/dkr/620dkrcollection/noco618_a_yard/618mysql/docker-compose.yml
 
-cd /srv/dkr/620dkrcollection/noco618_a_yard
+cd /srv/dkr/620dkrcollection/web618_a_yard
 
 mkdir -p data/noco_data
 mkdir -p data/crib/
@@ -14,7 +14,8 @@ docker-compose -f ./618mysql/docker-compose.yml up    -d
 
 docker-compose -f ./618mysql/docker-compose.yml logs -tf
 
-s=229 ; read  -rsp $"Wait $s seconds or press Escape-key or Arrow key to continue..." -t $s -d $'\e'; echo;echo;
+s=259 ; read  -rsp $"Wait $s seconds or press Escape-key or Arrow key to continue..." -t $s -d $'\e'; echo;echo;
+s=259 ; read  -rsp $"Wait $s seconds or press Escape-key or Arrow key to continue..." -t $s -d $'\e'; echo;echo;
 
 
 docker-compose -f ./618nocodb/docker-compose.yml up     -d
