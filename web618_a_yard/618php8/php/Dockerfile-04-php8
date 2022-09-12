@@ -2,7 +2,7 @@
 # https://github.com/mdobydullah/laravel-docker-apache-mariadb/blob/main/.docker/Dockerfile
 
 # FROM php:7.4.29-apache
-FROM php:7.4.29-apache-buster
+FROM php:8.0-apache-buster
 
 USER root
 
