@@ -1,0 +1,81 @@
+
+	
+    https://github.com/DavidColby/turbo-todo
+
+    
+    docker-compose run --rm web rails db:create db:migrate
+
+	docker-compose run --rm web rails tmp:clear
+
+	docker-compose run --rm web  bundle exec rake assets:precompile
+
+
+sftp://192.168.88.60/srv/dkr/620dkrcollection/web618_a_yard/turbotodorail7/apprails/db/development.sqlite3
+../turbotodorail7/apprails/db:/crib2
+
+
+sqlite3 development.sqlite3
+albe@vamp398:/srv/dkr/620dkrcollection/web618_a_yard/turbotodorail7/apprails/db$ sqlite3 development.sqlite3
+
+
+.tables
+
+|s|0|2022-09-16 03:14:10.374769|2022-09-16 03:14:10.374769
+
+insert into todos(name,created_at,updated_at) values ('three','2022-09-16 03:14:10','2022-09-16 03:14:10');
+
+
+sqlite> .schema todos
+CREATE TABLE "todos" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "status" integer DEFAULT 0, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#@  
+#@  
+#@  
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@   2022-09-15[Sep-Thu]23-05PM 
+
+
+ActionView Template Error Asset `tailwind.css` was not declared to be precompiled in production  Declare links to your assets in `app/assets/config/manifest.js`
+
+ans.
+
+	docker-compose run --rm web rails tmp:clear
+	docker-compose run --rm web  bundle exec rake assets:precompile
+
+
+
+web_1    |
+web_1    | ActionView::Template::Error (Asset `tailwind.css` was not declared to be precompiled in production.
+web_1    | Declare links to your assets in `app/assets/config/manifest.js`.
+web_1    |
+web_1    |   //= link tailwind.css
+web_1    |
+web_1    | and restart your server):
+web_1    |      5:     <meta name="viewport" content="width=device-width,initial-scale=1">
+web_1    |      6:     <%= csrf_meta_tags %>
+web_1    |      7:     <%= csp_meta_tag %>
+web_1    |      8:     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+web_1    |      9:
+web_1    |     10:     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+web_1    |     11:     <%= javascript_importmap_tags %>
+web_1    |
+web_1    | app/views/layouts/application.html.erb:8
+
+
+=================================================
+

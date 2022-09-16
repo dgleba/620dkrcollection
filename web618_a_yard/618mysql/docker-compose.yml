@@ -83,6 +83,7 @@ services:
     image: adminer:4.7
     volumes:
       - /etc/localtime:/etc/localtime:ro
+      - ../turbotodorail7/apprails/db:/crib2
     restart: always
     env_file:
       - .env
