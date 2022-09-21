@@ -1,6 +1,7 @@
 
+https://github.com/mixandgo/hotwire_broadcast
+
 	
-    https://github.com/DavidColby/turbo-todo
 
     
     docker-compose run --rm web rails db:create db:migrate
@@ -8,6 +9,47 @@
 	docker-compose run --rm web rails tmp:clear
 
 	docker-compose run --rm web  bundle exec rake assets:precompile
+
+
+_____________
+
+
+
+UPDATE "users" SET
+"email" = 'David1212@gmail.com',
+"encrypted_password" = '$2a$12$WkVkIxM0fyq9zJR/qGDdzep7AT0kuCKAl3Iqg8ZaWKXWF35EIAvxK',
+"created_at" = '2022-09-17 00:31:31.432626',
+"updated_at" = '2022-09-17 00:31:31.485856',
+"name" = 'dg2',
+"online" = '1'
+WHERE "id" = '2';
+
+
+"id" = '2',
+
+"reset_password_token" = NULL,
+"reset_password_sent_at" = NULL,
+"remember_created_at" = NULL,
+
+WHERE "id" = '1';
+
+
+
+
+_____________
+
+
+http://192.168.88.60:8012
+
+
+
+bash coleifersqliteweb.sh ./apprails/db/development.sqlite3
+
+
+
+_____________
+
+
 
 
 sftp://192.168.88.60/srv/dkr/620dkrcollection/web618_a_yard/turbotodorail7/apprails/db/development.sqlite3
@@ -31,6 +73,7 @@ CREATE TABLE "todos" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" va
 
 
 
+=================================================
 
 
 
