@@ -1,0 +1,8 @@
+
+http://192.168.88.60:6608/api.php/records/posts/1
+
+
+http://192.168.88.60:6611/api.php/records/dataa1/1
+
+  {"reader_name":"read10","mac_address":"mac0","antenna_port":null,"epc":"001151217800d","first_seen_timestamp":"1662506862093946","user_memory":null,"Usermem":"","user_mem_string":"","Date":"2022-09-08 19:42:15","Antenna":1,"id":1}
+
