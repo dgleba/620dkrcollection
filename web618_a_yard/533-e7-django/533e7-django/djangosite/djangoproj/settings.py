@@ -8,6 +8,8 @@ https://docs.djangoproject.com/
 
 
 
+
+
 import os
 from datetime import timedelta
 
@@ -19,13 +21,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY =  os.getenv('SECRET_KEY')
+SECRET_KEY = '^l)7d*%h&db4uft@dk%h-w&nup#pu%)a!d)c7jwgoixo5_h89m0$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = os.getenv('DJANGO_DEVELOPMENT')
+DEBUG = True
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS')
+
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -40,8 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'blogapp',
-    # 'schedulerapp',
-    'mark616',
+    'schedulerapp',
 ]
 
 # not used..
@@ -61,10 +62,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://\w+\.jgleba\.com$",
-    r"^https://.*.198.23.238.244.nip.io.*",
-    r"^https://.*.198.144.183.160.nip.io.*",
     r"^http://192.168.*",
-    r"^http://10.4.*",
 ]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
@@ -92,6 +90,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'djangoproj.wsgi.application'
 
+
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
@@ -99,15 +98,6 @@ WSGI_APPLICATION = 'djangoproj.wsgi.application'
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'OPTIONS': {
-#             'read_default_file': './djangoproj/database.cnf',
-#         },
 #     }
 # }
 
@@ -122,6 +112,7 @@ DATABASES = {
     }
 }
 
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -132,7 +123,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 6
+    'PAGE_SIZE': 2
 }
 
 # see api.py for more info.
