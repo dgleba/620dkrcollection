@@ -23,12 +23,16 @@ lite:
 cronad:
 	docker-compose    run --rm djdev   python manage.py crontab add
 
+dir:
+	docker-compose    run --rm djdev   ls -la; pwd;
+
   
 perm:
 # fix permissions. make them group writable so www-data group can manage the files. move, delete, etc..  
 	# docker-compose run --rm djan sh -c 'su root;chmod -R g+w .;exit;exit'
-	docker-compose run --rm djdev sh -c 'chgrp -R www-data . &&  chmod -R g+w . && chmod +x *.sh && chmod -R 777 /data'
-
+	# docker-compose run --rm djdev sh -c 'chgrp -R www-data . &&  chmod -R ugo+w . && chmod +x *.sh && chmod -R 777 /data'
+	docker-compose run --rm djdev sh -c 'chgrp -R www-data . &&  chmod -R ugo+w . && chmod +x *.sh && pwd ; chmod -R 777 .'
+	docker-compose run --rm djdev bash -c 'find . -type d -exec chmod 755 {} + '
 
 # shell in django
 #

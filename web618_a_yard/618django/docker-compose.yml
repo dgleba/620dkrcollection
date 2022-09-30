@@ -9,12 +9,13 @@ services:
   djdev:
     # http://10.4.1.231:6461/
     # http://192.168.88.60:6461/
+    # http://192.168.88.60:6461/admin2323
     build: ./djangosite
     restart: on-failure
     working_dir: /code
     # set user to root, group to www-data. All files should be delete-able by www-data group.
     # problem is that they are read only for group www-data. Use make perm to make them writable.
-    user: "0:33"
+    # user: "0:33"
     env_file:
       # .env.dev sets debug=True
       - ./.env.dev

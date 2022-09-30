@@ -113,7 +113,7 @@ WSGI_APPLICATION = 'djangoproj.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'dkrdb',
+        'NAME': 'dkrdbm',
         'USER':  os.environ['MYSQL_USER'],
         'PASSWORD': os.environ['MYSQL_PASSWORD'],
         'HOST': 'dbm',   # Or an IP Address that your DB is hosted on
