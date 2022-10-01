@@ -12344,12 +12344,12 @@ namespace Tqdev\PhpCrudApi {
 
     $config = new Config([
          'driver' => 'mysql',
-         'address' => '192.168.88.60',
+         'address' => '10.4.71.231',
          'port' => '6608',
         'username' => 'user',
-        'password' => 'pw12',
+        'password' => 'pw55',
         'database' => 'dkrdbm',
-        // 'debug' => false
+        'debug' => true,
     ]);
     $request = RequestFactory::fromGlobals();
     $api = new Api($config);

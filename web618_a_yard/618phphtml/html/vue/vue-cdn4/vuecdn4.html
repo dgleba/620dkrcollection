@@ -1,0 +1,64 @@
+<html lang="en">
+
+<!--  started from https://github.com/nlware/vue-crud-ui  see main.js -->
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>vcdn3</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.2/vue-router.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-vue/2.22.0/bootstrap-vue.min.js"></script> 
+  <script src="https://unpkg.com/http-vue-loader"></script>
+
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+
+  <script type="module" src="./src/main.js"></script>
+</head>
+
+<body>
+
+<!-- ================================================= -->
+
+<main id="app">
+  <div>
+    <b-navbar toggleable="md" type="dark" variant="dark">
+      <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+      <b-navbar-brand to="/">Vuecdn3</b-navbar-brand>
+      <b-collapse is-nav id="nav_collapse">
+        <b-navbar-nav>
+          <b-nav-item to="/">Home</b-nav-item>
+          <b-nav-item to="/pm">Posts</b-nav-item>
+        </b-navbar-nav>
+
+           <b-navbar-nav class="ml-auto">
+             <b-nav-item >  [ {{ this.activeUsername }} ]  </b-nav-item>
+          <b-nav-item class="ml-auto" href="#" @click.prevent="login" v-if="!activeUser">Login</b-nav-item>
+          <b-nav-item class="ml-auto" href="#" @click.prevent="logout" v-else>Logout </b-nav-item>
+        </b-navbar-nav>
+
+      </b-collapse>
+    </b-navbar>
+    <!-- routes will be rendered here -->
+    <router-view />
+  </div>
+  <hello01></hello01>
+</main>
+
+<!-- ================================================= -->
+
+
+<template id="home">
+  <div>Home view</div>
+</template>
+
+
+<!-- ================================================= -->
+
+<!-- ================================================= -->
+
+</body>
+</html>

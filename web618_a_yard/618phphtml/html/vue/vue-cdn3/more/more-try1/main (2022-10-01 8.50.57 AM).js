@@ -1,165 +1,135 @@
-<html lang="en">
 
-<!-- 
-https://github.com/nlware/vue-crud-ui
--->
+new window.Vue({
+el: '#app',
 
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>VUE-CRUD-UI</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.2/vue-router.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
 
-<body>
+  // baseURL: 'http://192.168.88.60:6035/',
+  const client = axios.create({
+    baseURL: `${process.env.VUE_APP_BACKEND_URL}/`,
+    json: true
+  });
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-3">
-      <h3>VUE-CRUD-UI</h3>
-    </div>
-  </div>
-  <main id="app">
-    <div class="row">
-      <div class="col-md-3">
-        <menu-component v-if="definition!==null" :subjects="definition.tags"></menu-component>
-      </div>
-      <div class="col-md-9">
-        <router-view :key="$route.fullPath" v-if="definition!==null" :definition="definition"></router-view>
-      </div>
-    </div>
-  </main>
-</div>
 
-<template id="menu">
-  <div v-if="subjects!==null" class="nav flex-column nav-pills">
-      <router-link v-for="subject in subjects" v-bind:to="{name: 'List', params: {subject: subject.name}}" class="nav-link" :key="subject.name">
-        {{ subject.name }}
-      </router-link>
-  </div>
-</template>
+export default {
+  data () {
+    return {
+      loading: false,
+      posts: [],
+      model: {},
+      show: false,
+      access_token:"",
+      t_errors:[],
+      Post_form_is_hidden: true,
+      polling: null
+    }
+  },
+  async created () {
+    console.log(`${process.env.VUE_APP_BACKEND_URL}/`);
+    this.refreshPosts();
+    this.pollData();
+  },
 
-<template id="home">
-  <div>Nothing</div>
-</template>
+  methods: {
+    async refreshPosts () {
+      this.loading = true // for original alert
+      this.showoverlay = true // for overlay
+      this.posts = await this.getPosts()
+      this.loading = false
+      this.showoverlay = false
+    },
 
-<template id="list">
-  <div>
-    <h2>{{ subject }}</h2>
-    <p>
-      <router-link class="btn btn-primary" v-bind:to="{name: 'Add', params: {subject: subject}}">
-        Add
-      </router-link>
-    </p>
-    <div class="card bg-light" v-if="field"><div class="card-body">
-      <div style="float:right;"><router-link v-bind:to="{name: 'List', params: {subject: subject}}">Clear filter</router-link></div>
-      <p class="card-text">Filtered by: {{ field }} = {{ id }}</p>
-    </div></div>
-    <p v-if="records===null">Loading...</p>
-    <table v-else class="table">
-      <thead>
-        <tr>
-          <th v-for="value in Object.keys(properties)">{{ value }}</th>
-          <th v-if="related">related</th>
-          <th v-if="primaryKey">actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="record in records">
-          <template v-for="(value, key) in record">
-            <td v-if="references[key] !== false">
-              <router-link v-bind:to="{name: 'View', params: {subject: references[key], id: referenceId(references[key], record[key])}}">{{ referenceText(references[key], record[key]) }}</router-link>
-            </td>
-            <td v-else>{{ value }}</td>
-          </template>
-          <td v-if="related">
-            <template v-for="(relation, i) in referenced">
-              <router-link v-bind:to="{name: 'Filter', params: {subject: relation[0], field: relation[1], id: record[primaryKey]}}">{{ relation[0] }}</router-link>&nbsp;
-            </template>
-          </td>
-          <td v-if="primaryKey" style="padding: 6px; white-space: nowrap;">
-            <router-link class="btn btn-secondary btn-sm" v-bind:to="{name: 'View', params: {subject: subject, id: record[primaryKey]}}">View</router-link>
-            <router-link class="btn btn-secondary btn-sm" v-bind:to="{name: 'Edit', params: {subject: subject, id: record[primaryKey]}}">Edit</router-link>
-            <router-link class="btn btn-danger btn-sm" v-bind:to="{name: 'Delete', params: {subject: subject, id: record[primaryKey]}}">Delete</router-link>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</template>
+    //  poll the api every x seconds to get updated data..
+    // https://renatello.com/vue-js-polling-using-setinterval/
+    pollData () {
+      this.polling = setInterval(() => {
+        this.refreshPosts()
+      }, 2000)
+    }, 
 
-<template id="create">
-  <div>
-    <h2>{{ subject }} - add</h2>
-    <form v-on:submit="createRecord">
-      <template v-for="(value, key) in record">
-        <div class="form-group">
-          <label v-bind:for="key">{{ key }}</label>
-          <input v-if="references[key] === false" class="form-control" v-bind:id="key" v-model="record[key]" :disabled="key === primaryKey" />
-          <select v-else class="form-control" v-bind:id="key" v-model="record[key]">
-            <option value=""></option>
-            <option v-for="option in options[references[key]]" v-bind:value="option.key">{{ option.value }}</option>
-          </select>
-        </div>
-      </template>
-      <button type="submit" class="btn btn-primary">Create</button>
-      <router-link class="btn btn-primary" v-bind:to="{name: 'List', params: {subject: subject}}">Cancel</router-link>
-    </form>
-  </div>
-</template>
+    async populatePostToEdit (post) {
+      this.Post_form_is_hidden = false
+      this.model = Object.assign({}, post)
+    },
+    async savePost () {
+      if (this.model.id) {
+        await this.updatePost(this.model.id, this.model)
+      } else {
+        await this.apiCreatePost(this.model)
+      }
+      this.model = {} // reset form
+      this.Post_form_is_hidden = true
+      await this.refreshPosts()
+    },
+    async createPost () {
+      this.model = {} // reset form
+      this.Post_form_is_hidden = false
+      // await this.refreshPosts()
+    },
+    async deletePost (id) {
+      if (confirm('Are you sure you want to delete this?')) {
+        // if we are editing a record we deleted, remove it from the form
+        if (this.model.id === id) {
+          this.model = {}
+        }
+        await this.dodeletePost(id)
+        await this.refreshPosts()
+      }
+    },
 
-<template id="view">
-  <div>
-    <h2>{{ subject }} - view</h2>
-    <p v-if="record===null">Loading...</p>
-    <dl v-else>
-      <template v-for="(value, key) in record">
-        <dt>{{ key }} </dt>
-        <dd>{{ value }}</dd>
-      </template>
-    </dl>
-  </div>
-</template>
+    async execute (method, resource, data) {
+      // inject the accessToken for each request
+      // let accessToken = await Vue.prototype.$auth.getAccessToken()
+      this.accessToken = localStorage.getItem("jwtToken");
+      return client({
+        method,
+        url: resource,
+        data,
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`
+        }
+      })
+      .then(req => {
+        return req.data.results
+      })
+      .catch(e => {
+        console.log("posts ~147");
+        console.log(e);
+        this.t_errors.push(e);
+        this.$bvToast.toast(` ${e}`, {variant: 'danger', autoHideDelay: 15000 });
+        if (e.response.status === 401) {
+          router.push({
+            name: "Login"
+          });
+        }
+      });
+    },
 
-<template id="update">
-  <div>
-    <h2>{{ subject }} - edit</h2>
-    <p v-if="record===null">Loading...</p>
-    <form v-else v-on:submit="updateRecord">
-      <template v-for="(value, key) in record">
-        <div class="form-group">
-          <label v-bind:for="key">{{ key }}</label>
-          <input v-if="references[key] === false" class="form-control" v-bind:id="key" v-model="record[key]" :disabled="key === primaryKey" />
-          <select v-else-if="!options[references[key]]" class="form-control" disabled>
-            <option value="" selected>Loading...</option>
-          </select>
-          <select v-else class="form-control" v-bind:id="key" v-model="record[key]">
-            <option value=""></option>
-            <option v-for="option in options[references[key]]" v-bind:value="option.key">{{ option.value }}</option>
-          </select>
-        </div>
-      </template>
-      <button type="submit" class="btn btn-primary">Save</button>
-      <router-link class="btn btn-secondary" v-bind:to="{name: 'List', params: {subject: subject}}">Cancel</router-link>
-    </form>
-  </div>
-</template>
+    // backend api urls..
+    getPosts () {
+      return this.execute('get', '/blogapp/api/v1/Post/')
+    },
+    getPost (id) {
+      return this.execute('get', `/blogapp/api/v1/Post/${id}`)
+    },
+    apiCreatePost (data) {
+      return this.execute('post', '/blogapp/api/v1/Post/', data)
+    },
+    updatePost (id, data) {
+      return this.execute('put', `/blogapp/api/v1/Post/${id}/`, data)
+    },
+    dodeletePost (id) {
+      return this.execute('delete', `/blogapp/api/v1/Post/${id}`)
+    }
+    // end backend api urls..
 
-<template id="delete">
-  <div>
-    <h2>{{ subject }} delete #{{ id }}</h2>
-    <form v-on:submit="deleteRecord">
-      <p>The action cannot be undone.</p>
-      <button type="submit" class="btn btn-danger">Delete</button>
-      <router-link class="btn btn-secondary" v-bind:to="{name: 'List', params: {subject: subject}}">Cancel</router-link>
-    </form>
-  </div>
-</template>
+  },
+  beforeDestroy () {
+    clearInterval(this.polling)
+  }
+  
+}
+
+
 
 <script>
 var api = axios.create({
@@ -512,6 +482,3 @@ app = new Vue({
   }
 }).$mount('#app');
 </script>
-
-</body>
-</html>
