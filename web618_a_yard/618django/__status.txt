@@ -1,0 +1,7 @@
+
+2022-10-02
+I broke this.
+
+admin has no css.
+logs show 404 error.
+I havenot been able to fix it yet.
