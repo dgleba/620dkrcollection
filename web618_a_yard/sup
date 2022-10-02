@@ -35,5 +35,11 @@ docker-compose -f ./618mysql/docker-compose.yml down
 docker-compose -f ./618nocodb/docker-compose.yml down 
 
 
+docker-compose -f ./618php/docker-compose.yml down
+docker-compose -f ./618php8/docker-compose.yml down
+
+docker-compose -f ./618django/docker-compose.yml down
+docker-compose -f ./533-e7-django/docker-compose.yml down
+
 
 

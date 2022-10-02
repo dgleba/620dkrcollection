@@ -10,6 +10,7 @@
 <script>
   export default {
     name: "hello",
+    template: '#hello',
     data() {
       return {
         state01: ""

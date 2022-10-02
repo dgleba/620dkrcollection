@@ -9,6 +9,7 @@ error:
 main.js:7 Uncaught ReferenceError: hello is not defined  at main.js:7:28
 
 
+
 albe@pmadata01:/ap/620dkrcollection/web618_a_yard/618phphtml/html/vue/vue-cdn5-min-eg$ cat -n src/main.js
      1  var Home = Vue.extend({
      2    template: '#home'
@@ -37,4 +38,7 @@ albe@pmadata01:/ap/620dkrcollection/web618_a_yard/618phphtml/html/vue/vue-cdn5-m
     25  });
     26  app.use(router);
     27  app.mount('#app');
+
+
+ggl: Uncaught ReferenceError component is not defined 
 

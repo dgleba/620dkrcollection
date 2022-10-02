@@ -3,13 +3,6 @@ Goal:
 looking for a way to organize vue app without bundler
 
 
-=================================================
-
-sftp://10.4.71.231/ap/620dkrcollection/web618_a_yard/618phphtml/html/
-
-http://10.4.71.231:6611/vue-cdn3/vuecdn3.html
-http://10.4.71.231:6611/vue/vue-cdn5-min-eg/vuecdn5.html
-
 
 =================================================
 

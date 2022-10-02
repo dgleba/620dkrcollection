@@ -164,14 +164,7 @@ var router = new VueRouter({
   // linkActiveClass: 'active',
   routes:[
     { path: '/', component: Home},
-
     { path: '/pm', component: postsMgr, name: 'postsMgr'},
-
-    // { path: '/:subject/read/:id', component: View, name: 'View'},
-    // { path: '/:subject/update/:id', component: Edit, name: 'Edit'},
-    // { path: '/:subject/delete/:id', component: Delete, name: 'Delete'},
-    // { path: '/:subject/list', component: List, name: 'List'},
-    // { path: '/:subject/list/:field/:id', component: List, name: 'Filter'}
   ]
 });
 
