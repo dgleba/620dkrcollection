@@ -1,0 +1,69 @@
+
+;;Configuration settings for application
+title="dgnote130"
+
+__include__=config.dbc
+
+disable_g2 = 1 ;
+;debug=1
+;default_browse_action=edit
+
+[_prefs]
+  show_jump_menu=0
+  show_result_controller=0
+  disable_master_detail=1
+	
+[_tables]
+    dashboard="------ Dashboard --------"
+    vw_nte_note = "Notes_with_tags"
+    nte_note = "Notes"
+    nte_note2 = "Notes Richtext"
+    nte_about_this_app = "About_this_app"
+    nte_tags = "Tags"
+
+    ;notes:
+    ;the vw_ tables are mysql views that set the order, where clauses, and possibly other list features for the 'top menu items' in the app
+
+[_auth]
+    ;https://bitbucket.org/viharm/xatafaceldapauth
+    ;users_table=users
+    users_table=users_xataface
+    username_column=username
+    ;allow_register=1
+    ;session_timeout=99600
+    ;
+    ;password_column=password
+    ;
+    ; ldap settings..
+    auth_type=ldap
+    ldap_host="10.4.1.200"
+    ldap_port="389"
+    ldap_base="DC=stackpole,DC=ca"
+    ldap_usercontainerrdn="ou=Users"
+    ldap_groupcontainerrdn="OU=PMDS Users & Groups,OU=Users-Employee"
+    ldap_usernameattrib = "sAMAccountName"
+    ldap_version = 3
+    ldap_type = "ad-lds"
+    ldap_userdomain = "stackpole.ca"
+    ;
+    ; notes... 
+    ;ldap_base = "OU=PMDS Users & Groups,OU=Users-Employee,DC=stackpole,DC=ca"
+    ; info  "CN=Dave Gleba,OU=Users,OU=PMDS Users & Groups,OU=Users-Employee,DC=stackpole,DC=ca"
+
+    
+[history]
+    enabled=0
+
+[_modules]
+    modules_egrappler=modules/egrappler/egrappler.php
+    modules_ckeditor=modules/ckeditor/ckeditor.php
+    ;modules_g2=modules/g2/g2.php
+    modules_tagger=modules/tagger/tagger.php
+    modules_datepicker=modules/datepicker/datepicker.php
+    ;modules_DataGrid=modules/DataGrid/DataGrid.php
+    ;modules_g2responsive=modules/g2responsive/g2responsive.php
+    ;modules_mautocomplete_tags_list=modules/mautocomplete_tags_list/mautocomplete_tags_list.php
+    modules_multipleautocomplete=modules/multipleautocomplete/multipleautocomplete.php
+    modules_htmlreports=modules/htmlreports/htmlreports.php
+
+       

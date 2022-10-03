@@ -1,0 +1,33 @@
+
+=================================================
+
+
+ref:
+
+1.
+https://medium.com/@jamesweee/using-vue-js-single-file-component-without-module-bundlers-aea58d892ad9
+
+components: {
+        'app-world': window.httpVueLoader('./component/appworld.vue')
+      },
+  <script src="https://unpkg.com/http-vue-loader"></script>
+
+2.
+https://github.com/ais-one/cookbook
+
+3.
+vue shopping list pouch couch
+https://github.com/ibm-watson-data-lab/shopping-list-vuejs-pouchdb
+
+4.
+https://markus.oberlehner.net/blog/goodbye-webpack-building-vue-applications-without-webpack/
+
+
+5.
+https://docs.google.com/spreadsheets/d/1Qsv52d3zlKNftJzySwqXP0wxShTiDAk48gzgM5HpqFY/edit?usp=sharing
+vue full-stack generate scaffold research.gsht
+
+
+
+=================================================
+
