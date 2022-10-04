@@ -1,4 +1,4 @@
-;; disable edit actions..
+;; disable edit/create/delete actions by using empty action commands..
 
 ;; Create a new record
 [new]

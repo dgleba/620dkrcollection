@@ -10,6 +10,7 @@ data/
 *.tgz
 
 config.dbc
+templates_c/
 
 
 *.gem

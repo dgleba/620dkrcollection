@@ -1,6 +1,5 @@
 <?php
 
-
 //report all errors for debugging...
 //error_reporting(E_ALL);
 //ini_set('display_errors', 'on');
@@ -11,11 +10,6 @@ error_reporting(E_ALL | E_STRICT);  # ...but do log them
 //LDAP debugging..
 //$GLOBALS['bl_DebugSwitch'] = TRUE ;
 
-//Main Application access point
-//require_once "..//xataface//dataface-public-api.php";
-//require_once "../xataface204461/dataface-public-api.php";
-//require_once "C:\\p2\\xampp\\htdocs\\xataface204461\\dataface-public-api.php"; 
-//require_once "C:\\p2\\xampp\\htdocs\\xataface\\dataface-public-api.php";
 
 //Main Application access point
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
@@ -26,22 +20,6 @@ if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
     require_once "../xataface/dataface-public-api.php";
 }
 
-
-/*
-    //set default sort order. needed to add this for 1.5x. the applicationdelegate.php stanza was not working for ver 1.5x.
-    // Problem is it only works after you click on a top menu [table] item.
-    if ( !isset($_REQUEST['-sort']) and @$_REQUEST['-table'] == 'vw_nte_note' ){
-    $_REQUEST['-sort'] = $_GET['-sort'] = 'createdtime desc';
-    }
-*/
-
-    //set default sort order. needed to add this for 1.5x. the applicationdelegate.php stanza was not working for ver 1.5x.
-    // Problem is it only works after you click on a top menu [table] item.
-    /*
-    if ( !isset($_REQUEST['-sort']) and @$_REQUEST['-table'] == 'nte_note' ){
-    $_REQUEST['-sort'] = $_GET['-sort'] = 'updatedtime desc';
-    }
-    */
 
 if (!isset($_REQUEST['-sort']) and @$_REQUEST['-table'] == 'nte_about_this_app') {
     $_REQUEST['-sort'] = $_GET['-sort'] = 'updatedtime desc';

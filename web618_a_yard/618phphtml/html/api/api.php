@@ -12335,6 +12335,7 @@ namespace Tqdev\PhpCrudApi {
 }
 
 // file: src/index.php
+
 namespace Tqdev\PhpCrudApi {
 
     use Tqdev\PhpCrudApi\Api;
@@ -12343,9 +12344,9 @@ namespace Tqdev\PhpCrudApi {
     use Tqdev\PhpCrudApi\ResponseUtils;
 
     $config = new Config([
-         'driver' => 'mysql',
-         'address' => '10.4.71.231',
-         'port' => '6608',
+        'driver' => 'mysql',
+        'address' => '10.4.71.231',
+        'port' => '6608',
         'username' => 'user',
         'password' => 'pw55',
         'database' => 'dkrdbm',
@@ -12359,3 +12360,4 @@ namespace Tqdev\PhpCrudApi {
     //file_put_contents('request.log',RequestUtils::toString($request)."===\n",FILE_APPEND);
     //file_put_contents('request.log',ResponseUtils::toString($response)."===\n",FILE_APPEND);
 }
+

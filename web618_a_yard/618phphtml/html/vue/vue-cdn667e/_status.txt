@@ -14,10 +14,15 @@ back api:
 php api 
 sftp://10.4.71.231/ap/620dkrcollection/web618_a_yard/618phphtml/html/api/api.php
 
+http://10.4.71.231:6611/api/api.php/records/blogapp_post
+
+http://10.4.71.231:6607/ 
 _____________
 
 
 http://10.4.71.231:6611/vue/vue-cdn667e
+
+
 
 http://10.4.71.231:6611/xatapost
 

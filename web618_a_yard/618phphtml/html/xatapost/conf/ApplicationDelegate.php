@@ -9,6 +9,7 @@ class conf_ApplicationDelegate {
     public function beforeHandleRequest() {
 
         //default sort...
+        
         $query = & Dataface_Application::getInstance()->getQuery();
         if (!$_POST and $query['-table'] == 'nte_note' and !isset($query['-sort'])) {
             $query['-sort'] = 'updatedtime desc';

@@ -17,6 +17,8 @@ https://github.com/dgleba/MEVNCRUDExample
 // =================================================
 
 
+// vue3-sfc-loader boilerplate..
+
 const options = {
   moduleCache: { vue: Vue },
 
@@ -35,12 +37,16 @@ const options = {
 
 // =================================================
 
+// home component
+
 var Home = Vue.extend({
   // mixins: [util],
   template: '#home'
 });
 
 // =================================================
+
+// component loader helper..
 
 function load(path) {
   return window['vue2-sfc-loader'].loadModule(path, options);
@@ -59,6 +65,8 @@ Vue.use(VueRouter);
 
 
 // =================================================
+
+// main starting point..
 
 load('./src/app.vue')
 .then(app => {

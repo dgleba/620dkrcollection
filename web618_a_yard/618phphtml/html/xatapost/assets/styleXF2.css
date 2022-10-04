@@ -1,9 +1,14 @@
-#xf-logo #site_logo {
-  background-image: url(assets/blanklogo.png);
-	height: 75px;
+.site_logo {
+  background-image: url(blanklogo.png);
+	/* height: 55px; */
 }
 
-#fineprint {
+#site_logo {
+  background-image: url(blanklogo.png);
+	/* height: 55px; */
+}
+
+.fineprint {
   display: none;
 }
 
