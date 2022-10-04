@@ -6,7 +6,7 @@
     <span class="mx-2 my-2" >Posts </span>
 
     <button v-if="Post_form_is_hidden"  class="btn btn-primary ml-4 mt-1 mb-1" @click="createPost()" >Create</button>
-     <!-- Search:<input type="text" v-model="searchterm" > -->
+      &nbsp <input type="text" v-model="searchterm" v-on:input="updateAfterSearchPosts" placeholder="Search">
     
   </div>
 
@@ -20,12 +20,12 @@
     </b-toast> -->
 
     <!-- display several errors... -->
-    <!-- <b-alert  :show="dismissCountDown"  dismissible  variant="warning"   @dismissed="dismissCountDown=0"  @dismiss-count-down="countDownChanged">
+    <b-alert  :show="dismissCountDown"  dismissible  variant="warning"   @dismissed="dismissCountDown=0"  @dismiss-count-down="countDownChanged">
       <div v-for="(t_error, index) of t_errors.slice().reverse().slice(0, 3)" v-bind:key=index>  
         {{index+1}} of {{t_error_cnt}}: {{t_error.message}}
       </div>
       <b-progress   variant="warning"  :max="dismissSecs"   :value="dismissCountDown"  height="3px" ></b-progress>
-    </b-alert> -->
+    </b-alert> 
 
     <b-row>
       <b-col v-if="!Post_form_is_hidden" lg="3">
@@ -125,6 +125,10 @@ export default {
       this.showoverlay = false
     },
 
+    async updateAfterSearchPosts () {
+      this.posts = await this.getPosts()
+    },    
+
     countDownChanged(dismissCountDown) {
         this.dismissCountDown = dismissCountDown
       },
@@ -137,7 +141,7 @@ export default {
     pollData () {
       this.polling = setInterval(() => {
         this.refreshPosts()
-      }, 92000)
+      }, 5000)
     }, 
 
     async populatePostToEdit (post) {
@@ -184,7 +188,7 @@ export default {
       })
       .then(req => {
         // uncomment  console.log(req);  to see the whole response for debugging.
-        // console.log(req);
+        //console.log(req);
         return req.data.records
       })
       .catch(e => {
@@ -210,7 +214,7 @@ export default {
     // backend api urls..
 
     getPosts () {
-      return this.execute('get', `${table1}`)
+      return this.execute('get', `${table1}?search=${this.searchterm}&page=1,25`)
     },
     getPost (id) {
       return this.execute('get', `${table1}/${id}`)
