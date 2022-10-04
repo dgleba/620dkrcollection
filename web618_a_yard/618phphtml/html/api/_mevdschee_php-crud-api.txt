@@ -12,6 +12,11 @@ http://10.4.71.231:6611/api/api.php/records/blogapp_post?search=23&page
 {"records":[{"id":1,"created":"2022-09-30 02:57:23.276811","last_updated":"2022-09-30 02:57:23.276852","title":"hi23","body":"there"}],"results":1}
 
 
+http://10.4.71.231:6611/api/api.php/records/posts_arc?search=&page=1,2
+{"records":[{"id":1,"title":"hi23","body":"there","created":"2022-09-30 02:57:23.276811","last_updated":"2022-09-30 02:57:23.276852"},{
+  "id":1,"title":"hi23","body":"there","created":"2022-09-30 02:57:23.276811","last_updated":"2022-09-30 02:57:23.276852"}],"results":91}
+
+
 http://10.4.71.231:6611/api/api.php/records/blogapp_post/1
 
   {"id":1,"created":"2022-09-30 02:57:23.276811","last_updated":"2022-09-30 02:57:23.276852","title":"hi","body":"there"}

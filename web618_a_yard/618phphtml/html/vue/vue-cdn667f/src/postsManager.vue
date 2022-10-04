@@ -6,11 +6,11 @@
     <span class="mx-2 my-2" >Posts </span>
 
     <button v-if="Post_form_is_hidden"  class="btn btn-primary ml-4 mt-1 mb-1" @click="createPost()" >Create</button>
-     <!-- Search:<input type="text" v-model="filtersearch" > -->
+     <!-- Search:<input type="text" v-model="searchterm" > -->
     
   </div>
 
-    <!-- // error messages area. toast, alert, .. -->
+
     <!-- For a full alert bar saying loading.. -->
     <!-- <b-alert :show="loading" variant="info">Loading...</b-alert> -->
 
@@ -19,7 +19,7 @@
       Loading..
     </b-toast> -->
 
-    <!-- display all errors... -->
+    <!-- display several errors... -->
     <!-- <b-alert  :show="dismissCountDown"  dismissible  variant="warning"   @dismissed="dismissCountDown=0"  @dismiss-count-down="countDownChanged">
       <div v-for="(t_error, index) of t_errors.slice().reverse().slice(0, 3)" v-bind:key=index>  
         {{index+1}} of {{t_error_cnt}}: {{t_error.message}}
@@ -106,7 +106,7 @@ export default {
       showDismissibleAlert: false,
       Post_form_is_hidden: true,
       polling: null,
-      filtersearch: ""
+      searchterm: ""
     }
   },
   async created () {
@@ -190,7 +190,7 @@ export default {
       .catch(e => {
         console.log("posts ~187");
         console.log(e);
-        // to keep all errors:  
+        // to keep all errors in an array:  
         this.t_errors.push(e);
         // Show only last error..
         // this.t_errors[0] = (e);
