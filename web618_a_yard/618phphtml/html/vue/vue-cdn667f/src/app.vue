@@ -24,25 +24,6 @@
   <!-- <hello01></hello01> -->
 </template>
 
-<!-- var app = new Vue({
-  router: router,
-  el: '#app',
-  components: {
-    'hello01': window.httpVueLoader('./src/hello.vue'),
-  }, 
-  data: function () {
-    return {
-      activeUser: 'aba',
-      username: "",
-      password: "",
-      login: {},
-      t_errors: [],
-      state: ""
-    };  
-  },
-}).$mount('#app') -->
-
-
 <script>
   export default {
     name: 'app',
