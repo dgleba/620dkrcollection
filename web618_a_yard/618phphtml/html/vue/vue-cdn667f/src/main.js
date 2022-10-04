@@ -1,21 +1,11 @@
-
 // =================================================
 /*
 
 This is a small vue app to edit a table in one component.
-There is not auth/login on the table.
-
-References:
-
-started from https://github.com/nlware/vue-crud-ui 
-
-https://github.com/dgleba/550dkrcolbrail/blob/main/vue-eg-552-yards/vue-eg-552-b-yard/vue-eg-552cdjango/src/components/PostsManager.vue
-
-https://github.com/dgleba/MEVNCRUDExample
+There is no auth/login on the table.
 
 */
 // =================================================
-
 
 const options = {
   moduleCache: { vue: Vue },
@@ -32,7 +22,6 @@ const options = {
   addStyle: () => {},
 }
 
-
 // =================================================
 
 var Home = Vue.extend({
@@ -47,16 +36,6 @@ function load(path) {
 }
 
 Vue.use(VueRouter);
-
-// const router = new VueRouter({
-//   //mode: 'history',
-//   mode: 'hash',
-//   routes: [
-//     { path: '/pm', component: () => load('/postsManager.vue') },
-//     { path: '/', component: Home},
-//   ]
-// })
-
 
 // =================================================
 

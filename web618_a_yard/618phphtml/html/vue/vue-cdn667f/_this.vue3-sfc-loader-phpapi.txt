@@ -51,6 +51,15 @@ https://markus.oberlehner.net/blog/goodbye-webpack-building-vue-applications-wit
 https://docs.google.com/spreadsheets/d/1Qsv52d3zlKNftJzySwqXP0wxShTiDAk48gzgM5HpqFY/edit?usp=sharing
 vue full-stack generate scaffold research.gsht
 
+_____________
+
+References:
+
+started from https://github.com/nlware/vue-crud-ui 
+
+https://github.com/dgleba/550dkrcolbrail/blob/main/vue-eg-552-yards/vue-eg-552-b-yard/vue-eg-552cdjango/src/components/PostsManager.vue
+
+https://github.com/dgleba/MEVNCRUDExample
 
 
 =================================================
