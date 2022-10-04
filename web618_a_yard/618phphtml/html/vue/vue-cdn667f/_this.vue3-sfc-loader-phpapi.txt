@@ -11,7 +11,7 @@ https://v2.vuejs.org/v2/guide/
 
 sftp://10.4.71.231/ap/620dkrcollection/web618_a_yard/618phphtml/html/
 
-http://10.4.71.231:6611/vue-cdn3/vuecdn3.html
+http://10.4.71.231:6611/vue/vue-cdn667f
 
 
 
