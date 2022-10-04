@@ -3,7 +3,7 @@
   <div id="app">
     <b-navbar toggleable="md" type="dark" variant="dark">
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-      <b-navbar-brand to="/">Vuecdn3</b-navbar-brand>
+      <b-navbar-brand to="/">Vue</b-navbar-brand>
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav>
           <b-nav-item to="/">Home</b-nav-item>
@@ -23,24 +23,6 @@
   </div>
   <!-- <hello01></hello01> -->
 </template>
-
-<!-- var app = new Vue({
-  router: router,
-  el: '#app',
-  components: {
-    'hello01': window.httpVueLoader('./src/hello.vue'),
-  }, 
-  data: function () {
-    return {
-      activeUser: 'aba',
-      username: "",
-      password: "",
-      login: {},
-      t_errors: [],
-      state: ""
-    };  
-  },
-}).$mount('#app') -->
 
 
 <script>

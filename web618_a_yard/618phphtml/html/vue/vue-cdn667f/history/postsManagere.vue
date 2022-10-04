@@ -235,14 +235,4 @@ export default {
 };
 </script>
 
-<style>
-  /* these examples not used here.. */
-  .hero {
-    height: 50vh;
-    display: flex;
-    align-items: center;
-  }
-  .hero .lead {
-    font-weight: 200;
-  }
-</style>
+

@@ -6,26 +6,20 @@
     <span class="mx-2 my-2" >Posts </span>
 
     <button v-if="Post_form_is_hidden"  class="btn btn-primary ml-4 mt-1 mb-1" @click="createPost()" >Create</button>
-     <!-- Search:<input type="text" v-model="filtersearch" > -->
-    
+    <!-- <a href="#" @click.prevent="createPost()">Create </a> -->
+    <!-- <button v-on:click="Post_form_is_hidden = false">Create</button> -->
+    <!-- <button v-on:click="Post_form_is_hidden = !Post_form_is_hidden">Toggle hide form</button> -->
   </div>
 
     <!-- // error messages area. toast, alert, .. -->
-    <!-- For a full alert bar saying loading.. -->
     <!-- <b-alert :show="loading" variant="info">Loading...</b-alert> -->
-
-    <!-- I don't think I got this one working. -->
-    <!-- <b-toast id="loading-toast" title="Dataloading"  static no-auto-hide>
-      Loading..
-    </b-toast> -->
-
-    <!-- display all errors... -->
-    <!-- <b-alert  :show="dismissCountDown"  dismissible  variant="warning"   @dismissed="dismissCountDown=0"  @dismiss-count-down="countDownChanged">
-      <div v-for="(t_error, index) of t_errors.slice().reverse().slice(0, 3)" v-bind:key=index>  
-        {{index+1}} of {{t_error_cnt}}: {{t_error.message}}
-      </div>
-      <b-progress   variant="warning"  :max="dismissSecs"   :value="dismissCountDown"  height="3px" ></b-progress>
-    </b-alert> -->
+    <!-- . -->
+    <!-- alert style here. toast style down in script. -->
+      <!-- <div v-if="t_errors && t_errors.length">
+        <div v-for="t_error of t_errors" v-bind:key="t_error">
+          <b-alert dismissible show>{{t_error.message}}</b-alert>
+        </div>
+      </div> -->
 
     <b-row>
       <b-col v-if="!Post_form_is_hidden" lg="3">
@@ -100,13 +94,8 @@ export default {
       show: false,
       access_token:"",
       t_errors:[],
-      t_error_cnt: 0,
-      dismissSecs: 10,
-      dismissCountDown: 0,
-      showDismissibleAlert: false,
       Post_form_is_hidden: true,
-      polling: null,
-      filtersearch: ""
+      polling: null
     }
   },
   async created () {
@@ -114,30 +103,22 @@ export default {
     this.refreshPosts();
     this.pollData();
   },
+
   methods: {
     async refreshPosts () {
       this.loading = true // for original alert
       this.showoverlay = true // for overlay
-      // For a loading message to give more feedback..
-      // this.$bvToast.toast('Loading', {variant: 'danger' });
       this.posts = await this.getPosts()
       this.loading = false
       this.showoverlay = false
     },
-
-    countDownChanged(dismissCountDown) {
-        this.dismissCountDown = dismissCountDown
-      },
-    showAlert() {
-      this.dismissCountDown = this.dismissSecs
-    },    
 
     //  poll the api every x seconds to get updated data..
     // https://renatello.com/vue-js-polling-using-setinterval/
     pollData () {
       this.polling = setInterval(() => {
         this.refreshPosts()
-      }, 92000)
+      }, 95000)
     }, 
 
     async populatePostToEdit (post) {
@@ -188,17 +169,10 @@ export default {
         return req.data.records
       })
       .catch(e => {
-        console.log("posts ~187");
+        console.log("posts ~147");
         console.log(e);
-        // to keep all errors:  
         this.t_errors.push(e);
-        // Show only last error..
-        // this.t_errors[0] = (e);
-
-        this.t_error_cnt++;
-        console.log(this.t_errors)
-        // this.$bvToast.toast(` ${e}`, {variant: 'danger', autoHideDelay: 8000 });
-        this.showAlert();
+        this.$bvToast.toast(` ${e}`, {variant: 'danger', autoHideDelay: 15000 });
         if (e.response.status === 401) {
           router.push({
             name: "Login"
@@ -226,7 +200,6 @@ export default {
     }
     // end backend api urls..
 
-
   },
   beforeDestroy () {
     clearInterval(this.polling)
@@ -236,13 +209,15 @@ export default {
 </script>
 
 <style>
-  /* these examples not used here.. */
   .hero {
     height: 50vh;
     display: flex;
     align-items: center;
+    justify-content: center;
+    text-align: center;
   }
   .hero .lead {
     font-weight: 200;
+    font-size: 1.6rem;
   }
 </style>
