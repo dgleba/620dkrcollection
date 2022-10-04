@@ -56,7 +56,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="post in filteredposts" :key="post.id">
+            <tr v-for="post in posts" :key="post.id">
               <td class="text-center">
                 <a href="#" @click.prevent="populatePostToEdit(post)">Edit </a> &nbsp; &nbsp;  <span/>
               </td>
@@ -235,14 +235,4 @@ export default {
 };
 </script>
 
-<style>
-  /* these examples not used here.. */
-  .hero {
-    height: 50vh;
-    display: flex;
-    align-items: center;
-  }
-  .hero .lead {
-    font-weight: 200;
-  }
-</style>
+

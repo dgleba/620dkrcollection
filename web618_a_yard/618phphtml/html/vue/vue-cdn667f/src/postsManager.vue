@@ -56,7 +56,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="post in filteredposts" :key="post.id">
+            <tr v-for="post in posts" :key="post.id">
               <td class="text-center">
                 <a href="#" @click.prevent="populatePostToEdit(post)">Edit </a> &nbsp; &nbsp;  <span/>
               </td>
