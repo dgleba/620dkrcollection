@@ -6,7 +6,7 @@
     <span class="mx-2 my-2" >Posts </span>
 
     <button v-if="Post_form_is_hidden"  class="btn btn-primary ml-4 mt-1 mb-1" @click="createPost()" >Create</button>
-      &nbsp <input type="text" v-model="searchterm" v-on:input="getreqdata" placeholder="Search">  &nbsp Recrds: {{recordcnt}}
+      &nbsp <input type="text" v-model="searchterm" v-on:input="updateAfterSearchPosts" placeholder="Search">
     
   </div>
 
@@ -84,8 +84,7 @@ const client = axios.create({
   json: true
 });
 
-// const table1 = '/blogapp_post';
-const table1 = '/posts_arc';
+const table1 = '/blogapp_post';
 
 // =================================================
 
@@ -96,8 +95,6 @@ export default {
   data () {
     return {
       loading: false,
-      reqdata: {},
-      recordcnt: 0,
       posts: [],
       model: {},
       show: false,
@@ -123,18 +120,13 @@ export default {
       this.showoverlay = true // for overlay
       // For a loading message to give more feedback..
       // this.$bvToast.toast('Loading', {variant: 'danger' });
-      this.reqdata = await this.getPosts()
-      this.posts = this.reqdata.records
-      this.recordcnt = this.reqdata.results
+      this.posts = await this.getPosts()
       this.loading = false
       this.showoverlay = false
     },
 
-    async getreqdata () {
-      this.reqdata = await this.getPosts()
-      this.posts = this.reqdata.records
-      this.recordcnt = this.reqdata.results
-      // console.log(this.reqdata.results)
+    async updateAfterSearchPosts () {
+      this.posts = await this.getPosts()
     },    
 
     countDownChanged(dismissCountDown) {
@@ -149,7 +141,7 @@ export default {
     pollData () {
       this.polling = setInterval(() => {
         this.refreshPosts()
-      }, 91000)
+      }, 5000)
     }, 
 
     async populatePostToEdit (post) {
@@ -197,7 +189,7 @@ export default {
       .then(req => {
         // uncomment  console.log(req);  to see the whole response for debugging.
         //console.log(req);
-        return req.data
+        return req.data.records
       })
       .catch(e => {
         console.log("posts ~187");
