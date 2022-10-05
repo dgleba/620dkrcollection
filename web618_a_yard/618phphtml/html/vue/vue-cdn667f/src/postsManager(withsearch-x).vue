@@ -6,9 +6,8 @@
     <span class="mx-2 my-2" >Posts </span>
 
     <button v-if="Post_form_is_hidden"  class="btn btn-primary ml-4 mt-1 mb-1" @click="createPost()" >Create</button>
-      &nbsp <input type="text" v-model="searchterm" placeholder="Search"><button v-on:click="clearsearch">x</button>
-      <button @click="getreqdata">Search</button>
-      &nbsp Recrds: {{recordcnt}}
+      &nbsp <input type="text" v-model="searchterm" v-on:input="getreqdata" placeholder="Search"><button v-on:click="clearsearch">x</button>  &nbsp Recrds: {{recordcnt}}
+    
   </div>
 
 
@@ -141,10 +140,6 @@ export default {
     	this.searchterm = '';
       this.getreqdata();
     },  
-    applysearch() {
-    this.filterTable = this.filterInput
-    },
-
     countDownChanged(dismissCountDown) {
         this.dismissCountDown = dismissCountDown
       },

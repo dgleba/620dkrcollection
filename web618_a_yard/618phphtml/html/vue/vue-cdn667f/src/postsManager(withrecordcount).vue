@@ -6,9 +6,8 @@
     <span class="mx-2 my-2" >Posts </span>
 
     <button v-if="Post_form_is_hidden"  class="btn btn-primary ml-4 mt-1 mb-1" @click="createPost()" >Create</button>
-      &nbsp <input type="text" v-model="searchterm" placeholder="Search"><button v-on:click="clearsearch">x</button>
-      <button @click="getreqdata">Search</button>
-      &nbsp Recrds: {{recordcnt}}
+      &nbsp <input type="text" v-model="searchterm" v-on:input="getreqdata" placeholder="Search">  &nbsp Recrds: {{recordcnt}}
+    
   </div>
 
 
@@ -20,7 +19,7 @@
       Loading..
     </b-toast> -->
 
-    <!-- display several errors. sort reverse and show only 3 of them... -->
+    <!-- display several errors... -->
     <b-alert  :show="dismissCountDown"  dismissible  variant="warning"   @dismissed="dismissCountDown=0"  @dismiss-count-down="countDownChanged">
       <div v-for="(t_error, index) of t_errors.slice().reverse().slice(0, 3)" v-bind:key=index>  
         {{index+1}} of {{t_error_cnt}}: {{t_error.message}}
@@ -137,13 +136,6 @@ export default {
       this.recordcnt = this.reqdata.results
       // console.log(this.reqdata.results)
     },    
-  	clearsearch() {
-    	this.searchterm = '';
-      this.getreqdata();
-    },  
-    applysearch() {
-    this.filterTable = this.filterInput
-    },
 
     countDownChanged(dismissCountDown) {
         this.dismissCountDown = dismissCountDown
