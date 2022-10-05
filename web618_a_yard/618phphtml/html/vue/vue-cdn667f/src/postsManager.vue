@@ -1,3 +1,10 @@
+<!-- 
+Concepts:
+Posts is used below to refer to the list of db records.
+Model is used to refer to one record being edited.
+Copy and edit this file for another table. 
+Why not just keep post and model as generic terms for the db records. 
+-->
 
 <template id="postsManager">
   <div class="container-fluid mt-9">
@@ -5,6 +12,7 @@
     <!-- <b-toast id="Post-toaster01">{{}}</b-toast> -->
     <span class="mx-2 my-2" >Posts </span>
 
+    <!-- Search bar -->
     <button v-if="Post_form_is_hidden"  class="btn btn-primary ml-4 mt-1 mb-1" @click="createPost()" >Create</button>
       &nbsp <input type="text" v-model="searchterm" placeholder="Search"><button v-on:click="clearsearch">x</button>
       <button @click="getreqdata">Search</button>
@@ -20,7 +28,7 @@
       Loading..
     </b-toast> -->
 
-    <!-- display several errors. sort reverse and show only 3 of them... -->
+    <!-- Toast/alerts - display several errors. sort reverse and show only 3 of them... -->
     <b-alert  :show="dismissCountDown"  dismissible  variant="warning"   @dismissed="dismissCountDown=0"  @dismiss-count-down="countDownChanged">
       <div v-for="(t_error, index) of t_errors.slice().reverse().slice(0, 3)" v-bind:key=index>  
         {{index+1}} of {{t_error_cnt}}: {{t_error.message}}
@@ -28,6 +36,7 @@
       <b-progress   variant="warning"  :max="dismissSecs"   :value="dismissCountDown"  height="3px" ></b-progress>
     </b-alert> 
 
+    <!-- create edit form -->
     <b-row>
       <b-col v-if="!Post_form_is_hidden" lg="3">
         <div :title="(model.id ? 'Edit ID#' + model.id : 'New') ">
@@ -45,6 +54,7 @@
       </b-col>
     </b-row>
 
+    <!-- list view -->
     <b-row>
         <b-overlay :show="showoverlay" class="d-inline-block"  variant="info" opacity="0.27" >
         <table class="table table-striped">

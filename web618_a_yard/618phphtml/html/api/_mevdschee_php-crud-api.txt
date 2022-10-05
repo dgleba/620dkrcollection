@@ -47,3 +47,19 @@ HTTP/1.1 200 OK
 Date: Sat, 01 Oct 2022 16:28:10 GMT
 Serve...
 {"records":[{"id":1,"created":"2022-09-30 02:57:23.276811","last_updated":"2022-09-30 02:57:23.276852","title":"hi","body":"there"}]}
+
+=================================================
+
+    $config = new Config([
+        'driver' => 'mysql',
+        'address' => '10.4.71.231',
+        'port' => '6608',
+        'username' => 'user',
+        'password' => 'pw55',
+        'database' => 'dkrdbm',
+        'middlewares' => 'textSearch',
+        'debug' => true,
+    ]);
+
+=================================================
+
