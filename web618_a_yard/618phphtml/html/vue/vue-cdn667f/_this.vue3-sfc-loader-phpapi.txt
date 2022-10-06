@@ -15,9 +15,6 @@ http://10.4.71.231:6611/vue/vue-cdn667f
 
 
 
-<script src="https://unpkg.com/bootstrap-vue@^2.22/dist/bootstrap-vue.common.js"></script> 
- error - exports not defined:  
- https://www.unpkg.com/browse/bootstrap-vue@2.22.0/
 
 
 
@@ -62,13 +59,32 @@ https://github.com/dgleba/550dkrcolbrail/blob/main/vue-eg-552-yards/vue-eg-552-b
 https://github.com/dgleba/MEVNCRUDExample
 
 
+https://v2.vuejs.org/v2/guide/
+
+
+
 =================================================
+=================================================
+
+error;
+
+<script src="https://unpkg.com/bootstrap-vue@^2.22/dist/bootstrap-vue.common.js"></script> 
+ error - exports not defined:  
+ https://www.unpkg.com/browse/bootstrap-vue@2.22.0/
+
 
 
 
 bootstrap-vue.common.js Uncaught ReferenceError exports is not defined
 
 bootstrap-vue.common.js Uncaught ReferenceError require is not defined
+
+
+http://10.4.71.231:6611/api/phpcrudui.php
+
+php-crud-ui Fatal error
+ Declaration of Tqdev\PhpCrudApi\Database\LazyPdo::query(string $statement): 
+PDOStatement must be compatible with PDO::query(string $query, ?int $fetchMode = null, mixed ...$fetchModeArgs) in /var/www/html/api/phpcrudui.php on line 6997
 
 
 =================================================
