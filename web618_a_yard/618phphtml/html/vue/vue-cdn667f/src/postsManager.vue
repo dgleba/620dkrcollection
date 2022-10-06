@@ -3,7 +3,7 @@ Concepts:
 Posts is used below to refer to the list of db records.
 Model is used to refer to one record being edited.
 Copy and edit this file for another table. 
-Why not just keep post and model as generic terms for the db records. 
+Why not just keep post and model as generic terms for the db records? 
 -->
 
 <template id="postsManager">
@@ -95,8 +95,8 @@ const client = axios.create({
   json: true
 });
 
-// const table1 = '/blogapp_post';
-const table1 = '/posts_arc';
+const table1 = '/blogapp_post';
+// const table1 = '/posts_arc';
 
 // =================================================
 
@@ -167,7 +167,7 @@ export default {
     pollData () {
       this.polling = setInterval(() => {
         this.refreshPosts()
-      }, 91000)
+      }, 12000)
     }, 
 
     async populatePostToEdit (post) {
@@ -240,7 +240,7 @@ export default {
     // backend api urls..
 
     getPosts () {
-      return this.execute('get', `${table1}?search=${this.searchterm}&page=1,25`)
+      return this.execute('get', `${table1}?search=${this.searchterm}&page=1,50`)
     },
     getPost (id) {
       return this.execute('get', `${table1}/${id}`)
