@@ -20,7 +20,7 @@ adminer:
 http://10.4.71.231:6607/ 
 
 
-http://10.4.71.231:6611/vue/vue-cdn667e
+http://10.4.71.231:6611/vue/vue-cdn667f
 
 
 http://10.4.71.231:6611/xatapost
