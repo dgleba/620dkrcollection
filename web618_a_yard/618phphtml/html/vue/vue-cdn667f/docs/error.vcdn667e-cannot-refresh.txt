@@ -1,0 +1,31 @@
+=================================================
+
+still broken.  vue-cdn667e -  2022-10-06_Thu_18.35-PM
+
+=================================================
+
+
+
+This didn't fix it.
+
+
+
+Title:
+caching - Chrome Refuses to Clear Javascript Cache (Even After Hard Reload and Manual Cache Clear) - Stack Overflow
+
+Body:
+
+Also if you want to use Ctrl+F5, do this after opening the developer console - it should work. Make sure to check 'disable cache' in network tab in the developer console.
+
+It is incredibly annoying. 
+You can force a reload by opening the inspect window in Chrome and selecting Network and Disable cache.
+
+
+old data . can't clear cache
+
+chrome clear cache for js app not getting refreshed
+
+Url:
+https://stackoverflow.com/questions/48306819/chrome-refuses-to-clear-javascript-cache-even-after-hard-reload-and-manual-cach
+
+=================================================
