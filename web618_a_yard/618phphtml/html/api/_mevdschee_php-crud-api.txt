@@ -63,3 +63,24 @@ Serve...
 
 =================================================
 
+
+
+ curl -H "X-API-Key: key134"   http://10.4.71.231:6611/api/api.php/records/blogapp_post?search=hi&page=1,3
+
+
+    $config = new Config([
+        'driver' => 'mysql',
+        'address' => '10.4.71.231',
+        'port' => '6608',
+        'username' => 'user',
+        'password' => 'pw55',
+        'database' => 'dkrdbm',
+        'middlewares' => 'textSearch, apiKeyAuth',
+                         "apiKeyAuth.keys" => 'key134',
+        'debug' => true,
+    ]);
+
+
+
+=================================================
+

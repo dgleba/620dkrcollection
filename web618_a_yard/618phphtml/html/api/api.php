@@ -12350,7 +12350,8 @@ namespace Tqdev\PhpCrudApi {
         'username' => 'user',
         'password' => 'pw55',
         'database' => 'dkrdbm',
-        'middlewares' => 'textSearch',
+        'middlewares' => 'textSearch, apiKeyAuth',
+                         "apiKeyAuth.keys" => 'key134',
         'debug' => true,
     ]);
     $request = RequestFactory::fromGlobals();
@@ -12362,3 +12363,8 @@ namespace Tqdev\PhpCrudApi {
     //file_put_contents('request.log',ResponseUtils::toString($response)."===\n",FILE_APPEND);
 }
 
+/*
+note:
+
+
+*/

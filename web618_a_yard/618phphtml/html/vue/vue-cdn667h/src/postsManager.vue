@@ -92,6 +92,9 @@ Why not just keep post and model as generic terms for the db records?
 
 // api data backend settings: 
 
+// To use api key for https://github.com/mevdschee/php-crud-api
+axios.defaults.headers.common['X-API-Key'] = 'key134' 
+
 const client = axios.create({
   // baseURL: 'http://10.4.71.231:6461/blogapp/api/v1',
   baseURL: 'http://10.4.71.231:6611/api/api.php/records',
@@ -205,8 +208,6 @@ export default {
     },
 
     async execute (method, resource, data) {
-      // inject the accessToken for each request
-      // let accessToken = await Vue.prototype.$auth.getAccessToken()
       this.accessToken = localStorage.getItem("jwtToken");
       return client({
         method,
