@@ -12336,6 +12336,10 @@ namespace Tqdev\PhpCrudApi {
 
 // file: src/index.php
 
+
+//  with api-key
+
+
 namespace Tqdev\PhpCrudApi {
 
     use Tqdev\PhpCrudApi\Api;
@@ -12350,7 +12354,8 @@ namespace Tqdev\PhpCrudApi {
         'username' => 'user',
         'password' => 'pw55',
         'database' => 'dkrdbm',
-        'middlewares' => 'textSearch', 
+        'middlewares' => 'textSearch, apiKeyAuth',
+                         "apiKeyAuth.keys" => 'key134',
         'debug' => true,
     ]);
     $request = RequestFactory::fromGlobals();
@@ -12365,7 +12370,5 @@ namespace Tqdev\PhpCrudApi {
 /*
 note:
 
-        'middlewares' => 'textSearch, apiKeyAuth',
-                         "apiKeyAuth.keys" => 'key134',
 
 */
