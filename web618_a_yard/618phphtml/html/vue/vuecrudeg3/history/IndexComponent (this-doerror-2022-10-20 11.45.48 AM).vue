@@ -45,9 +45,26 @@ export default {
     this.axios.get(uri).then(response => {
       console.log(response);
       this.posts = response.data.records;
-    }).catch(e => { this.$root.doError(e) });
+    }).catch(e => { this.doError(e)  });
   },
   methods: {
+    // errors alerts functions..
+    doError (e) {
+      console.log("catch ~47");
+      console.log(e);
+      // to keep all errors in an array:  
+      this.$root.t_errors.push(e);
+      // Show only last error..
+      // this.t_errors[0] = (e);
+      this.$root.t_error_cnt++;
+      console.log(this.$root.t_errors)
+      // this.$bvToast.toast(` ${e}`, {variant: 'danger', autoHideDelay: 8000 });
+      this.$root.showAlert();
+      if (e.response.status === 401) {
+        this.$router.push('/login')
+      }
+    },
+
     deletePost(id) {
       let uri = `http://localhost:4000/posts/delete/${id}`;
       this.axios.delete(uri).then(response => {
