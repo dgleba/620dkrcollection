@@ -1,17 +1,20 @@
 
 Status:
 
-works.
+
 
 Goal:
 
-combine edit and create component 2022-10-19
+add error message display. 2022-10-19
 
 _____________
 
 
 
 History:
+
+combine edit and create component 2022-10-19
+
 converted. mevn eg to sfc
 
 from:
