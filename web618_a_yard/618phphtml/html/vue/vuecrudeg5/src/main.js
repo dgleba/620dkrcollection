@@ -14,13 +14,7 @@ const options = {
     addStyle: () => {},
   }
   
-  // =================================================
-  
-  var Home = Vue.extend({
-    // mixins: [util],
-    template: '#home'
-  });
-  
+ 
   // =================================================
   
   function load(path) {
