@@ -1,12 +1,12 @@
 <template>
   <div>
-    <!-- <h1>Edit Post</h1> -->
-    <form @submit.prevent="updatePost">
+    <!-- <h1>Edit</h1> -->
+    <form @submit.prevent="updatedataRow">
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
             <label>Title: </label>
-            <input type="text" class="form-control" v-model="post.title">
+            <input type="text" class="form-control" v-model="dataRow.title">
           </div>
         </div>
       </div>
@@ -14,7 +14,7 @@
         <div class="col-md-6">
           <div class="form-group">
             <label>Body: </label>
-            <textarea class="form-control" v-model="post.body" rows="5"></textarea>
+            <textarea class="form-control" v-model="dataRow.body" rows="5"></textarea>
           </div>
         </div>
       </div><br />
@@ -30,7 +30,7 @@ export default {
 
   data() {
     return {
-      post: {},
+      dataRow: {},
       editing: false
     }
   },
@@ -41,7 +41,7 @@ export default {
       this.editing = true;
       let uri = `http://10.4.71.231:6611/api/api.php/records/blogapp_post/${this.$route.params.id}`;
       this.axios.get(uri).then((response) => {
-        this.post = response.data;
+        this.dataRow = response.data;
       }).catch(e => { this.$root.doError(e)  });
     }
     else {
@@ -50,18 +50,18 @@ export default {
     }
   },
   methods: {
-    updatePost() {
+    updatedataRow() {
       if (this.editing) {
         // edit
         let uri = `http://10.4.71.231:6611/api/api.php/records/blogapp_post/${this.$route.params.id}`;
-        this.axios.put(uri, this.post).then(response => {
+        this.axios.put(uri, this.dataRow).then(response => {
           this.$router.push({ name: 'posts' });
         }).catch(e => { this.$root.doError(e)  });
       }
       else {
         // create 
         let uri = 'http://10.4.71.231:6611/api/api.php/records/blogapp_post';
-        this.axios.post(uri, this.post).then(response => {
+        this.axios.post(uri, this.dataRow).then(response => {
           this.$router.push({ name: 'posts' });
         }).catch(e => { this.$root.doError(e)  });
       }

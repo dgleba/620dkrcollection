@@ -1,6 +1,6 @@
 <template id="IndexComponent">
   <div>
-    <!-- <h1>Posts</h1> -->
+    <!-- <h1>List</h1> -->
     <div class="row">
       <router-link :to="{ name: 'edit' }" class="btn btn-primary">Create</router-link>
       <!-- Search bar -->
@@ -21,14 +21,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="post in posts" :key="post.id">
-          <td>{{ post.id }}</td>
-          <td>{{ post.title }}</td>
-          <td>{{ post.body }}</td>
+        <tr v-for="dataRow in dataRows" :key="dataRow.id">
+          <td>{{ dataRow.id }}</td>
+          <td>{{ dataRow.title }}</td>
+          <td>{{ dataRow.body }}</td>
           <td>
-            <router-link :to="{name: 'edit', params: { id: post.id }}" class="btn btn-primary">Edit</router-link>
+            <router-link :to="{name: 'edit', params: { id: dataRow.id }}" class="btn btn-primary">Edit</router-link>
           </td>
-          <td><button class="btn btn-danger" @click.prevent="deletePost(post.id)">Delete</button></td>
+          <td><button class="btn btn-danger" @click.prevent="deletedataRow(dataRow.id)">Delete</button></td>
         </tr>
       </tbody>
     </table>
@@ -40,7 +40,7 @@ export default {
 
   data() {
     return {
-      posts: [],
+      dataRows: [],
       recordcnt: 0,
       searchterm: ""
     }
@@ -62,14 +62,14 @@ export default {
       console.log(uri)
       this.axios.get(uri).then(response => {
         console.log(response);
-        this.posts = response.data.records;
+        this.dataRows = response.data.records;
         this.recordcnt = response.data.results;
       }).catch(e => { this.$root.doError(e) });
     },
-    deletePost(id) {
+    deletedataRow(id) {
       let uri = `http://localhost:4000/posts/delete/${id}`;
       this.axios.delete(uri).then(response => {
-        this.posts.splice(this.posts.indexOf(id), 1);
+        this.dataRows.splice(this.dataRows.indexOf(id), 1);
       });
     }
   }
