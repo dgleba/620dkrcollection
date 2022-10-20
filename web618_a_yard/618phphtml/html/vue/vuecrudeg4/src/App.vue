@@ -18,7 +18,7 @@
     <b-alert :show="dismissCountDown" dismissible variant="warning" @dismissed="dismissCountDown=0"
       @dismiss-count-down="countDownChanged">
       <div v-for="(t_error, index) of t_errors.slice(-3)" v-bind:key=index>
-        {{t_error_cnt +index}}:  {{t_error.message}}
+        {{t_error_cnt +index}}: {{t_error.message}}
       </div>
       <b-progress variant="warning" :max="dismissSecs" :value="dismissCountDown" height="3px"></b-progress>
     </b-alert>
@@ -35,8 +35,6 @@ export default {
     return {
       t_errors: [],
       t_error_cnt: [],
-      t_errors2: {},
-
       dismissSecs: 10,
       dismissCountDown: 0,
       showDismissibleAlert: false,

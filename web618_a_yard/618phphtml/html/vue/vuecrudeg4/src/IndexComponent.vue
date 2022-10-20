@@ -1,13 +1,15 @@
 <template id="IndexComponent">
   <div>
-
     <!-- <h1>Posts</h1> -->
     <div class="row">
-      <div class="col-md-10"></div>
-      <div class="col-md-2">
-        <router-link :to="{ name: 'edit' }" class="btn btn-primary">Create</router-link>
-      </div>
-    </div><br />
+      <router-link :to="{ name: 'edit' }" class="btn btn-primary">Create</router-link>
+      <!-- Search bar -->
+      &nbsp <input type="text" v-model="searchterm" v-on:keyup.enter="getrecords" placeholder="Search"><button
+        v-on:click="clearsearch">x</button>
+      <button @click="getrecords">Search</button>
+      &nbsp Recrds: {{recordcnt}}
+    </div>
+    <!-- <br /> -->
 
     <table class="table table-hover">
       <thead>
@@ -35,19 +37,35 @@
 
 <script>
 export default {
+
   data() {
     return {
       posts: [],
+      recordcnt: 0,
+      searchterm: ""
     }
   },
   created() {
-    let uri = 'http://10.4.71.231:6611/api/api.php/records/blogapp_post?order=id,desc&page=1,5';
-    this.axios.get(uri).then(response => {
-      console.log(response);
-      this.posts = response.data.records;
-    }).catch(e => { this.$root.doError(e) });
+    if ("localsearchterm" in localStorage) {
+      this.searchterm = localStorage.getItem("localsearchterm");
+    }
+    this.getrecords();
   },
   methods: {
+    clearsearch() {
+      this.searchterm = "";
+      this.getrecords();
+    },
+    getrecords() {
+      localStorage.setItem("localsearchterm", this.searchterm);
+      let uri = `http://10.4.71.231:6611/api/api.php/records/blogapp_post?search=${this.searchterm}&order=id,desc&page=1,5`;
+      console.log(uri)
+      this.axios.get(uri).then(response => {
+        console.log(response);
+        this.posts = response.data.records;
+        this.recordcnt = response.data.results;
+      }).catch(e => { this.$root.doError(e) });
+    },
     deletePost(id) {
       let uri = `http://localhost:4000/posts/delete/${id}`;
       this.axios.delete(uri).then(response => {
@@ -57,3 +75,4 @@ export default {
   }
 }
 </script>
+

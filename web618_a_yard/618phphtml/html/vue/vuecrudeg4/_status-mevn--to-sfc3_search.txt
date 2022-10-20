@@ -6,13 +6,13 @@ works.
 
 Goal:
 
-add error message display. 2022-10-19
+add search .  2022-10-20
 
 _____________
 
 
 
-http://10.4.71.231:6611/vue/vuecrudeg3
+http://10.4.71.231:6611/vue/vuecrudeg4
 
 
 Api url:
