@@ -12,7 +12,12 @@
           <router-link to="/posts" class="nav-link">Posts</router-link>
         </li>
       </ul>
-    </nav><br />
+      <b-navbar-nav class="ml-auto">
+        <b-nav-item> [ {{ this.activeUsername }} ] </b-nav-item>
+        <b-nav-item class="ml-auto" href="#" @click.prevent="login" v-if="!activeUser">Login</b-nav-item>
+        <b-nav-item class="ml-auto" href="#" @click.prevent="logout" v-else>Logout </b-nav-item>
+      </b-navbar-nav>
+    </nav> <br />
 
     <!-- Toast/alerts - display several errors. sort reverse and show only 3 of them... -->
     <b-alert :show="dismissCountDown" dismissible variant="warning" @dismissed="dismissCountDown=0"
@@ -38,8 +43,19 @@ export default {
       dismissSecs: 10,
       dismissCountDown: 0,
       showDismissibleAlert: false,
+      activeUser: null,
+      jwtusername: null,
+
     }
   },
+  async created() {
+    await this.refreshActiveUser()
+  },
+  watch: {
+    // everytime a route is changed refresh the activeUser
+    '$route': 'refreshActiveUser'
+  },
+
   methods: {
     // errors alerts functions..
     countDownChanged(dismissCountDown) {
@@ -63,6 +79,23 @@ export default {
         this.$router.push('/login')
       }
     },
+    login() {
+      // this.$auth.loginRedirect()
+      this.$router.push('/login')
+    },
+    async refreshActiveUser() {
+      // this.activeUser = await this.$auth.getUser()
+      this.activeUser = localStorage.getItem("jwtToken");
+      this.activeUsername = localStorage.getItem("jwtusername");
+    },
+
+    async logout() {
+      // await this.$auth.logout()
+      // await this.refreshActiveUser()
+      localStorage.removeItem("jwtToken");
+      localStorage.removeItem("jwtusername");
+      this.$router.push('/')
+    }
   }
 }
 </script>

@@ -42,7 +42,8 @@ export default {
     return {
       dataRows: [],
       recordcnt: 0,
-      searchterm: ""
+      searchterm: "",
+      accessToken: "",
     }
   },
   created() {
@@ -58,12 +59,16 @@ export default {
     },
     getrecords() {
       localStorage.setItem("localsearchterm", this.searchterm);
-      let uri = `http://10.4.71.231:6611/api/api.php/records/blogapp_post?search=${this.searchterm}&order=id,desc&page=1,5`;
-      console.log(uri)
-      this.axios.get(uri).then(response => {
+      // this.accessToken = localStorage.getItem("jwtToken");
+      this.accessToken = localStorage.getItem("jwtToken");;
+      let head = { headers: {          Authorization: `Bearer ${this.accessToken}`        } };
+      let uri = `http://10.4.71.231:6461/blogapp/api/v1/Post`;
+      // let uri = `http://10.4.71.231:6611/api/api.php/records/blogapp_post?search=${this.searchterm}&order=id,desc&page=1,5`;
+      console.log(uri);
+      this.axios.get(uri, head).then(response => {
         console.log(response);
-        this.dataRows = response.data.records;
-        this.recordcnt = response.data.results;
+        this.dataRows = response.data.results;
+        this.recordcnt = response.data.count;
       }).catch(e => { this.$root.doError(e) });
     },
     deletedataRow(id) {
@@ -74,5 +79,6 @@ export default {
     }
   }
 }
+
 </script>
 

@@ -35,6 +35,7 @@ const options = {
         { path: '/create',  name: 'create', component: () => load('./src/CreateComponent.vue') },
         { path: '/posts',  name: 'posts', component: () => load('./src/IndexComponent.vue') },
         { path: '/edit',  name: 'edit', component: () => load('./src/EditComponent.vue') },
+        { path: '/login', component: () => load('./src/Login.vue') },
       ]
     })
     new Vue({ ...app, router }).$mount('#app')

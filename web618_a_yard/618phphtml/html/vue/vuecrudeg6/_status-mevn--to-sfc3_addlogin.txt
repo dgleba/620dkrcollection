@@ -4,15 +4,16 @@ Status:
 
 works.
 
+
 Goal:
 
-rename post to dataRow to make it more generic 2022-10-20
+add login. 2022-10-20
 
 _____________
 
 
 
-http://10.4.71.231:6611/vue/vuecrudeg5
+http://10.4.71.231:6611/vue/vuecrudeg6
 
 
 Api url:
@@ -21,6 +22,8 @@ http://10.4.71.231:6611/api/api.php/records/blogapp_post?search=&page=1,3
 http://10.4.71.231:6611/api/api.php/records/blogapp_post
 
 sftp://10.4.71.231/ap/620dkrcollection/web618_a_yard/618phphtml/html/api/api.php
+
+https://github.com/mevdschee/php-crud-api
 
 
 =================================================
