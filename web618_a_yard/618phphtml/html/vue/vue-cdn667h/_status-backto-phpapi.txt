@@ -4,7 +4,7 @@ looking for a way to organize vue app without bundler
 
 Purpose:
 
-use g on php api again.
+use 667g on php api again.
 
 https://github.com/mevdschee/php-crud-api
 

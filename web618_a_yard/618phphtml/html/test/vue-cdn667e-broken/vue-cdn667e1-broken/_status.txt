@@ -9,6 +9,10 @@ Add search  2022-10-02
 _____________
 
 
+this front:
+http://10.4.71.231:6611/vue/vue-cdn667e1-broken
+
+
 back api:
 
 php api 
@@ -18,6 +22,7 @@ http://10.4.71.231:6611/api/api.php/records/blogapp_post
 
 adminer:
 http://10.4.71.231:6607/ 
+
 _____________
 
 
