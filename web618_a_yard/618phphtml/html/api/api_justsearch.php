@@ -12350,7 +12350,7 @@ namespace Tqdev\PhpCrudApi {
         'username' => 'user',
         'password' => 'pw55',
         'database' => 'dkrdbm',
-        'middlewares' => 'textSearch, cors', 'cors.allowedOrigins' => '*', 'cors.allowHeaders' => 'X-Authorization',
+        'middlewares' => 'textSearch', 
         'debug' => true,
     ]);
     $request = RequestFactory::fromGlobals();
