@@ -3,20 +3,20 @@ import { createWebHistory, createRouter } from "vue-router";
 const routes =  [
   {
     path: "/",
-    name: "home",
-    component: () => import("./components/HomeComponent")
-  },  
-  {
-    path: "/posts",
-    name: "posts",
-    component: () => import("./components/IndexComponent")
+    alias: "/tutorials",
+    name: "tutorials",
+    component: () => import("./components/TutorialsList")
   },
   {
-    path: "/edit",
-    name: "edit",
-    component: () => import("./components/EditComponent")
+    path: "/tutorials/:id",
+    name: "tutorial-details",
+    component: () => import("./components/Tutorial")
   },
-
+  {
+    path: "/add",
+    name: "add",
+    component: () => import("./components/AddTutorial")
+  }
 ];
 
 const router = createRouter({

@@ -5,6 +5,7 @@ status:
 
   i didn't finsih it all, but what I did does work.
   
+  2022-10-26 renmaed to vue3crud675b
   
 goal:
 
