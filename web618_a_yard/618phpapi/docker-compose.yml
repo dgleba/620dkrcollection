@@ -1,36 +1,27 @@
 version: "3.6"
-#
+
 networks:
   sister:
     name: sister
 
 services:
-  #
+
   php:
     # http://10.4.1.245:6611/    
     # http://192.168.88.60:6611/exampleapp    
     # http://192.168.88.60:6611/dgnote130    
     # http://10.4.1.231:6611/exampleapp    
     # https://php.198.144.183.160.nip.io/
-    
     restart: unless-stopped
     # image: php:7.3-apache
     build:
       context: ./php
-      dockerfile: Dockerfile-04-php8
+      dockerfile: Dockerfile-php8-api2
     ports:
-      - 6811:80
+      - 6711:80
     volumes:
       - ../618phphtml/html:/var/www/html
       - ./php/apache_allow.conf:/etc/apache2/conf-enabled/apache_allow.conf
-      # This wipes out the files in the container... - ../data/c-php483b_etc_apache2:/etc/apache2
-      # this noworky either..
-      # - type: volume
-      #   source: etc_apache2
-      #   target: /etc/apache2 #/path/in/container
-      #   read_only: true
-      # - ./data1:/var/www/html
-      # - ./apache2.conf:/etc/apache2/apache2.conf
     env_file:
       - .env
     environment:
@@ -41,5 +32,4 @@ services:
       # - LETSENCRYPT_EMAIL=dgleba@gmail.com
     networks:
       - sister
-
 
