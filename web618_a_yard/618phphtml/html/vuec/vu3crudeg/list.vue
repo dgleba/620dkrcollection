@@ -58,7 +58,7 @@ export default {
     },
     getrecords() {
       localStorage.setItem("localsearchterm", this.searchterm);
-      let uri = `http://10.4.71.231:6611/api/api.php/records/blogapp_post?search=${this.searchterm}&order=id,desc&page=1,5`;
+      let uri = `http://10.4.71.231:6611/api/api.php/records/blogapp_post?search=${this.searchterm}&order=id,desc&page=1,1`;
       console.log(uri)
       this.axios.get(uri).then(response => {
         console.log(response);
