@@ -81,6 +81,10 @@ web ui for api.
 http://192.168.88.60:6461/blogapp/api/v1/Post/ 
 
 
+sudo apt install httpie
+
+
+http http://10.4.71.231:37461/blogapp/api/v1/Post/
 
 
 works.

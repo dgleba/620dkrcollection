@@ -32,6 +32,10 @@ Look at the make file for useful commands to speed up using the system.
 eg: make clean - this will clean up unneeded containers and such.
 
 
+# Generate new app code
+
+  https://djangobuilder.io
+
 
 # commands - for Development
 
@@ -43,7 +47,15 @@ Note: some of these may be in the Makefile. Then, just run make mmb, or make mig
 
 These have already been run against this project..
 
-  docker-compose run --rm djdev django-admin.py startproject djangoproj .
+  cd /ap/test/djangot4/694django
+  mkdir djangosite
+  docker-compose run --rm djdev django-admin.py startproject djangoproject .
+  
+  docker-compose run --rm djdev django-admin.py startproject djangositea
+    docker-compose run --rm djdev django-admin.py startproject djangositea
+  
+  docker-compose run --rm djdev django-admin.py startproject djangoproject
+  
 
   docker-compose run --rm djdev python manage.py startapp polls
   
@@ -88,7 +100,8 @@ dc restart
 
 
 visit -    http://10.4.1.228:6461/
-
+    http://10.4.71.231:9461/blogapp/blogapp/Post/
+ 
 admin -   http://10.4.1.228:6461/admin/login/?next=/admin/
   User - root . passw - 123
 
@@ -156,9 +169,17 @@ https://github.com/dgleba/482dkrcollection/blob/master/mysqlsimple5/Makefile#L32
 
 # older
 
-# older
+
 
 # older
+
+
+
+
+# older
+
+
+
 
 
 I think this may have come from..

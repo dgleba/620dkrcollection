@@ -15,7 +15,7 @@ services:
 
   djprod:
     # http://192.168.88.60:6464/adminb/blogapp/post/
-    build: ./djangosite
+    build: ./docker
     restart: on-failure
     env_file:
       - ./.env

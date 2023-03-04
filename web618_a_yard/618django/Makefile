@@ -31,8 +31,9 @@ perm:
 # fix permissions. make them group writable so www-data group can manage the files. move, delete, etc..  
 	# docker-compose run --rm djan sh -c 'su root;chmod -R g+w .;exit;exit'
 	# docker-compose run --rm djdev sh -c 'chgrp -R www-data . &&  chmod -R ugo+w . && chmod +x *.sh && chmod -R 777 /data'
-	docker-compose run --rm djdev sh -c 'chgrp -R www-data . &&  chmod -R ugo+w . && chmod +x *.sh && pwd ; chmod -R 777 .'
-	docker-compose run --rm djdev bash -c 'find . -type d -exec chmod 755 {} + '
+	# chmod -R 777 /code; chmod +x *.sh  ; 
+	docker-compose run --rm djdev sh -c 'pwd; chgrp -R www-data . ; chmod -R ug+w,go-x /code ; '
+	docker-compose run --rm djdev bash -c 'find . -type d -exec chmod 774 {} + '
 
 # shell in django
 #

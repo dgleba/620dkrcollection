@@ -30,10 +30,10 @@ urlpatterns = [
 
     path('blogapp/', include('blogapp.urls')),
 
-    path('admin2323/', admin.site.urls),
+    path('admin/', admin.site.urls),
     
     # for second admin site
-    path('adminb2/', admin2.urls),
+    path('admin2/', admin2.urls),
 
     # for jwt
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

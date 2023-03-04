@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'blogapp',
-    'schedulerapp',
+    # 'schedulerapp',
 ]
 
 # not used..

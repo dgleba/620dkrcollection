@@ -10,3 +10,4 @@ gunicorn
 
 mysqlclient
 django-environ
+whitenoise
