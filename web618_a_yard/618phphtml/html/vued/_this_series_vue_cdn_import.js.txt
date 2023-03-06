@@ -1,0 +1,10 @@
+2023-03-06_Mon_13.55-PM
+
+Purpose:
+
+use vue 3, bootstrap 5, vue-router, axios,  error messages, login, 
+use cdn not build step
+import js files with components.
+
+Try to make something simple to create vue apps with.
+

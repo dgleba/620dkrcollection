@@ -1,10 +1,16 @@
+
+ <!-- Component is missing template or render function.  -->
+
 <!DOCTYPE html>
+  <!-- http://10.4.71.231:6611/vued/vued01 -->
 <html>
 <head>
 	<title>Vue.js Routing From Scratch Using Vue Router CDN</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
 	<script src="https://unpkg.com/vue-router"></script>
+	<script src="main.js" type="module"></script>
+
 </head>
 <body>
 
@@ -15,7 +21,7 @@
 	    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 			<li> <router-link class="nav-link" to="/"> Home </router-link> </li>
 			<li> <router-link class="nav-link" to="about"> About </router-link> </li>
-			<li> <router-link class="nav-link" to="contact"> Contact </router-link> </li>
+			<!-- <li> <router-link class="nav-link" to="contact"> Contact </router-link> </li> -->
 	    </ul>
 	  </div>
 	</nav>
@@ -26,35 +32,10 @@
 </div>
 
 <!-- Vue Pages -->
-<script src="home.vue.js"></script>
-<script src="about.vue.js"></script>
-<script src="contact.vue.js"></script>
+<!-- <script src="home.vue.js"></script> -->
+<!-- <script src="about.vue.js"></script> -->
+<!-- <script src="contact.vue.js"></script> -->
 
-<script>
-
-const app = Vue.createApp({
-    data() {
-        return {
-            mess: "ciao mondo"
-        }
-    }
-});
-
-var routes = [
-  { path: '/', component: Home },
-  { path: '/about', component: About },
-  { path: '/contact', component: Contact }
-];
-
-const router = VueRouter.createRouter({
-           history: VueRouter.createWebHashHistory(),
-           routes
-    })
-
-app.use(router)
-app.mount('#app')
-
-</script>
 
 </body>
 </html>
