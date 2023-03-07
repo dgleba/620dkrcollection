@@ -1,10 +1,12 @@
-<template id="IndexComponent">
+export default {
+
+template:`
   <div>
     <!-- <h1>List</h1> -->
-    <div class="row">
-      <router-link :to="{ name: 'edit' }" class="btn btn-primary">Create</router-link>
+    <div class="row row-cols-auto">
+     <!-- <router-link :to="{ name: 'edit' }" class="btn btn-primary">Create</router-link> -->
       <!-- Search bar -->
-      &nbsp <input type="text" v-model="searchterm" v-on:keyup.enter="getrecords" placeholder="Search"><button
+      &nbsp&nbsp&nbsp <input type="text" v-model="searchterm" v-on:keyup.enter="getrecords" placeholder="Search"><button
         v-on:click="clearsearch">x</button>
       <button @click="getrecords">Search</button>
       &nbsp Recrds: {{recordcnt}}
@@ -23,20 +25,17 @@
       <tbody>
         <tr v-for="dataRow in dataRows" :key="dataRow.id">
           <td>{{ dataRow.id }}</td>
-          <td>{{ dataRow.title }}</td>
-          <td>{{ dataRow.body }}</td>
+          <td>{{ dataRow.mlink }}</td>
+          <td>{{ dataRow.mapplication }}</td>
           <td>
-            <router-link :to="{name: 'edit', params: { id: dataRow.id }}" class="btn btn-primary">Edit</router-link>
+            <!-- <router-link :to="{name: 'edit', params: { id: dataRow.id }}" class="btn btn-primary">Edit</router-link> -->
           </td>
-          <td><button class="btn btn-danger" @click.prevent="deletedataRow(dataRow.id)">Delete</button></td>
+          <!-- <td><button class="btn btn-danger" @click.prevent="deletedataRow(dataRow.id)">Delete</button></td> -->
         </tr>
       </tbody>
     </table>
   </div>
-</template>
-
-<script>
-export default {
+`,
 
   data() {
     return {
@@ -46,7 +45,7 @@ export default {
       accessToken: "",
     }
   },
-  created() {
+  mounted() {
     if ("localsearchterm" in localStorage) {
       this.searchterm = localStorage.getItem("localsearchterm");
     }
@@ -61,11 +60,11 @@ export default {
       localStorage.setItem("localsearchterm", this.searchterm);
       // this.accessToken = localStorage.getItem("jwtToken");
       this.accessToken = localStorage.getItem("jwtToken");;
-      let head = { headers: {          Authorization: `Bearer ${this.accessToken}`        } };
-      let uri = `http://10.4.71.231:37461/blogapp/api/v1/Post`;
-      // let uri = `http://10.4.71.231:6611/api/api.php/records/blogapp_post?search=${this.searchterm}&order=id,desc&page=1,5`;
+      let head = { headers: {   Authorization: `Bearer ${this.accessToken}`   } };
+      let uri = `http://10.4.71.231:37461/menuapp/api/v1/Menu0`;
       console.log(uri);
-      this.axios.get(uri, head).then(response => {
+
+      axios.get(uri, head).then(response => {
         console.log(response);
         this.dataRows = response.data.results;
         this.recordcnt = response.data.count;
@@ -79,6 +78,4 @@ export default {
     }
   }
 }
-
-</script>
 
