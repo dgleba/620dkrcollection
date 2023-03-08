@@ -13,6 +13,14 @@ added simple js alert. then commented out.
 added bootstrap 5 toast alerts.
 
 
+this:
+sftp://albe@10.4.71.231/ap/620dkrcollection/web618_a_yard/618phphtml/html/vued/vued08/
+
+https://github.com/dgleba/620dkrcollection/tree/main/web618_a_yard/618phphtml/html/vued/vued08
+
+=================================================
+
+
 
 based on. https://vuejs.org/examples/#simple-component
 

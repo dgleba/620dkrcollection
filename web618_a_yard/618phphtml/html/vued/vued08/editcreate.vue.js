@@ -1,4 +1,5 @@
-<template>
+export default {
+template=`
   <div>
     <!-- <h1>Edit</h1> -->
     <form @submit.prevent="updatedataRow">
@@ -23,10 +24,7 @@
       </div>
     </form>
   </div>
-</template>
-
-<script>
-export default {
+`,
 
   data() {
     return {
@@ -68,4 +66,4 @@ export default {
     }
   }
 }
-</script>
+

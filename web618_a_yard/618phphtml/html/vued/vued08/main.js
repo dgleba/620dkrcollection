@@ -22,9 +22,6 @@ const router = VueRouter.createRouter({
 
 const app = Vue.createApp({
  
-   // components: {
-    // Toasta
-  // }, 
   data() {
     return {
       t_errors: [],
