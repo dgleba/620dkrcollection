@@ -9,5 +9,7 @@ use cdn - not build step like webpack.
 import js files with components.
 
 
+Goal:
+
 Try to make something simple to create vue apps with.
 
