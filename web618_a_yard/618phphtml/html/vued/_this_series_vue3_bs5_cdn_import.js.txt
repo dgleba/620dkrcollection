@@ -13,3 +13,18 @@ Goal:
 
 Try to make something simple to create vue apps with.
 
+
+
+=================================================
+
+
+ref: Features list:
+
+y bootstrap5
+y router
+y api data get put
+y error messages
+y search
+y login
+y polling (sftp://albe@10.4.71.231/ap/620dkrcollection/web618_a_yard/618phphtml/html/vue-sfc-loader/vuea/vue-cdn667g/src/postsManager.vue)
+

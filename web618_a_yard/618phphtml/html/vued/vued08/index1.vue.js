@@ -61,7 +61,8 @@ template:`
       // this.accessToken = localStorage.getItem("jwtToken");
       this.accessToken = localStorage.getItem("jwtToken");;
       let head = { headers: {   Authorization: `Bearer ${this.accessToken}`   } };
-      let uri = `http://10.4.71.231:37461/menuapp/api/v1/Menu0`;
+      let uri = `http://10.4.71.231:37461/menuapp/api/v1/Menu0?search=${this.searchterm} `;
+      // let uri = `http://10.4.71.231:6611/api/api.php/records/blogapp_post?search=${this.searchterm}&order=id,desc&page=1,5`;
       console.log(uri);
 
       axios.get(uri, head).then(response => {
