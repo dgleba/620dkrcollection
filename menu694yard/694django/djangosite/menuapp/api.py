@@ -26,5 +26,5 @@ class Menu0ViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.Menu0Serializer
     
     # permission_classes = [permissions.IsAuthenticated]
-    
-    
+
+
