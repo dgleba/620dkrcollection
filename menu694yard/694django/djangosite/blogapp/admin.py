@@ -40,7 +40,7 @@ class PostAdminForm(forms.ModelForm):
             # "title",
             # "body",
         ]
-        
+
 class PostAdmin(admin.ModelAdmin):
     # add_form_template = 'blogapp/admin/postadd.html'
     form = PostAdminForm
@@ -48,6 +48,10 @@ class PostAdmin(admin.ModelAdmin):
         # # "id",
         # # "created",
         # # "last_updated",
+        "title",
+        "body",
+    ]
+    search_fields = [
         "title",
         "body",
     ]

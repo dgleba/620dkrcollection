@@ -1,0 +1,14 @@
+
+{% extends "base.html" %}
+{% block content %}
+
+<form method='GET'>
+  <input type='text' name='q' value='{{ request.GET.q }}'>
+  <input class="button" type='submit' value="Search">
+</form>
+
+{% for object in object_list %}
+  <div class="m-2"><a href="{{object.get_absolute_url}}">{{object}}</a></div>
+{% endfor %}
+<div><a class="btn btn-primary" href="{% url 'blogapp_Post_create' %}">Create a new Post</a></div>
+{% endblock %}

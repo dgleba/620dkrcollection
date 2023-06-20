@@ -1,5 +1,8 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+from django.conf import settings
 
 class none_to_empty(models.CharField):
     def get_prep_value(self, value):
@@ -18,6 +21,7 @@ class Post(models.Model):
     last_updated = models.DateTimeField(auto_now=True, editable=False)
     title = models.CharField(max_length=230)
     body = models.TextField(max_length=32100, default=None, blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=None, blank=True, null=True, on_delete=models.DO_NOTHING)  # Foreign key field for user (User, on_delete=models.CASCADE) 
 
     class Meta:
         pass
@@ -32,7 +36,18 @@ class Post(models.Model):
     def get_update_url(self):
         return reverse("blogapp_Post_update", args=(self.pk,))
 
+    # def save(self, *args, **kwargs):
+        # if not self.user_id:
+            # User = get_user_model()
+            # self.user = User.objects.get(pk)  # Replace 1 with the appropriate user ID or condition
+        # super().save(*args, **kwargs)
 
+    # def save_model(self, request, obj, form, change):
+        # # associating the current logged in user to the client_id
+        # obj.client_id = request.user
+        # super().save_model(request, obj, form, change)
+        
+        
 
 # =================================================
 # =================================================
