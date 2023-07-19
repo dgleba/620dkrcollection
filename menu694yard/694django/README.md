@@ -41,7 +41,7 @@ docker-compose build
 Note: some of these may be in the Makefile. Then, just run make mmb, or make mig etc.
 
 
-These have already been run against this project..
+These HAVE already BEEN run against this project..
 
   cd /ap/test/djangot4/694django
   mkdir djangosite
@@ -64,6 +64,7 @@ These MAY have already been run against this project..
 
     docker-compose run --rm djdev python manage.py makemigrations blogapp
     docker-compose run --rm djdev python manage.py makemigrations menuapp
+    docker-compose run --rm djdev python manage.py makemigrations contactapp
 
 
     docker-compose run --rm djdev python manage.py migrate 

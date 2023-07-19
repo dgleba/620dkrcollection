@@ -39,6 +39,7 @@ urlpatterns = [
 
     path('blogapp/', include('blogapp.urls')),
     path('menuapp/', include('menuapp.urls')),
+    #path('contactapp/', include('contactapp.urls')),
 
 
     # admin panel forgot password. Put before admin urls..

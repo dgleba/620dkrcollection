@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'blogapp',
+    #'contactapp',
     'menuapp',
     # 'schedulerapp',
 ]
