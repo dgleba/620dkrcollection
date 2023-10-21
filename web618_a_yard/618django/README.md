@@ -32,20 +32,19 @@ Look at the make file for useful commands to speed up using the system.
 eg: make clean - this will clean up unneeded containers and such.
 
 
-# Generate new app code
-
-  https://djangobuilder.io
-
 
 # commands - for Development
 
 ```
-docker-compose build
 
 Note: some of these may be in the Makefile. Then, just run make mmb, or make mig etc.
 
 
-These have already been run against this project..
+These HAVE already BEEN run against this project..
+
+docker-compose build
+
+
 
   cd /ap/test/djangot4/694django
   mkdir djangosite
@@ -61,16 +60,23 @@ These have already been run against this project..
   
   docker-compose run --rm djdev python manage.py startapp blog
   docker-compose run --rm djdev python manage.py startapp schedulerapp
+  docker-compose run --rm djdev python manage.py startapp toolbreakapp624c
+    or make an app on djangobuilder.io
   
   # This can work with sqlite in development. See production below for use with mysql.
 
 These MAY have already been run against this project..
 
     docker-compose run --rm djdev python manage.py makemigrations blogapp
+    docker-compose run --rm djdev python manage.py makemigrations menuapp
+    docker-compose run --rm djdev python manage.py makemigrations menu94app
+    docker-compose run --rm djdev python manage.py makemigrations blogappm2m
+    docker-compose run --rm djdev python manage.py makemigrations toolbreakapp624c
+
 
     docker-compose run --rm djdev python manage.py migrate 
 
-    docker-compose run --rm djdev python manage.py createsuperuser --username bb  --email=c@a.com
+    docker-compose run --rm djdev python manage.py createsuperuser --username bb  --email=b@b.com
 
     docker-compose run --rm djdev python manage.py createsuperuser --email=b@a.com
     
@@ -94,13 +100,16 @@ docker-compose run --rm djdev python manage.py startapp trakberry2
 docker-compose exec djdev pip list
 docker-compose run --rm djdev pip list
 
-dc up
-dc stop
-dc restart
+To run the dev server:
+
+docker-compose  up
+docker-compose  stop
+docker-compose  restart
 
 
 visit -    http://10.4.1.228:6461/
     http://10.4.71.231:9461/blogapp/blogapp/Post/
+ 
  
 admin -   http://10.4.1.228:6461/admin/login/?next=/admin/
   User - root . passw - 123
@@ -169,17 +178,9 @@ https://github.com/dgleba/482dkrcollection/blob/master/mysqlsimple5/Makefile#L32
 
 # older
 
-
-
 # older
 
-
-
-
 # older
-
-
-
 
 
 I think this may have come from..
