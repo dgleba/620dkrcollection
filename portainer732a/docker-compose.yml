@@ -1,0 +1,26 @@
+# 
+version: "3"
+
+services:
+
+  portainer:
+    # https://192.168.88.69:9443/  
+    restart: always
+    image: portainer/portainer-ce:latest
+    ports:
+      - 2123:9443
+    volumes:
+      - data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    env_file:
+      - ./.env
+    
+volumes:
+  data:
+
+# portainer container link opens to 0.0.0.0
+# https://www.reddit.com/r/portainer/comments/y4tt7s/0000_ip_address_for_container_ui/
+# https://portal.portainer.io/knowledge/exposed-ports-in-the-container-view-redirect-me-to-0.0.0.0-what-can-i-do
+# Change the configuration of your Docker daemon by adding the --ip option.
+# no:    command: --ip=${host_ip}
+
