@@ -1,0 +1,71 @@
+
+=================================================
+
+
+References:
+
+1.
+https://medium.com/@jamesweee/using-vue-js-single-file-component-without-module-bundlers-aea58d892ad9
+
+components: {
+        'app-world': window.httpVueLoader('./component/appworld.vue')
+      },
+  <script src="https://unpkg.com/http-vue-loader"></script>
+
+2.
+https://github.com/ais-one/cookbook
+
+3.
+vue shopping list pouch couch
+https://github.com/ibm-watson-data-lab/shopping-list-vuejs-pouchdb
+
+4.
+https://markus.oberlehner.net/blog/goodbye-webpack-building-vue-applications-without-webpack/
+
+
+5.
+https://docs.google.com/spreadsheets/d/1Qsv52d3zlKNftJzySwqXP0wxShTiDAk48gzgM5HpqFY/edit?usp=sharing
+vue full-stack generate scaffold research.gsht
+
+
+6.
+started from https://github.com/nlware/vue-crud-ui 
+
+7.
+https://github.com/dgleba/550dkrcolbrail/blob/main/vue-eg-552-yards/vue-eg-552-b-yard/vue-eg-552cdjango/src/components/PostsManager.vue
+
+
+8.
+https://github.com/dgleba/MEVNCRUDExample
+
+sftp://10.4.71.231/ap/test/550dkrcolbrail/vue/MEVNCRUDExample/src/components/IndexComponent.vue
+
+
+
+
+=================================================
+
+
+http://10.4.71.231:6611/vue/vuecrudeg6
+
+
+Api url:
+http://10.4.71.231:6611/api/api.php/records/blogapp_post?search=&page=1,3
+
+http://10.4.71.231:6611/api/api.php/records/blogapp_post
+
+sftp://10.4.71.231/ap/620dkrcollection/web618_a_yard/618phphtml/html/api/api.php
+
+https://github.com/mevdschee/php-crud-api
+
+
+adminer:
+http://10.4.71.231:6607/
+server dbm
+
+
+phpmyadmin:
+http://10.4.71.231:6606/
+
+=================================================
+

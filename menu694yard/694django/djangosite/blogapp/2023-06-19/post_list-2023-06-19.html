@@ -1,0 +1,20 @@
+
+<!-- blogapp/post_list.html -->
+
+<h1>Post List</h1>
+
+<form method="GET" action="{{ request.path }}">
+  <input type="text" name="q" placeholder="Search posts" value="{{ request.GET.q }}">
+  <button type="submit">Search</button>
+</form>
+
+<ul>
+  {% for post in post_list %}
+    <li>{{ post.title }} </li>
+    <p>{{ post.body }}</p>
+    <hr>
+  {% empty %}
+    <li>No posts found.</li>
+  {% endfor %}
+</ul>
+

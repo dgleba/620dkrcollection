@@ -1,0 +1,41 @@
+
+
+version: "3"
+
+networks:
+  sister:
+    name: sister
+   
+services:
+
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/app.Dockerfile
+      args:
+        - RACK_ENV=development
+        - RAKE_ENV=development
+        - RAILS_ENV=development
+    volumes:
+      - ./rails-new:/app
+      - bundle_cache:/usr/local/bundle/
+    environment:
+      # APP_NAME can be used for cookie names, and any other needs to name something uniquely project specific
+      - APP_NAME=r7hot
+      - APPHOSTNAME=${HOSTNAME}
+      #
+      - RACK_ENV=development
+      - RAKE_ENV=development
+      - RAILS_ENV=development
+      # - RAILS_LOG_TO_STDOUT=1
+    expose:
+      - 3000
+    ports:
+      - 6534:3000
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    networks:
+      - sister 
+
+volumes:
+  bundle_cache:
+  # mysqldata:

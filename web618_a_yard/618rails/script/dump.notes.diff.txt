@@ -1,0 +1,11 @@
+
+a=db_mysqldump-alldb-events.sql
+b=db_mysqldump-alldb-noevents.sql
+    diff $a  $b
+    # ==========================  a has..
+    diff --unchanged-line-format="" --old-line-format="" --new-line-format=":%dn: %L" $b  $a
+    # ~~~~~~~~~~~~~~  b has..
+    diff --unchanged-line-format="" --old-line-format="" --new-line-format=":%dn: %L" $a  $b
+
+
+# diff --unchanged-line-format="" $a  $b

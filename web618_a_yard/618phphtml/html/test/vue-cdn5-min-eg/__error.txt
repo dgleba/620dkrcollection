@@ -1,0 +1,44 @@
+2022-10-01
+
+http://10.4.71.231:6611/vue/vue-cdn5-min-eg/vuecdn5.html
+
+
+error:
+
+
+main.js:7 Uncaught ReferenceError: hello is not defined  at main.js:7:28
+
+
+
+albe@pmadata01:/ap/620dkrcollection/web618_a_yard/618phphtml/html/vue/vue-cdn5-min-eg$ cat -n src/main.js
+     1  var Home = Vue.extend({
+     2    template: '#home'
+     3  });
+     4
+     5  const routes = [
+     6    { path: '/', component: Home},
+>>     7    { path: '/h', component: hello, name: 'hello'},
+     8  ]
+     9  const router = new VueRouter({
+    10    routes
+    11  });
+    12
+    13  var app = new Vue({
+    14    // router: router,
+    15    el: '#app',
+    16    components: {
+    17      'hello': window.httpVueLoader('./hello.vue'),
+    18    },
+    19    data: function () {
+    20      return {
+    21        activeUser: 'aba',
+    22        state: ""
+    23      };
+    24    },
+    25  });
+    26  app.use(router);
+    27  app.mount('#app');
+
+
+ggl: Uncaught ReferenceError component is not defined 
+

@@ -1,0 +1,24 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    
+<p>
+    <a class="btn btn-light" href="{% url 'mcpunchapp_MCpunch_list' %}">
+    MCpunch Listing
+    </a>
+</p>
+    
+<table class="table">
+    <tr><td>punchtime</td><td>{{ object.punchtime }}</td></tr>
+    <tr><td>duration</td><td>{{ object.duration }}</td></tr>
+    <tr><td>machinecell</td><td>{{ object.machinecell }}</td></tr>
+    <tr><td>punchtype</td><td>{{ object.punchtype }}</td></tr>
+    <tr><td>employee</td><td>{{ object.employee }}</td></tr>
+    <tr><td>durationtype</td><td>{{ object.durationtype }}</td></tr>
+    <tr><td>updated_at</td><td>{{ object.updated_at }}</td></tr>
+    <tr><td>created_at</td><td>{{ object.created_at }}</td></tr>
+</table>
+<a class="btn btn-primary" href="{{object.get_update_url}}">Edit</a>
+
+{% endblock %}

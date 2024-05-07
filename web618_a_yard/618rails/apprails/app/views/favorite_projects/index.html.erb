@@ -1,0 +1,68 @@
+
+<row class="row is-table-row" >
+
+  <div class="col-sm-1 ">
+    <%= link_to 'Create', new_favorite_project_path , class: "btn btn-success"%>
+  </div>
+
+  <div class="col-sm-2 ">
+    <h4>Listing Favorite Projects</h4>
+  </div>
+
+  <div class="col-sm-3">
+    <%= search_form_for @q, class: 'search-form' do |f| %>
+      <div class="input-group">
+        <%= f.search_field :fave_num_cont, class: 'form-control' %>
+        <span class="input-group-btn">
+          <button class="btn btn-primary">Search <i class="fa fa-search"></i>
+          </button>
+        </span>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-sm-4 ">
+    <%= paginate @favorite_projects %>
+  </div>
+  
+  <div class="col-sm-2 ">
+    <%= page_entries_info @favorite_projects, :entry_name => 'item' %>
+  </div>
+  
+</row>
+
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th colspan="1"></th>
+            <th>Project</th>
+      <th>User</th>
+      <th>Fave num</th>
+      <th>Sort order</th>
+      <th>Active status</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @favorite_projects.each do |favorite_project| %>
+      <tr>
+        <td>
+          <div class="btn-group">
+          <%= link_to 'Show', favorite_project, class: "btn btn-info", :style=>'color:#FFFFFF;' %>
+          <%= link_to 'Edit', edit_favorite_project_path(favorite_project), class: "btn btn-primary", :style=>'color:#FFFFFF;' %>
+          <%= link_to 'Destroy', favorite_project, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-warning", :style=>'color:#FFFFFF;' %>
+          </div>
+        </td>
+        
+        <td><%= favorite_project.project %></td>
+        <td><%= favorite_project.user %></td>
+        <td><%= favorite_project.fave_num %></td>
+        <td><%= favorite_project.sort_order %></td>
+        <td><%= favorite_project.active_status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

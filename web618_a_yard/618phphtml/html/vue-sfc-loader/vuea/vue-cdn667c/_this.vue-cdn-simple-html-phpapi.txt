@@ -1,0 +1,82 @@
+
+
+Status:
+works.
+
+
+Goal:
+looking for a way to organize vue app without bundler
+
+
+
+=================================================
+
+https://v2.vuejs.org/v2/guide/
+
+
+sftp://10.4.71.231/ap/620dkrcollection/web618_a_yard/618phphtml/html/
+
+http://10.4.71.231:6611/vue-cdn3/vuecdn3.html
+
+
+
+<script src="https://unpkg.com/bootstrap-vue@^2.22/dist/bootstrap-vue.common.js"></script> 
+ error - exports not defined:  
+ https://www.unpkg.com/browse/bootstrap-vue@2.22.0/
+
+
+
+
+=================================================
+
+
+ref:
+
+1.
+https://medium.com/@jamesweee/using-vue-js-single-file-component-without-module-bundlers-aea58d892ad9
+
+components: {
+        'app-world': window.httpVueLoader('./component/appworld.vue')
+      },
+  <script src="https://unpkg.com/http-vue-loader"></script>
+
+2.
+https://github.com/ais-one/cookbook
+
+3.
+vue shopping list pouch couch
+https://github.com/ibm-watson-data-lab/shopping-list-vuejs-pouchdb
+
+4.
+https://markus.oberlehner.net/blog/goodbye-webpack-building-vue-applications-without-webpack/
+
+
+5.
+
+https://docs.google.com/spreadsheets/d/1Qsv52d3zlKNftJzySwqXP0wxShTiDAk48gzgM5HpqFY/edit?usp=sharing
+vue full-stack generate scaffold research.gsht
+
+
+
+=================================================
+
+
+
+bootstrap-vue.common.js Uncaught ReferenceError exports is not defined
+
+bootstrap-vue.common.js Uncaught ReferenceError require is not defined
+
+
+=================================================
+
+notes
+
+https://medium.com/@jamesweee/using-vue-js-single-file-component-without-module-bundlers-aea58d892ad9
+
+https://gist.github.com/chrisvfritz/
+e2b6a6110e0829d78fa4aedf7cf6b235/raw/2a965010302c2c842f84de3702603b120e86ad22/Hello.vue
+
+https://github.com/pxwee5/static-vue-sfc
+
+
+=================================================

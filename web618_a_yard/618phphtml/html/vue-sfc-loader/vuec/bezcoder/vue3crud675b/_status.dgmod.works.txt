@@ -1,0 +1,23 @@
+
+status:
+
+  works. 2022-10-23
+
+  i didn't finsih it all, but what I did does work.
+  
+  2022-10-26 renmaed to vue3crud675b
+  
+goal:
+
+  modify vuecrudeg5 from vue2 to vue3
+  
+  
+ref:
+    https://github.com/bezkoder/vue-3-crud
+    sftp://10.4.71.231/ap/620dkrcollection/web618_a_yard/618phphtml/html/vue/vuecrudeg5
+    
+    D:\n\sfile\0takenotes\vue.vite.vvit.know.txt
+    
+=================================================
+
+    

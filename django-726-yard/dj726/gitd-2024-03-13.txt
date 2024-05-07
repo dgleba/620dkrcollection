@@ -1,0 +1,1381 @@
+diff --git a/django-726-yard/dj726/Makefile b/django-726-yard/dj726/Makefile
+index 3fbc639..70da879 100644
+--- a/django-726-yard/dj726/Makefile
++++ b/django-726-yard/dj726/Makefile
+@@ -6,8 +6,13 @@
+ # I can't seem to get writable group permissions 2018-08-27_Mon_21.28-PM
+ #
+ 
++cs1:
++	  docker-compose -f docker-compose.yml run --rm  djdev python manage.py collectstatic --noinput
++
++
++
+ mm:
+-	docker-compose run --rm djdev python manage.py makemigrations mark616
++	docker-compose run --rm djdev python manage.py makemigrations blogappm2m
+ 	# docker-compose run --rm djdev python manage.py makemigrations blogapp
+ 	docker-compose run --rm djdev python manage.py migrate
+ 
+diff --git a/django-726-yard/dj726/__status.txt b/django-726-yard/dj726/__status.txt
+index cb29718..c4ab911 100644
+--- a/django-726-yard/dj726/__status.txt
++++ b/django-726-yard/dj726/__status.txt
+@@ -35,6 +35,8 @@ see git history.
+ +STATIC_ROOT = BASE_DIR / "static"
+ +
+  
++# https://whitenoise.readthedocs.io/en/latest/django.html#using-whitenoise-in-development
++ 
+  
+  ------------
+  
+@@ -90,7 +92,7 @@ diff --git a/dj726/djangosite/djangoproj/urls.py b/dj726/djangosite/djangoproj/u
+ 
+  urlpatterns = [
+ +    path('', include(static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT))),
+-+
++
+ 
+ 
+ 
+diff --git a/django-726-yard/dj726/djangosite/blogappm2m/admin.py b/django-726-yard/dj726/djangosite/blogappm2m/admin.py
+index 25e2e4d..1a0a5c0 100644
+--- a/django-726-yard/dj726/djangosite/blogappm2m/admin.py
++++ b/django-726-yard/dj726/djangosite/blogappm2m/admin.py
+@@ -1,8 +1,9 @@
+ from django.contrib import admin
+ from django import forms
+-
+ from . import models
+ 
++from django.contrib.admin.widgets import ForeignKeyRawIdWidget
++
+ 
+ class PostedFromTblAdminForm(forms.ModelForm):
+ 
+@@ -10,7 +11,6 @@ class PostedFromTblAdminForm(forms.ModelForm):
+         model = models.PostedFromTbl
+         fields = "__all__"
+ 
+-
+ class PostedFromTblAdmin(admin.ModelAdmin):
+     form = PostedFromTblAdminForm
+     list_display = [
+@@ -29,69 +29,66 @@ class PostedFromTblAdmin(admin.ModelAdmin):
+         "name",
+     ]
+ 
+-class PostTblAdminForm(forms.ModelForm):
++
++class TagTblAdminForm(forms.ModelForm):
+ 
+     class Meta:
+-        model = models.PostTbl
++        model = models.TagTbl
+         fields = "__all__"
+ 
+ 
+-class PostTblAdmin(admin.ModelAdmin):
+-    form = PostTblAdminForm
++class TagTblAdmin(admin.ModelAdmin):
++    form = TagTblAdminForm
+     list_display = [
+-        "created_at",
+-        "updated_at",
+-        "body",
+-        "title",
+-        "pic",
++        "created",        "name",        "last_updated",
+     ]
+     readonly_fields = [
+-        "created_at",
+-        "updated_at",
+-    ]
+-    search_fields = [
+-        "tags",
+-        "postedfrom",
+-        "title",
+-        "body",
++        "created",        "last_updated",
+     ]
+     fields = [
+-        "title",
+-        "body",
+-        "pic",
+-        "tags",
+-        "postedfrom",
++        "name",
+     ]
+-    autocomplete_fields = [
+-        "tags",
+-        "postedfrom",
++    search_fields = [
++        "name",
+     ]
+ 
+-class TagTblAdminForm(forms.ModelForm):
++
++class PostTblAdminForm(forms.ModelForm):
+ 
+     class Meta:
+-        model = models.TagTbl
++        model = models.PostTbl
+         fields = "__all__"
+ 
+ 
+-class TagTblAdmin(admin.ModelAdmin):
+-    form = TagTblAdminForm
++class PostTblAdmin(admin.ModelAdmin):
++    form = PostTblAdminForm
+     list_display = [
+-        "created",
+-        "name",
+-        "last_updated",
++        "created_at",        "updated_at",
++        "body",        "title",
++        "pic",        'postedfrom', 
+     ]
+     readonly_fields = [
+-        "created",
+-        "last_updated",
++        "created_at",        "updated_at",
++    ]
++    search_fields = [
++        "tags",        "postedfrom",
++        "title",        "body",
+     ]
+     fields = [
+-        "name",
++        "title",        "body",        "pic",
++        "tags",        "postedfrom",
+     ]
+-    search_fields = [
+-        "name",
++    autocomplete_fields = [
++        "tags",        "postedfrom",
+     ]
++    
++    list_filter = ('postedfrom', 'tags')
++
++    date_hierarchy = 'created_at'
++    
+ 
+ admin.site.register(models.PostedFromTbl, PostedFromTblAdmin)
+ admin.site.register(models.PostTbl, PostTblAdmin)
+ admin.site.register(models.TagTbl, TagTblAdmin)
++
++# admin.site.register(PostTbl, PostTblAdmin)
+diff --git a/django-726-yard/dj726/djangosite/db.sqlite3 b/django-726-yard/dj726/djangosite/db.sqlite3
+index 9098f23..6d67ef4 100644
+Binary files a/django-726-yard/dj726/djangosite/db.sqlite3 and b/django-726-yard/dj726/djangosite/db.sqlite3 differ
+diff --git a/django-726-yard/dj726/djangosite/djangoproj/settings.py b/django-726-yard/dj726/djangosite/djangoproj/settings.py
+index f23e1a3..f92ec57 100644
+--- a/django-726-yard/dj726/djangosite/djangoproj/settings.py
++++ b/django-726-yard/dj726/djangosite/djangoproj/settings.py
+@@ -80,12 +80,25 @@ WSGI_APPLICATION = 'djangoproj.wsgi.application'
+ # Database
+ # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+ 
++'''
+ DATABASES = {
+     'default': {
+         'ENGINE': 'django.db.backends.sqlite3',
+         'NAME': BASE_DIR / 'db.sqlite3',
+     }
+ }
++'''
++
++DATABASES = {
++    'default': {
++        'ENGINE': 'django.db.backends.mysql', 
++        'NAME': 'dkrdbm',
++        'USER':  os.environ['MYSQL_USER'],
++        'PASSWORD': os.environ['MYSQL_PASSWORD'],
++        'HOST': 'dbm',   # Or an IP Address that your DB is hosted on
++        'PORT': '3306',
++    }
++}
+ 
+ 
+ # Password validation
+@@ -130,7 +143,7 @@ STATIC_URL = '/static/'
+ MEDIA_URL = '/upload/'
+ MEDIA_ROOT = os.path.join(BASE_DIR, 'upload')
+ 
+-
++STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+ 
+ 
+ # Default primary key field type
+diff --git a/django-726-yard/dj726/docker-compose.yml b/django-726-yard/dj726/docker-compose.yml
+index f3a0af0..ef0db04 100644
+--- a/django-726-yard/dj726/docker-compose.yml
++++ b/django-726-yard/dj726/docker-compose.yml
+@@ -10,8 +10,6 @@ volumes:
+ services:
+   djdev:
+     # http://10.4.71.231:16461/admin
+-    # http://192.168.88.60:6461/admin2323
+-    # http://10.4.1.231:6461/
+     # http://192.168.88.60:6461/
+     build: ./docker
+     restart: on-failure
+@@ -51,6 +49,7 @@ services:
+ 
+   dbm:
+     # image: mysql:8.0.23
++    # http://10.4.71.231:7412/?server=10.4.71.231%3A16608&username=root&db=dkrdbm
+     image: yobasystems/alpine-mariadb:10.11
+     restart: always
+     env_file:
+diff --git a/tmp-file-find-for-tar_albe_2324.txt b/tmp-file-find-for-tar_albe_2324.txt
+index 8cdc24e..8795614 100644
+--- a/tmp-file-find-for-tar_albe_2324.txt
++++ b/tmp-file-find-for-tar_albe_2324.txt
+@@ -1,304 +1,835 @@
+-menu694yard/tmp-file-find-for-tar_albe_2324.txt
+-menu694yard/694django/adminer-sqlite/adminer.php
+-menu694yard/694django/adminer-sqlite/Dockerfile
+-menu694yard/694django/adminer-sqlite/index.php
+-menu694yard/694django/adminer-sqlite/README.md
+-menu694yard/694django/Makefile
+-menu694yard/694django/example-stripd.env
+-menu694yard/694django/notes/_unused/admin (9.25.2021 5.14.35 PM).py
+-menu694yard/694django/notes/_unused/0007_rename_application2s_vehicle2_application2s.py
+-menu694yard/694django/notes/docker-compose(mysql).yml
+-menu694yard/694django/notes/z-example-djangosite/Dockerfile
+-menu694yard/694django/notes/z-example-djangosite/djangoproj/urls.py
+-menu694yard/694django/notes/z-example-djangosite/djangoproj/__init__.py
+-menu694yard/694django/notes/z-example-djangosite/djangoproj/wsgi.py
+-menu694yard/694django/notes/z-example-djangosite/djangoproj/settings.py
+-menu694yard/694django/notes/z-example-djangosite/djangoproj/db.sqlite3
+-menu694yard/694django/notes/z-example-djangosite/requirements.txt
+-menu694yard/694django/notes/z-example-djangosite/manage.py
+-menu694yard/694django/notes/django.drf.api.curl.token.txt
+-menu694yard/694django/notes/mangoproj.tar
+-menu694yard/694django/notes/README.dg_roles.rbac-unused.md
+-menu694yard/694django/notes/django.built-in.permissions.txt
+-menu694yard/694django/.gitignore
+-menu694yard/694django/example.env.dev
+-menu694yard/694django/example.env
+-menu694yard/694django/djangosite/static/rest_framework/js/bootstrap.min.js
+-menu694yard/694django/djangosite/static/rest_framework/js/default.js
+-menu694yard/694django/djangosite/static/rest_framework/js/jquery-3.5.1.min.js
+-menu694yard/694django/djangosite/static/rest_framework/js/ajax-form.js
+-menu694yard/694django/djangosite/static/rest_framework/js/prettify-min.js
+-menu694yard/694django/djangosite/static/rest_framework/js/csrf.js
+-menu694yard/694django/djangosite/static/rest_framework/js/coreapi-0.1.1.js
+-menu694yard/694django/djangosite/static/rest_framework/docs/js/api.js
+-menu694yard/694django/djangosite/static/rest_framework/docs/js/highlight.pack.js
+-menu694yard/694django/djangosite/static/rest_framework/docs/js/jquery.json-view.min.js
+-menu694yard/694django/djangosite/static/rest_framework/docs/css/base.css
+-menu694yard/694django/djangosite/static/rest_framework/docs/css/highlight.css
+-menu694yard/694django/djangosite/static/rest_framework/docs/css/jquery.json-view.min.css
+-menu694yard/694django/djangosite/static/rest_framework/docs/img/grid.png
+-menu694yard/694django/djangosite/static/rest_framework/docs/img/favicon.ico
+-menu694yard/694django/djangosite/static/rest_framework/css/bootstrap-theme.min.css
+-menu694yard/694django/djangosite/static/rest_framework/css/prettify.css
+-menu694yard/694django/djangosite/static/rest_framework/css/bootstrap-theme.min.css.map
+-menu694yard/694django/djangosite/static/rest_framework/css/font-awesome-4.0.3.css
+-menu694yard/694django/djangosite/static/rest_framework/css/bootstrap.min.css.map
+-menu694yard/694django/djangosite/static/rest_framework/css/bootstrap-tweaks.css
+-menu694yard/694django/djangosite/static/rest_framework/css/bootstrap.min.css
+-menu694yard/694django/djangosite/static/rest_framework/css/default.css
+-menu694yard/694django/djangosite/static/rest_framework/fonts/fontawesome-webfont.ttf
+-menu694yard/694django/djangosite/static/rest_framework/fonts/fontawesome-webfont.woff
+-menu694yard/694django/djangosite/static/rest_framework/fonts/glyphicons-halflings-regular.ttf
+-menu694yard/694django/djangosite/static/rest_framework/fonts/fontawesome-webfont.svg
+-menu694yard/694django/djangosite/static/rest_framework/fonts/glyphicons-halflings-regular.eot
+-menu694yard/694django/djangosite/static/rest_framework/fonts/glyphicons-halflings-regular.woff
+-menu694yard/694django/djangosite/static/rest_framework/fonts/fontawesome-webfont.eot
+-menu694yard/694django/djangosite/static/rest_framework/fonts/glyphicons-halflings-regular.woff2
+-menu694yard/694django/djangosite/static/rest_framework/fonts/glyphicons-halflings-regular.svg
+-menu694yard/694django/djangosite/static/rest_framework/img/grid.png
+-menu694yard/694django/djangosite/static/rest_framework/img/glyphicons-halflings-white.png
+-menu694yard/694django/djangosite/static/rest_framework/img/glyphicons-halflings.png
+-menu694yard/694django/djangosite/static/admin/js/vendor/jquery/jquery.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/jquery/jquery.min.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/jquery/LICENSE.txt
+-menu694yard/694django/djangosite/static/admin/js/vendor/xregexp/xregexp.min.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/xregexp/xregexp.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/xregexp/LICENSE.txt
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/LICENSE.md
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/select2.full.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/select2.full.min.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/km.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/ko.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/fa.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/az.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/dsb.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/pl.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/hsb.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/th.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/el.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/af.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/id.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/ja.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/en.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/ro.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/ms.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/fr.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/es.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/ar.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/bs.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/it.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/hu.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/sk.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/fi.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/tr.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/zh-CN.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/hi.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/ps.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/is.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/ka.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/uk.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/pt.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/eu.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/ne.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/vi.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/hy.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/bn.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/bg.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/lt.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/hr.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/de.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/sq.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/nb.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/gl.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/zh-TW.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/mk.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/ca.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/sl.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/sr-Cyrl.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/pt-BR.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/nl.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/da.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/tk.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/sv.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/cs.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/he.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/et.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/sr.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/lv.js
+-menu694yard/694django/djangosite/static/admin/js/vendor/select2/i18n/ru.js
+-menu694yard/694django/djangosite/static/admin/js/SelectFilter2.js
+-menu694yard/694django/djangosite/static/admin/js/actions.js
+-menu694yard/694django/djangosite/static/admin/js/core.js
+-menu694yard/694django/djangosite/static/admin/js/popup_response.js
+-menu694yard/694django/djangosite/static/admin/js/cancel.js
+-menu694yard/694django/djangosite/static/admin/js/jquery.init.js
+-menu694yard/694django/djangosite/static/admin/js/autocomplete.js
+-menu694yard/694django/djangosite/static/admin/js/change_form.js
+-menu694yard/694django/djangosite/static/admin/js/inlines.js
+-menu694yard/694django/djangosite/static/admin/js/nav_sidebar.js
+-menu694yard/694django/djangosite/static/admin/js/urlify.js
+-menu694yard/694django/djangosite/static/admin/js/prepopulate.js
+-menu694yard/694django/djangosite/static/admin/js/admin/DateTimeShortcuts.js
+-menu694yard/694django/djangosite/static/admin/js/admin/RelatedObjectLookups.js
+-menu694yard/694django/djangosite/static/admin/js/calendar.js
+-menu694yard/694django/djangosite/static/admin/js/collapse.js
+-menu694yard/694django/djangosite/static/admin/js/prepopulate_init.js
+-menu694yard/694django/djangosite/static/admin/js/SelectBox.js
+-menu694yard/694django/djangosite/static/admin/css/vendor/select2/select2.css
+-menu694yard/694django/djangosite/static/admin/css/vendor/select2/LICENSE-SELECT2.md
+-menu694yard/694django/djangosite/static/admin/css/vendor/select2/select2.min.css
+-menu694yard/694django/djangosite/static/admin/css/dashboard.css
+-menu694yard/694django/djangosite/static/admin/css/fonts.css
+-menu694yard/694django/djangosite/static/admin/css/rtl.css
+-menu694yard/694django/djangosite/static/admin/css/responsive_rtl.css
+-menu694yard/694django/djangosite/static/admin/css/widgets.css
+-menu694yard/694django/djangosite/static/admin/css/base.css
+-menu694yard/694django/djangosite/static/admin/css/nav_sidebar.css
+-menu694yard/694django/djangosite/static/admin/css/changelists.css
+-menu694yard/694django/djangosite/static/admin/css/login.css
+-menu694yard/694django/djangosite/static/admin/css/forms.css
+-menu694yard/694django/djangosite/static/admin/css/responsive.css
+-menu694yard/694django/djangosite/static/admin/css/autocomplete.css
+-menu694yard/694django/djangosite/static/admin/fonts/Roboto-Regular-webfont.woff
+-menu694yard/694django/djangosite/static/admin/fonts/README.txt
+-menu694yard/694django/djangosite/static/admin/fonts/Roboto-Bold-webfont.woff
+-menu694yard/694django/djangosite/static/admin/fonts/Roboto-Light-webfont.woff
+-menu694yard/694django/djangosite/static/admin/fonts/LICENSE.txt
+-menu694yard/694django/djangosite/static/admin/img/tooltag-add.svg
+-menu694yard/694django/djangosite/static/admin/img/icon-changelink.svg
+-menu694yard/694django/djangosite/static/admin/img/icon-alert.svg
+-menu694yard/694django/djangosite/static/admin/img/icon-calendar.svg
+-menu694yard/694django/djangosite/static/admin/img/sorting-icons.svg
+-menu694yard/694django/djangosite/static/admin/img/icon-viewlink.svg
+-menu694yard/694django/djangosite/static/admin/img/icon-deletelink.svg
+-menu694yard/694django/djangosite/static/admin/img/gis/move_vertex_on.svg
+-menu694yard/694django/djangosite/static/admin/img/gis/move_vertex_off.svg
+-menu694yard/694django/djangosite/static/admin/img/tooltag-arrowright.svg
+-menu694yard/694django/djangosite/static/admin/img/README.txt
+-menu694yard/694django/djangosite/static/admin/img/icon-unknown-alt.svg
+-menu694yard/694django/djangosite/static/admin/img/LICENSE
+-menu694yard/694django/djangosite/static/admin/img/calendar-icons.svg
+-menu694yard/694django/djangosite/static/admin/img/icon-unknown.svg
+-menu694yard/694django/djangosite/static/admin/img/icon-yes.svg
+-menu694yard/694django/djangosite/static/admin/img/inline-delete.svg
+-menu694yard/694django/djangosite/static/admin/img/icon-clock.svg
+-menu694yard/694django/djangosite/static/admin/img/icon-no.svg
+-menu694yard/694django/djangosite/static/admin/img/selector-icons.svg
+-menu694yard/694django/djangosite/static/admin/img/icon-addlink.svg
+-menu694yard/694django/djangosite/static/admin/img/search.svg
+-menu694yard/694django/djangosite/test_settings.py
+-menu694yard/694django/djangosite/djangoproj/urls.py
+-menu694yard/694django/djangosite/djangoproj/wsgi.py
+-menu694yard/694django/djangosite/djangoproj/test_requirements.txt
+-menu694yard/694django/djangosite/djangoproj/settings.py
+-menu694yard/694django/djangosite/menuapp/admin.py
+-menu694yard/694django/djangosite/menuapp/urls.py
+-menu694yard/694django/djangosite/menuapp/models.py
+-menu694yard/694django/djangosite/menuapp/htmx.py
+-menu694yard/694django/djangosite/menuapp/__init__.py
+-menu694yard/694django/djangosite/menuapp/api.py
+-menu694yard/694django/djangosite/menuapp/serializers.py
+-menu694yard/694django/djangosite/menuapp/templates/menuapp/menu0_list.html
+-menu694yard/694django/djangosite/menuapp/templates/menuapp/menu0_detail.html
+-menu694yard/694django/djangosite/menuapp/templates/menuapp/menu0_form.html
+-menu694yard/694django/djangosite/menuapp/templates/menuapp/menu0_confirm_delete.html
+-menu694yard/694django/djangosite/menuapp/migrations/__init__.py
+-menu694yard/694django/djangosite/menuapp/migrations/0002_menu0_mgroup_alter_menu0_mcomment.py
+-menu694yard/694django/djangosite/menuapp/migrations/0001_initial.py
+-menu694yard/694django/djangosite/menuapp/views.py
+-menu694yard/694django/djangosite/menuapp/forms.py
+-menu694yard/694django/djangosite/templates/base.html
+-menu694yard/694django/djangosite/templates/registration/password_reset_email.html
+-menu694yard/694django/djangosite/templates/registration/password_reset_form.html
+-menu694yard/694django/djangosite/templates/registration/password_reset_confirm.html
+-menu694yard/694django/djangosite/templates/registration/login.html
+-menu694yard/694django/djangosite/templates/registration/logged_out.html
+-menu694yard/694django/djangosite/templates/registration/password_reset_complete.html
+-menu694yard/694django/djangosite/templates/registration/password_reset_done.html
+-menu694yard/694django/djangosite/templates/admin/base.html
+-menu694yard/694django/djangosite/templates/admin/base_site.html
+-menu694yard/694django/djangosite/templates/favicon.ico
+-menu694yard/694django/djangosite/templates/index.html
+-menu694yard/694django/djangosite/pytest.ini
+-menu694yard/694django/djangosite/blogapp/admin.py
+-menu694yard/694django/djangosite/blogapp/urls.py
+-menu694yard/694django/djangosite/blogapp/2023-06-19/views-00.py
+-menu694yard/694django/djangosite/blogapp/2023-06-19/views-play.py
+-menu694yard/694django/djangosite/blogapp/2023-06-19/urls.py
+-menu694yard/694django/djangosite/blogapp/2023-06-19/views-c.py
+-menu694yard/694django/djangosite/blogapp/2023-06-19/views-619.py
+-menu694yard/694django/djangosite/blogapp/2023-06-19/post_list-2023-06-19.html
+-menu694yard/694django/djangosite/blogapp/2023-06-19/post_list-2.html
+-menu694yard/694django/djangosite/blogapp/2023-06-19/views-fbv.py
+-menu694yard/694django/djangosite/blogapp/models.py
+-menu694yard/694django/djangosite/blogapp/__init__.py
+-menu694yard/694django/djangosite/blogapp/api.py
+-menu694yard/694django/djangosite/blogapp/serializers.py
+-menu694yard/694django/djangosite/blogapp/templates/admin/blogapp/post/change_form.html
+-menu694yard/694django/djangosite/blogapp/templates/blogapp/post_form.html
+-menu694yard/694django/djangosite/blogapp/templates/blogapp/post_detail.html
+-menu694yard/694django/djangosite/blogapp/templates/blogapp/admin/postadd.html
+-menu694yard/694django/djangosite/blogapp/templates/blogapp/post_list-00.html
+-menu694yard/694django/djangosite/blogapp/templates/blogapp/post_list.html
+-menu694yard/694django/djangosite/blogapp/migrations/0009_post_user.py
+-menu694yard/694django/djangosite/blogapp/migrations/0003_group_person.py
+-menu694yard/694django/djangosite/blogapp/migrations/0006_application2_vehicle2.py
+-menu694yard/694django/djangosite/blogapp/migrations/0004_application_vehicle.py
+-menu694yard/694django/djangosite/blogapp/migrations/__init__.py
+-menu694yard/694django/djangosite/blogapp/migrations/0002_auto_20210225_1928.py
+-menu694yard/694django/djangosite/blogapp/migrations/0008_auto_20220109_1048.py
+-menu694yard/694django/djangosite/blogapp/migrations/0007_auto_20211222_1700.py
+-menu694yard/694django/djangosite/blogapp/migrations/0005_auto_20210925_2317.py
+-menu694yard/694django/djangosite/blogapp/migrations/0001_initial.py
+-menu694yard/694django/djangosite/blogapp/views.py
+-menu694yard/694django/djangosite/blogapp/forms.py
+-menu694yard/694django/djangosite/blogapp/cron.py
+-menu694yard/694django/djangosite/db.sqlite3
+-menu694yard/694django/djangosite/tests/__init__.py
+-menu694yard/694django/djangosite/tests/blogapp/test_views.py
+-menu694yard/694django/djangosite/tests/blogapp/__init__.py
+-menu694yard/694django/djangosite/manage.py
+-menu694yard/694django/djangosite/test_helpers.py
+-menu694yard/694django/djangosite/schedulerapp/admin.py
+-menu694yard/694django/djangosite/schedulerapp/apps.py
+-menu694yard/694django/djangosite/schedulerapp/models.py
+-menu694yard/694django/djangosite/schedulerapp/tests.py
+-menu694yard/694django/djangosite/schedulerapp/__init__.py
+-menu694yard/694django/djangosite/schedulerapp/migrations/__init__.py
+-menu694yard/694django/djangosite/schedulerapp/views.py
+-menu694yard/694django/djangosite/schedulerapp/___status.txt
+-menu694yard/694django/docker-compose.yml
+-menu694yard/694django/htmvue/htm/testget.vue.js
+-menu694yard/694django/htmvue/htm/index1.vue.js
+-menu694yard/694django/htmvue/htm/home.vue.js
+-menu694yard/694django/htmvue/htm/_source__.txt
+-menu694yard/694django/htmvue/htm/index.html
+-menu694yard/694django/htmvue/htm/main.js
+-menu694yard/694django/htmvue/htm/about.vue.js
+-menu694yard/694django/htmvue/conf/one.conf
+-menu694yard/694django/.dockerignore
+-menu694yard/694django/README-notes2.api.md
+-menu694yard/694django/README.built-in.permissions.md
+-menu694yard/694django/README-notes3.api.md
+-menu694yard/694django/troubleshooting.md
+-menu694yard/694django/__status.txt
+-menu694yard/694django/docker-compose.prod.yml
+-menu694yard/694django/docker/Dockerfile
+-menu694yard/694django/docker/entrypoint.sh
+-menu694yard/694django/docker/requirements.txt
+-menu694yard/694django/README.md
+-menu694yard/694django/.env
+-menu694yard/694django/djangobuilder.io/djangoproj-menu694-menuapp-2023-03-04.tar
+-menu694yard/694django/djangobuilder.io/djangoproj-menu694pma_old.tar
+-menu694yard/694django/djangobuilder.io/djangoproj(justmenu).tar
+-menu694yard/694django/djangobuilder.io/djangoproj-menu694-2023-03-03.tar
+-menu694yard/694django/README.change.project.name.md
+-menu694yard/694django/_based.on.533-e7-django-2-admins-yard/notes/django.drf.api.curl.token.txt
+-menu694yard/694django/_based.on.533-e7-django-2-admins-yard/notes/__status (9.25.2021 2.53.15 PM).txt
+-menu694yard/694django/_based.on.533-e7-django-2-admins-yard/notes/_passwords.txt
+-menu694yard/694django/_based.on.533-e7-django-2-admins-yard/notes/_app_naming.txt
+-menu694yard/694django/_based.on.533-e7-django-2-admins-yard/notes/__status01.txt
+-menu694yard/694django/_based.on.533-e7-django-2-admins-yard/notes/_this_example-django
+-menu694yard/694django/_based.on.533-e7-django-2-admins-yard/notes/README.dg_roles.rbac-unused.md
+-menu694yard/694django/_based.on.533-e7-django-2-admins-yard/notes/django.built-in.permissions.txt
+-menu694yard/694django/nginx/conf.d/djangodocker.conf
++django-726-yard/.gitignore
++django-726-yard/dj726/adminer-sqlite/adminer.php
++django-726-yard/dj726/adminer-sqlite/Dockerfile
++django-726-yard/dj726/adminer-sqlite/index.php
++django-726-yard/dj726/adminer-sqlite/README.md
++django-726-yard/dj726/Makefile
++django-726-yard/dj726/example-stripd.env
++django-726-yard/dj726/notes/_unused/admin (9.25.2021 5.14.35 PM).py
++django-726-yard/dj726/notes/_unused/0007_rename_application2s_vehicle2_application2s.py
++django-726-yard/dj726/notes/docker-compose(mysql).yml
++django-726-yard/dj726/notes/z-example-djangosite/Dockerfile
++django-726-yard/dj726/notes/z-example-djangosite/djangoproj/urls.py
++django-726-yard/dj726/notes/z-example-djangosite/djangoproj/__init__.py
++django-726-yard/dj726/notes/z-example-djangosite/djangoproj/wsgi.py
++django-726-yard/dj726/notes/z-example-djangosite/djangoproj/settings.py
++django-726-yard/dj726/notes/z-example-djangosite/djangoproj/db.sqlite3
++django-726-yard/dj726/notes/z-example-djangosite/requirements.txt
++django-726-yard/dj726/notes/z-example-djangosite/manage.py
++django-726-yard/dj726/notes/django.drf.api.curl.token.txt
++django-726-yard/dj726/notes/mangoproj.tar
++django-726-yard/dj726/notes/README.dg_roles.rbac-unused.md
++django-726-yard/dj726/notes/chatgpt-notes/CBV with Django Admin-like Search.md
++django-726-yard/dj726/notes/chatgpt-notes/Filter search results correctly[django.search code didnt work]..md
++django-726-yard/dj726/notes/chatgpt-notes/Django CBV User Ownership.md
++django-726-yard/dj726/notes/chatgpt-notes/Django Admin-like Search.md
++django-726-yard/dj726/notes/chatgpt-notes/Django Model Creation..md
++django-726-yard/dj726/notes/django.built-in.permissions.txt
++django-726-yard/dj726/.gitignore
++django-726-yard/dj726/example.env.dev
++django-726-yard/dj726/example.env
++django-726-yard/dj726/djangosite/static/django-htmx.b395a6831ba0.js.gz
++django-726-yard/dj726/djangosite/static/staticfiles.json
++django-726-yard/dj726/djangosite/static/rest_framework/js/default.js.gz
++django-726-yard/dj726/djangosite/static/rest_framework/js/default.5b08897dbdc3.js.gz
++django-726-yard/dj726/djangosite/static/rest_framework/js/bootstrap.min.2f34b630ffe3.js.gz
++django-726-yard/dj726/djangosite/static/rest_framework/js/csrf.969930007329.js.gz
++django-726-yard/dj726/djangosite/static/rest_framework/js/bootstrap.min.js
++django-726-yard/dj726/djangosite/static/rest_framework/js/default.js
++django-726-yard/dj726/djangosite/static/rest_framework/js/prettify-min.709bfcc456c6.js
++django-726-yard/dj726/djangosite/static/rest_framework/js/jquery-3.5.1.min.js
++django-726-yard/dj726/djangosite/static/rest_framework/js/bootstrap.min.js.gz
++django-726-yard/dj726/djangosite/static/rest_framework/js/jquery-3.5.1.min.dc5e7f18c8d3.js.gz
++django-726-yard/dj726/djangosite/static/rest_framework/js/ajax-form.js.gz
++django-726-yard/dj726/djangosite/static/rest_framework/js/coreapi-0.1.1.js.gz
++django-726-yard/dj726/djangosite/static/rest_framework/js/ajax-form.js
++django-726-yard/dj726/djangosite/static/rest_framework/js/prettify-min.js
++django-726-yard/dj726/djangosite/static/rest_framework/js/jquery-3.5.1.min.js.gz
++django-726-yard/dj726/djangosite/static/rest_framework/js/jquery-3.5.1.min.dc5e7f18c8d3.js
++django-726-yard/dj726/djangosite/static/rest_framework/js/ajax-form.0ea6e6052ab5.js.gz
++django-726-yard/dj726/djangosite/static/rest_framework/js/ajax-form.0ea6e6052ab5.js
++django-726-yard/dj726/djangosite/static/rest_framework/js/csrf.js
++django-726-yard/dj726/djangosite/static/rest_framework/js/bootstrap.min.2f34b630ffe3.js
++django-726-yard/dj726/djangosite/static/rest_framework/js/coreapi-0.1.1.e580e3854595.js
++django-726-yard/dj726/djangosite/static/rest_framework/js/csrf.969930007329.js
++django-726-yard/dj726/djangosite/static/rest_framework/js/csrf.js.gz
++django-726-yard/dj726/djangosite/static/rest_framework/js/coreapi-0.1.1.js
++django-726-yard/dj726/djangosite/static/rest_framework/js/coreapi-0.1.1.e580e3854595.js.gz
++django-726-yard/dj726/djangosite/static/rest_framework/js/prettify-min.js.gz
++django-726-yard/dj726/djangosite/static/rest_framework/js/prettify-min.709bfcc456c6.js.gz
++django-726-yard/dj726/djangosite/static/rest_framework/js/default.5b08897dbdc3.js
++django-726-yard/dj726/djangosite/static/rest_framework/docs/js/highlight.pack.js.gz
++django-726-yard/dj726/djangosite/static/rest_framework/docs/js/highlight.pack.479b5f21dcba.js.gz
++django-726-yard/dj726/djangosite/static/rest_framework/docs/js/jquery.json-view.min.b7c2d6981377.js.gz
++django-726-yard/dj726/djangosite/static/rest_framework/docs/js/api.18a5ba8a1bd8.js.gz
++django-726-yard/dj726/djangosite/static/rest_framework/docs/js/api.js
++django-726-yard/dj726/djangosite/static/rest_framework/docs/js/api.js.gz
++django-726-yard/dj726/djangosite/static/rest_framework/docs/js/api.18a5ba8a1bd8.js
++django-726-yard/dj726/djangosite/static/rest_framework/docs/js/jquery.json-view.min.b7c2d6981377.js
++django-726-yard/dj726/djangosite/static/rest_framework/docs/js/highlight.pack.479b5f21dcba.js
++django-726-yard/dj726/djangosite/static/rest_framework/docs/js/jquery.json-view.min.js.gz
++django-726-yard/dj726/djangosite/static/rest_framework/docs/js/highlight.pack.js
++django-726-yard/dj726/djangosite/static/rest_framework/docs/js/jquery.json-view.min.js
++django-726-yard/dj726/djangosite/static/rest_framework/docs/css/highlight.e0e4d973c6d7.css
++django-726-yard/dj726/djangosite/static/rest_framework/docs/css/base.css.gz
++django-726-yard/dj726/djangosite/static/rest_framework/docs/css/highlight.e0e4d973c6d7.css.gz
++django-726-yard/dj726/djangosite/static/rest_framework/docs/css/jquery.json-view.min.css.gz
++django-726-yard/dj726/djangosite/static/rest_framework/docs/css/base.css
++django-726-yard/dj726/djangosite/static/rest_framework/docs/css/jquery.json-view.min.a2e6beeb6710.css.gz
++django-726-yard/dj726/djangosite/static/rest_framework/docs/css/jquery.json-view.min.a2e6beeb6710.css
++django-726-yard/dj726/djangosite/static/rest_framework/docs/css/highlight.css
++django-726-yard/dj726/djangosite/static/rest_framework/docs/css/highlight.css.gz
++django-726-yard/dj726/djangosite/static/rest_framework/docs/css/jquery.json-view.min.css
++django-726-yard/dj726/djangosite/static/rest_framework/docs/css/base.e630f8f4990e.css
++django-726-yard/dj726/djangosite/static/rest_framework/docs/css/base.e630f8f4990e.css.gz
++django-726-yard/dj726/djangosite/static/rest_framework/docs/img/grid.png
++django-726-yard/dj726/djangosite/static/rest_framework/docs/img/grid.a4b938cf382b.png
++django-726-yard/dj726/djangosite/static/rest_framework/docs/img/favicon.ico.gz
++django-726-yard/dj726/djangosite/static/rest_framework/docs/img/favicon.5195b4d0f3eb.ico.gz
++django-726-yard/dj726/djangosite/static/rest_framework/docs/img/favicon.5195b4d0f3eb.ico
++django-726-yard/dj726/djangosite/static/rest_framework/docs/img/favicon.ico
++django-726-yard/dj726/djangosite/static/rest_framework/css/bootstrap-theme.min.css
++django-726-yard/dj726/djangosite/static/rest_framework/css/prettify.a987f72342ee.css
++django-726-yard/dj726/djangosite/static/rest_framework/css/default.789dfb5732d7.css.gz
++django-726-yard/dj726/djangosite/static/rest_framework/css/font-awesome-4.0.3.c1e1ea213abf.css.gz
++django-726-yard/dj726/djangosite/static/rest_framework/css/bootstrap-tweaks.css.gz
++django-726-yard/dj726/djangosite/static/rest_framework/css/bootstrap-theme.min.css.51806092cc05.map
++django-726-yard/dj726/djangosite/static/rest_framework/css/prettify.css
++django-726-yard/dj726/djangosite/static/rest_framework/css/bootstrap.min.css.cafbda9c0e9e.map
++django-726-yard/dj726/djangosite/static/rest_framework/css/bootstrap-theme.min.css.51806092cc05.map.gz
++django-726-yard/dj726/djangosite/static/rest_framework/css/bootstrap-theme.min.1d4b05b397c3.css.gz
++django-726-yard/dj726/djangosite/static/rest_framework/css/bootstrap.min.f17d4516b026.css
++django-726-yard/dj726/djangosite/static/rest_framework/css/bootstrap-theme.min.css.gz
++django-726-yard/dj726/djangosite/static/rest_framework/css/default.css.gz
++django-726-yard/dj726/djangosite/static/rest_framework/css/font-awesome-4.0.3.css.gz
++django-726-yard/dj726/djangosite/static/rest_framework/css/bootstrap.min.css.gz
++django-726-yard/dj726/djangosite/static/rest_framework/css/bootstrap-theme.min.css.map.gz
++django-726-yard/dj726/djangosite/static/rest_framework/css/bootstrap-theme.min.1d4b05b397c3.css
++django-726-yard/dj726/djangosite/static/rest_framework/css/font-awesome-4.0.3.c1e1ea213abf.css
++django-726-yard/dj726/djangosite/static/rest_framework/css/bootstrap-theme.min.css.map
++django-726-yard/dj726/djangosite/static/rest_framework/css/prettify.css.gz
++django-726-yard/dj726/djangosite/static/rest_framework/css/bootstrap.min.css.cafbda9c0e9e.map.gz
++django-726-yard/dj726/djangosite/static/rest_framework/css/bootstrap.min.f17d4516b026.css.gz
++django-726-yard/dj726/djangosite/static/rest_framework/css/font-awesome-4.0.3.css
++django-726-yard/dj726/djangosite/static/rest_framework/css/prettify.a987f72342ee.css.gz
++django-726-yard/dj726/djangosite/static/rest_framework/css/bootstrap.min.css.map.gz
++django-726-yard/dj726/djangosite/static/rest_framework/css/bootstrap.min.css.map
++django-726-yard/dj726/djangosite/static/rest_framework/css/bootstrap-tweaks.css
++django-726-yard/dj726/djangosite/static/rest_framework/css/default.789dfb5732d7.css
++django-726-yard/dj726/djangosite/static/rest_framework/css/bootstrap-tweaks.46ed116b0edd.css
++django-726-yard/dj726/djangosite/static/rest_framework/css/bootstrap-tweaks.46ed116b0edd.css.gz
++django-726-yard/dj726/djangosite/static/rest_framework/css/bootstrap.min.css
++django-726-yard/dj726/djangosite/static/rest_framework/css/default.css
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/fontawesome-webfont.svg.gz
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/fontawesome-webfont.ttf
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/fontawesome-webfont.dcb26c7239d8.ttf
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/glyphicons-halflings-regular.fa2772327f55.woff
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/fontawesome-webfont.woff
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/glyphicons-halflings-regular.ttf
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/fontawesome-webfont.svg
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/fontawesome-webfont.3293616ec0c6.woff
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/glyphicons-halflings-regular.eot
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/fontawesome-webfont.83e37a11f9d7.svg
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/glyphicons-halflings-regular.woff
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/glyphicons-halflings-regular.e18bbf611f2a.ttf.gz
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/glyphicons-halflings-regular.f4769f9bdb74.eot
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/fontawesome-webfont.eot
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/glyphicons-halflings-regular.448c34a56d69.woff2
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/fontawesome-webfont.ttf.gz
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/fontawesome-webfont.dcb26c7239d8.ttf.gz
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/glyphicons-halflings-regular.woff2
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/glyphicons-halflings-regular.svg
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/glyphicons-halflings-regular.08eda92397ae.svg.gz
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/fontawesome-webfont.8b27bc96115c.eot
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/fontawesome-webfont.83e37a11f9d7.svg.gz
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/glyphicons-halflings-regular.08eda92397ae.svg
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/glyphicons-halflings-regular.e18bbf611f2a.ttf
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/glyphicons-halflings-regular.ttf.gz
++django-726-yard/dj726/djangosite/static/rest_framework/fonts/glyphicons-halflings-regular.svg.gz
++django-726-yard/dj726/djangosite/static/rest_framework/img/grid.png
++django-726-yard/dj726/djangosite/static/rest_framework/img/grid.a4b938cf382b.png
++django-726-yard/dj726/djangosite/static/rest_framework/img/glyphicons-halflings-white.png
++django-726-yard/dj726/djangosite/static/rest_framework/img/glyphicons-halflings.png
++django-726-yard/dj726/djangosite/static/rest_framework/img/glyphicons-halflings.90233c9067e9.png
++django-726-yard/dj726/djangosite/static/rest_framework/img/glyphicons-halflings-white.9bbc6e960299.png
++django-726-yard/dj726/djangosite/static/django-htmx.b395a6831ba0.js
++django-726-yard/dj726/djangosite/static/django-htmx.js
++django-726-yard/dj726/djangosite/static/admin/js/inlines.22d4d93c00b4.js
++django-726-yard/dj726/djangosite/static/admin/js/autocomplete.01591ab27be7.js
++django-726-yard/dj726/djangosite/static/admin/js/collapse.f84e7410290f.js
++django-726-yard/dj726/djangosite/static/admin/js/calendar.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/jquery/jquery.min.8fb8fee4fcc3.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/jquery/jquery.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/jquery/jquery.min.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/jquery/LICENSE.de877aa6d744.txt.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/jquery/jquery.2849239b95f5.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/jquery/jquery.min.8fb8fee4fcc3.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/jquery/jquery.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/jquery/LICENSE.txt.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/jquery/jquery.2849239b95f5.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/jquery/jquery.min.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/jquery/LICENSE.de877aa6d744.txt
++django-726-yard/dj726/djangosite/static/admin/js/vendor/jquery/LICENSE.txt
++django-726-yard/dj726/djangosite/static/admin/js/vendor/xregexp/xregexp.min.b0439563a5d3.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/xregexp/xregexp.efda034b9537.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/xregexp/LICENSE.bf79e414957a.txt.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/xregexp/xregexp.min.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/xregexp/xregexp.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/xregexp/LICENSE.txt.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/xregexp/xregexp.efda034b9537.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/xregexp/xregexp.min.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/xregexp/LICENSE.bf79e414957a.txt
++django-726-yard/dj726/djangosite/static/admin/js/vendor/xregexp/xregexp.min.b0439563a5d3.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/xregexp/xregexp.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/xregexp/LICENSE.txt
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/LICENSE.md
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/select2.full.c2afdeda3058.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/select2.full.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/select2.full.min.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/select2.full.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/select2.full.min.fcd7500d8e13.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/select2.full.c2afdeda3058.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/select2.full.min.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/LICENSE.md.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/km.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/cs.4f43e8e7d33a.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ko.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/pt-BR.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/fa.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/az.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/dsb.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/da.766346afe4dd.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/pl.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/bn.6d42b4dd5665.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/hi.70640d41628f.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/eu.adfe5c97b72c.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/de.8a1c222b0204.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/hsb.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/km.c23089cb06ca.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ps.38dfa47af9e0.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/th.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/es.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/es.66dbc2652fb1.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/el.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ar.65aa8e36bf5d.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/de.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/af.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/vi.097a5b75b3e1.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ro.f75cb460ec3b.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/nb.da2fce143f27.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/id.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/cs.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/lt.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/hu.6ec6039cb8a3.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sr-Cyrl.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ja.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sk.33d02cef8d11.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/lt.23c7ce903300.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/en.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sl.131a78bc0752.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ro.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/he.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/lt.23c7ce903300.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/fr.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ne.3d79fd3f08db.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ka.2083264a54f0.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/az.270c257daf81.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ms.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/fr.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/en.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/es.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/fi.614ec42aa9ba.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/bs.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/pt.33b4a3b44d43.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/uk.8cede7f4803c.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/hy.c7babaeef5a6.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/it.be4fe8d365b5.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ar.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/en.cf932ba09a98.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sr.5ed85a48f483.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/et.2b96fd98289d.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ko.e7be6c20e673.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/bs.91624382358e.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/lv.08e62128eac1.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/fa.3b5bd1961cfd.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/fa.3b5bd1961cfd.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/pl.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ru.934aa95f5b5f.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/bs.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/pl.6031b4f16452.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/it.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/pt-BR.e1b294433e7f.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/uk.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sr-Cyrl.f254bb8c4c7c.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/gl.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sv.7a9c2f71e777.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/vi.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/km.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/hu.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sk.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/fi.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sv.7a9c2f71e777.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/tr.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/az.270c257daf81.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/bs.91624382358e.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/tr.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/af.4f6fcd73488c.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/bg.39b8be30d4f0.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ru.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ro.f75cb460ec3b.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/zh-CN.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/da.766346afe4dd.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/he.e420ff6cd3ed.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/nb.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/fi.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ja.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/it.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/et.2b96fd98289d.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/zh-CN.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/hi.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/nl.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/th.f38c20b0221b.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ps.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/is.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ps.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/af.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ca.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ps.38dfa47af9e0.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/hsb.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ar.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/uk.8cede7f4803c.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ms.4ba82c9a51ce.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ka.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/uk.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/el.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/da.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/pt.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/id.04debded514d.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/it.be4fe8d365b5.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/az.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/cs.4f43e8e7d33a.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sl.131a78bc0752.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/eu.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/gl.d99b1fedaa86.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/he.e420ff6cd3ed.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ne.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/mk.dabbb9087130.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/vi.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/de.8a1c222b0204.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/fa.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/lv.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/mk.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/hy.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/et.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/pt.33b4a3b44d43.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/bg.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/zh-CN.2cff662ec5f9.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/bn.6d42b4dd5665.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/hu.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/tk.7c572a68c78f.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ka.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/id.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sk.33d02cef8d11.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/bn.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/bg.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/lt.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/tr.b5a0643d1545.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/hr.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/fr.05e0542fcfe6.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/hr.a2b092cc1147.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/id.04debded514d.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ar.65aa8e36bf5d.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/de.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/pl.6031b4f16452.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sq.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/hy.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/hr.a2b092cc1147.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/tr.b5a0643d1545.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/eu.adfe5c97b72c.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ru.934aa95f5b5f.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ca.a166b745933a.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/zh-TW.04554a227c2b.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/dsb.56372c92d2f1.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/bn.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/af.4f6fcd73488c.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/bg.39b8be30d4f0.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ms.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/nb.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/is.3ddd9a6a97e9.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sl.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/dsb.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/gl.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/dsb.56372c92d2f1.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/is.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/pt-BR.e1b294433e7f.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/zh-TW.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/hsb.fa3b55265efe.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/nb.da2fce143f27.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/mk.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ca.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sl.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/th.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ko.e7be6c20e673.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/km.c23089cb06ca.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/lv.08e62128eac1.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/hsb.fa3b55265efe.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sk.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ko.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sr-Cyrl.f254bb8c4c7c.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ca.a166b745933a.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/en.cf932ba09a98.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/eu.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/el.27097f071856.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/zh-CN.2cff662ec5f9.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/nl.997868a37ed8.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/hi.70640d41628f.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/is.3ddd9a6a97e9.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/es.66dbc2652fb1.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ro.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sr.5ed85a48f483.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sr-Cyrl.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ka.2083264a54f0.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/pt-BR.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sr.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sq.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/nl.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/gl.d99b1fedaa86.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/zh-TW.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/da.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/nl.997868a37ed8.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ne.3d79fd3f08db.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/tk.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sv.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/hy.c7babaeef5a6.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ne.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ja.170ae885d74f.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/cs.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/zh-TW.04554a227c2b.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/hu.6ec6039cb8a3.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ms.4ba82c9a51ce.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/hr.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sq.5636b60d29c9.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/he.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/hi.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/et.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sr.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/pt.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/tk.7c572a68c78f.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/lv.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/fr.05e0542fcfe6.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/fi.614ec42aa9ba.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/vi.097a5b75b3e1.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sv.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ja.170ae885d74f.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/ru.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/el.27097f071856.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/mk.dabbb9087130.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/tk.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/sq.5636b60d29c9.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/i18n/th.f38c20b0221b.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/LICENSE.f94142512c91.md
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/select2.full.min.fcd7500d8e13.js
++django-726-yard/dj726/djangosite/static/admin/js/vendor/select2/LICENSE.f94142512c91.md.gz
++django-726-yard/dj726/djangosite/static/admin/js/SelectBox.8161741c7647.js
++django-726-yard/dj726/djangosite/static/admin/js/change_form.9d8ca4f96b75.js
++django-726-yard/dj726/djangosite/static/admin/js/SelectFilter2.js
++django-726-yard/dj726/djangosite/static/admin/js/actions.js
++django-726-yard/dj726/djangosite/static/admin/js/calendar.f8a5d055eb33.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/core.js
++django-726-yard/dj726/djangosite/static/admin/js/popup_response.js
++django-726-yard/dj726/djangosite/static/admin/js/nav_sidebar.36a64ecb39ed.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/core.5d6b384a08b5.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/cancel.js
++django-726-yard/dj726/djangosite/static/admin/js/filters.295a9d3d8b6a.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/actions.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/jquery.init.js
++django-726-yard/dj726/djangosite/static/admin/js/urlify.25cc3eac8123.js
++django-726-yard/dj726/djangosite/static/admin/js/urlify.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/autocomplete.js
++django-726-yard/dj726/djangosite/static/admin/js/change_form.9d8ca4f96b75.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/nav_sidebar.36a64ecb39ed.js
++django-726-yard/dj726/djangosite/static/admin/js/popup_response.c6cc78ea5551.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/jquery.init.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/prepopulate_init.6cac7f3105b8.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/jquery.init.b7781a0897fc.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/collapse.f84e7410290f.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/cancel.ecc4c5ca7b32.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/inlines.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/actions.eac7e3441574.js
++django-726-yard/dj726/djangosite/static/admin/js/collapse.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/change_form.js
++django-726-yard/dj726/djangosite/static/admin/js/inlines.js
++django-726-yard/dj726/djangosite/static/admin/js/SelectBox.8161741c7647.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/filters.js
++django-726-yard/dj726/djangosite/static/admin/js/nav_sidebar.js
++django-726-yard/dj726/djangosite/static/admin/js/urlify.js
++django-726-yard/dj726/djangosite/static/admin/js/prepopulate.js
++django-726-yard/dj726/djangosite/static/admin/js/calendar.f8a5d055eb33.js
++django-726-yard/dj726/djangosite/static/admin/js/nav_sidebar.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/admin/DateTimeShortcuts.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/admin/RelatedObjectLookups.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/admin/RelatedObjectLookups.de5309ac06dd.js
++django-726-yard/dj726/djangosite/static/admin/js/admin/DateTimeShortcuts.js
++django-726-yard/dj726/djangosite/static/admin/js/admin/DateTimeShortcuts.300591891b2b.js
++django-726-yard/dj726/djangosite/static/admin/js/admin/RelatedObjectLookups.de5309ac06dd.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/admin/RelatedObjectLookups.js
++django-726-yard/dj726/djangosite/static/admin/js/admin/DateTimeShortcuts.300591891b2b.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/SelectBox.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/filters.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/urlify.25cc3eac8123.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/core.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/cancel.ecc4c5ca7b32.js
++django-726-yard/dj726/djangosite/static/admin/js/popup_response.c6cc78ea5551.js
++django-726-yard/dj726/djangosite/static/admin/js/inlines.22d4d93c00b4.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/change_form.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/SelectFilter2.3f53e33c88d6.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/calendar.js
++django-726-yard/dj726/djangosite/static/admin/js/autocomplete.01591ab27be7.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/prepopulate_init.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/prepopulate_init.6cac7f3105b8.js
++django-726-yard/dj726/djangosite/static/admin/js/popup_response.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/actions.eac7e3441574.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/filters.295a9d3d8b6a.js
++django-726-yard/dj726/djangosite/static/admin/js/prepopulate.bd2361dfd64d.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/collapse.js
++django-726-yard/dj726/djangosite/static/admin/js/SelectFilter2.3f53e33c88d6.js
++django-726-yard/dj726/djangosite/static/admin/js/jquery.init.b7781a0897fc.js
++django-726-yard/dj726/djangosite/static/admin/js/prepopulate.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/autocomplete.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/cancel.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/SelectFilter2.js.gz
++django-726-yard/dj726/djangosite/static/admin/js/prepopulate_init.js
++django-726-yard/dj726/djangosite/static/admin/js/prepopulate.bd2361dfd64d.js
++django-726-yard/dj726/djangosite/static/admin/js/core.5d6b384a08b5.js
++django-726-yard/dj726/djangosite/static/admin/js/SelectBox.js
++django-726-yard/dj726/djangosite/static/admin/css/widgets.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/dark_mode.4e3d1504ca81.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/fonts.168bab448fee.css
++django-726-yard/dj726/djangosite/static/admin/css/dashboard.be83f13e4369.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/vendor/select2/select2.min.9f54e6414f87.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/vendor/select2/LICENSE-SELECT2.md.gz
++django-726-yard/dj726/djangosite/static/admin/css/vendor/select2/select2.min.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/vendor/select2/select2.css
++django-726-yard/dj726/djangosite/static/admin/css/vendor/select2/LICENSE-SELECT2.md
++django-726-yard/dj726/djangosite/static/admin/css/vendor/select2/select2.min.css
++django-726-yard/dj726/djangosite/static/admin/css/vendor/select2/select2.a2194c262648.css
++django-726-yard/dj726/djangosite/static/admin/css/vendor/select2/select2.a2194c262648.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/vendor/select2/LICENSE-SELECT2.f94142512c91.md
++django-726-yard/dj726/djangosite/static/admin/css/vendor/select2/LICENSE-SELECT2.f94142512c91.md.gz
++django-726-yard/dj726/djangosite/static/admin/css/vendor/select2/select2.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/vendor/select2/select2.min.9f54e6414f87.css
++django-726-yard/dj726/djangosite/static/admin/css/autocomplete.4a81fc4242d0.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/dashboard.css
++django-726-yard/dj726/djangosite/static/admin/css/login.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/dark_mode.4e3d1504ca81.css
++django-726-yard/dj726/djangosite/static/admin/css/widgets.00318bc424d3.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/responsive.02281633b5f1.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/nav_sidebar.30423191f399.css
++django-726-yard/dj726/djangosite/static/admin/css/dark_mode.css
++django-726-yard/dj726/djangosite/static/admin/css/changelists.ae46354f4e80.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/base.01580fff1759.css
++django-726-yard/dj726/djangosite/static/admin/css/base.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/forms.c192d1ec6902.css
++django-726-yard/dj726/djangosite/static/admin/css/fonts.css
++django-726-yard/dj726/djangosite/static/admin/css/widgets.00318bc424d3.css
++django-726-yard/dj726/djangosite/static/admin/css/login.586129c60a93.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/nav_sidebar.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/dashboard.be83f13e4369.css
++django-726-yard/dj726/djangosite/static/admin/css/rtl.css
++django-726-yard/dj726/djangosite/static/admin/css/forms.c192d1ec6902.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/responsive_rtl.css
++django-726-yard/dj726/djangosite/static/admin/css/rtl.8473f45bd49b.css
++django-726-yard/dj726/djangosite/static/admin/css/dashboard.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/autocomplete.4a81fc4242d0.css
++django-726-yard/dj726/djangosite/static/admin/css/responsive_rtl.e13ae754cceb.css
++django-726-yard/dj726/djangosite/static/admin/css/widgets.css
++django-726-yard/dj726/djangosite/static/admin/css/changelists.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/base.css
++django-726-yard/dj726/djangosite/static/admin/css/nav_sidebar.css
++django-726-yard/dj726/djangosite/static/admin/css/nav_sidebar.30423191f399.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/fonts.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/dark_mode.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/autocomplete.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/responsive.02281633b5f1.css
++django-726-yard/dj726/djangosite/static/admin/css/changelists.css
++django-726-yard/dj726/djangosite/static/admin/css/fonts.168bab448fee.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/base.01580fff1759.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/login.586129c60a93.css
++django-726-yard/dj726/djangosite/static/admin/css/changelists.ae46354f4e80.css
++django-726-yard/dj726/djangosite/static/admin/css/login.css
++django-726-yard/dj726/djangosite/static/admin/css/rtl.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/forms.css
++django-726-yard/dj726/djangosite/static/admin/css/responsive_rtl.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/rtl.8473f45bd49b.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/responsive.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/responsive.css
++django-726-yard/dj726/djangosite/static/admin/css/autocomplete.css
++django-726-yard/dj726/djangosite/static/admin/css/forms.css.gz
++django-726-yard/dj726/djangosite/static/admin/css/responsive_rtl.e13ae754cceb.css.gz
++django-726-yard/dj726/djangosite/static/admin/fonts/Roboto-Regular-webfont.woff
++django-726-yard/dj726/djangosite/static/admin/fonts/README.ab99e6b541ea.txt.gz
++django-726-yard/dj726/djangosite/static/admin/fonts/Roboto-Bold-webfont.50d75e48e0a3.woff
++django-726-yard/dj726/djangosite/static/admin/fonts/README.ab99e6b541ea.txt
++django-726-yard/dj726/djangosite/static/admin/fonts/README.txt
++django-726-yard/dj726/djangosite/static/admin/fonts/README.txt.gz
++django-726-yard/dj726/djangosite/static/admin/fonts/Roboto-Light-webfont.c73eb1ceba33.woff
++django-726-yard/dj726/djangosite/static/admin/fonts/LICENSE.txt.gz
++django-726-yard/dj726/djangosite/static/admin/fonts/Roboto-Regular-webfont.35b07eb2f871.woff
++django-726-yard/dj726/djangosite/static/admin/fonts/LICENSE.d273d63619c9.txt
++django-726-yard/dj726/djangosite/static/admin/fonts/Roboto-Bold-webfont.woff
++django-726-yard/dj726/djangosite/static/admin/fonts/LICENSE.d273d63619c9.txt.gz
++django-726-yard/dj726/djangosite/static/admin/fonts/Roboto-Light-webfont.woff
++django-726-yard/dj726/djangosite/static/admin/fonts/LICENSE.txt
++django-726-yard/dj726/djangosite/static/admin/img/inline-delete.fec1b761f254.svg
++django-726-yard/dj726/djangosite/static/admin/img/tooltag-add.svg
++django-726-yard/dj726/djangosite/static/admin/img/icon-no.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-alert.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/selector-icons.b4555096cea2.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/calendar-icons.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/LICENSE.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-alert.034cc7d8a67f.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-viewlink.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-viewlink.41eb31f7826e.svg
++django-726-yard/dj726/djangosite/static/admin/img/icon-clock.e1d4dfac3f2b.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-changelink.svg
++django-726-yard/dj726/djangosite/static/admin/img/sorting-icons.3a097b59f104.svg
++django-726-yard/dj726/djangosite/static/admin/img/icon-no.439e821418cd.svg
++django-726-yard/dj726/djangosite/static/admin/img/icon-unknown.a18cb4398978.svg
++django-726-yard/dj726/djangosite/static/admin/img/tooltag-add.e59d620a9742.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-alert.svg
++django-726-yard/dj726/djangosite/static/admin/img/tooltag-arrowright.bbfb788a849e.svg
++django-726-yard/dj726/djangosite/static/admin/img/icon-changelink.18d2fd706348.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-clock.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-calendar.svg
++django-726-yard/dj726/djangosite/static/admin/img/sorting-icons.svg
++django-726-yard/dj726/djangosite/static/admin/img/icon-unknown-alt.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-viewlink.svg
++django-726-yard/dj726/djangosite/static/admin/img/inline-delete.fec1b761f254.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/tooltag-arrowright.bbfb788a849e.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-deletelink.svg
++django-726-yard/dj726/djangosite/static/admin/img/gis/move_vertex_off.7a23bf31ef8a.svg
++django-726-yard/dj726/djangosite/static/admin/img/gis/move_vertex_on.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/gis/move_vertex_on.svg
++django-726-yard/dj726/djangosite/static/admin/img/gis/move_vertex_off.7a23bf31ef8a.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/gis/move_vertex_on.0047eba25b67.svg
++django-726-yard/dj726/djangosite/static/admin/img/gis/move_vertex_off.svg
++django-726-yard/dj726/djangosite/static/admin/img/gis/move_vertex_on.0047eba25b67.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/gis/move_vertex_off.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/LICENSE.2c54f4e1ca1c.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-yes.d2f9f035226a.svg
++django-726-yard/dj726/djangosite/static/admin/img/tooltag-arrowright.svg
++django-726-yard/dj726/djangosite/static/admin/img/sorting-icons.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/README.txt
++django-726-yard/dj726/djangosite/static/admin/img/README.txt.gz
++django-726-yard/dj726/djangosite/static/admin/img/calendar-icons.39b290681a8b.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-changelink.18d2fd706348.svg
++django-726-yard/dj726/djangosite/static/admin/img/icon-calendar.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-unknown-alt.svg
++django-726-yard/dj726/djangosite/static/admin/img/LICENSE
++django-726-yard/dj726/djangosite/static/admin/img/icon-deletelink.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/search.7cf54ff789c6.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-addlink.d519b3bab011.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/calendar-icons.svg
++django-726-yard/dj726/djangosite/static/admin/img/inline-delete.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/calendar-icons.39b290681a8b.svg
++django-726-yard/dj726/djangosite/static/admin/img/icon-viewlink.41eb31f7826e.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-unknown-alt.81536e128bb6.svg
++django-726-yard/dj726/djangosite/static/admin/img/icon-clock.e1d4dfac3f2b.svg
++django-726-yard/dj726/djangosite/static/admin/img/icon-calendar.ac7aea671bea.svg
++django-726-yard/dj726/djangosite/static/admin/img/selector-icons.b4555096cea2.svg
++django-726-yard/dj726/djangosite/static/admin/img/icon-unknown.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/selector-icons.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/sorting-icons.3a097b59f104.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/tooltag-add.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-alert.034cc7d8a67f.svg
++django-726-yard/dj726/djangosite/static/admin/img/icon-unknown.a18cb4398978.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/tooltag-arrowright.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/search.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-no.439e821418cd.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-unknown.svg
++django-726-yard/dj726/djangosite/static/admin/img/icon-yes.svg
++django-726-yard/dj726/djangosite/static/admin/img/icon-calendar.ac7aea671bea.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/inline-delete.svg
++django-726-yard/dj726/djangosite/static/admin/img/README.a70711a38d87.txt.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-addlink.d519b3bab011.svg
++django-726-yard/dj726/djangosite/static/admin/img/icon-clock.svg
++django-726-yard/dj726/djangosite/static/admin/img/icon-no.svg
++django-726-yard/dj726/djangosite/static/admin/img/README.a70711a38d87.txt
++django-726-yard/dj726/djangosite/static/admin/img/search.7cf54ff789c6.svg
++django-726-yard/dj726/djangosite/static/admin/img/LICENSE.2c54f4e1ca1c
++django-726-yard/dj726/djangosite/static/admin/img/selector-icons.svg
++django-726-yard/dj726/djangosite/static/admin/img/tooltag-add.e59d620a9742.svg
++django-726-yard/dj726/djangosite/static/admin/img/icon-addlink.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-addlink.svg
++django-726-yard/dj726/djangosite/static/admin/img/icon-deletelink.564ef9dc3854.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-unknown-alt.81536e128bb6.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-deletelink.564ef9dc3854.svg
++django-726-yard/dj726/djangosite/static/admin/img/search.svg
++django-726-yard/dj726/djangosite/static/admin/img/icon-yes.d2f9f035226a.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-changelink.svg.gz
++django-726-yard/dj726/djangosite/static/admin/img/icon-yes.svg.gz
++django-726-yard/dj726/djangosite/static/django-htmx.js.gz
++django-726-yard/dj726/djangosite/___this_is_made-by-djbuilder17.txt
++django-726-yard/dj726/djangosite/test_settings.py
++django-726-yard/dj726/djangosite/toolbreakapp624c/admin.py
++django-726-yard/dj726/djangosite/toolbreakapp624c/urls.py
++django-726-yard/dj726/djangosite/toolbreakapp624c/consumers.py
++django-726-yard/dj726/djangosite/toolbreakapp624c/models.py
++django-726-yard/dj726/djangosite/toolbreakapp624c/htmx.py
++django-726-yard/dj726/djangosite/toolbreakapp624c/__init__.py
++django-726-yard/dj726/djangosite/toolbreakapp624c/api.py
++django-726-yard/dj726/djangosite/toolbreakapp624c/serializers.py
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/pressselect_confirm_delete.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/coinissue_form.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/pressselect_form.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/compactissue_form.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/engineering_detail.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/deviation_list.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/help_detail.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/compactissue_list.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/compactissue_confirm_delete.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/pressinfo_confirm_delete.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/toolbreakagereport_form.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/tool_list.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/partnumber_list.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/deviation_form.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/tool_form.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/supervisor_form.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/pressinfo_list.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/tool_confirm_delete.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/pressinfo_form.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/engineering_list.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/supervisor_confirm_delete.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/help_list.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/toolroom_confirm_delete.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/partnumber_form.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/toolsshopfloor_detail.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/coinissue_detail.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/supervisor_detail.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/engineering_confirm_delete.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/partnumber_confirm_delete.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/tool_detail.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/toolroom_form.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/compactissue_detail.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/help_form.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/toolbreakagereport_confirm_delete.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/toolsshopfloor_list.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/deviation_confirm_delete.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/toolroom_list.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/partnumber_detail.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/toolbreakagereport_detail.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/supervisor_list.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/toolbreakagereport_list.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/toolsshopfloor_form.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/help_confirm_delete.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/toolsshopfloor_confirm_delete.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/coinissue_confirm_delete.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/coinissue_list.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/pressselect_list.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/deviation_detail.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/pressselect_detail.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/toolroom_detail.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/pressinfo_detail.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/templates/toolbreakapp624c/engineering_form.html
++django-726-yard/dj726/djangosite/toolbreakapp624c/migrations/__init__.py
++django-726-yard/dj726/djangosite/toolbreakapp624c/migrations/0001_initial.py
++django-726-yard/dj726/djangosite/toolbreakapp624c/views.py
++django-726-yard/dj726/djangosite/toolbreakapp624c/forms.py
++django-726-yard/dj726/djangosite/djangoproj/urls.py
++django-726-yard/dj726/djangosite/djangoproj/consumers.py
++django-726-yard/dj726/djangosite/djangoproj/wsgi.py
++django-726-yard/dj726/djangosite/djangoproj/routing.py
++django-726-yard/dj726/djangosite/djangoproj/settings.py
++django-726-yard/dj726/djangosite/djangoproj/views.py
++django-726-yard/dj726/djangosite/djangoproj/asgi.py
++django-726-yard/dj726/djangosite/upload/images/2024-03-12_15_57_04-Production-Scrap.xlsx_-_Excel_DCMkPxD.png
++django-726-yard/dj726/djangosite/upload/images/20240306_094238.jpg
++django-726-yard/dj726/djangosite/upload/images/2024-03-12_15_57_04-Production-Scrap.xlsx_-_Excel.png
++django-726-yard/dj726/djangosite/upload/images/20240306_094238_8n90zvq.jpg
++django-726-yard/dj726/djangosite/upload/images/20240306_094238_6CAk7Sw.jpg
++django-726-yard/dj726/djangosite/templates/base.html
++django-726-yard/dj726/djangosite/templates/htmx/htmx.html
++django-726-yard/dj726/djangosite/templates/htmx/form.html
++django-726-yard/dj726/djangosite/templates/htmx/delete_button.html
++django-726-yard/dj726/djangosite/templates/htmx/list.html
++django-726-yard/dj726/djangosite/templates/htmx/create.html
++django-726-yard/dj726/djangosite/templates/index.html
++django-726-yard/dj726/djangosite/pytest.ini
++django-726-yard/dj726/djangosite/test_requirements.txt
++django-726-yard/dj726/djangosite/_this_from-djbuilder17/.keep
++django-726-yard/dj726/djangosite/requirements.txt
++django-726-yard/dj726/djangosite/blogappm2m/admin.py
++django-726-yard/dj726/djangosite/blogappm2m/urls.py
++django-726-yard/dj726/djangosite/blogappm2m/consumers.py
++django-726-yard/dj726/djangosite/blogappm2m/models.py
++django-726-yard/dj726/djangosite/blogappm2m/htmx.py
++django-726-yard/dj726/djangosite/blogappm2m/__init__.py
++django-726-yard/dj726/djangosite/blogappm2m/api.py
++django-726-yard/dj726/djangosite/blogappm2m/serializers.py
++django-726-yard/dj726/djangosite/blogappm2m/templates/blogappm2m/postedfromtbl_detail.html
++django-726-yard/dj726/djangosite/blogappm2m/templates/blogappm2m/postedfromtbl_form.html
++django-726-yard/dj726/djangosite/blogappm2m/templates/blogappm2m/posttbl_list.html
++django-726-yard/dj726/djangosite/blogappm2m/templates/blogappm2m/tagtbl_detail.html
++django-726-yard/dj726/djangosite/blogappm2m/templates/blogappm2m/posttbl_detail.html
++django-726-yard/dj726/djangosite/blogappm2m/templates/blogappm2m/tagtbl_confirm_delete.html
++django-726-yard/dj726/djangosite/blogappm2m/templates/blogappm2m/posttbl_form.html
++django-726-yard/dj726/djangosite/blogappm2m/templates/blogappm2m/posttbl_confirm_delete.html
++django-726-yard/dj726/djangosite/blogappm2m/templates/blogappm2m/postedfromtbl_list.html
++django-726-yard/dj726/djangosite/blogappm2m/templates/blogappm2m/tagtbl_form.html
++django-726-yard/dj726/djangosite/blogappm2m/templates/blogappm2m/tagtbl_list.html
++django-726-yard/dj726/djangosite/blogappm2m/templates/blogappm2m/postedfromtbl_confirm_delete.html
++django-726-yard/dj726/djangosite/blogappm2m/admin00old.py
++django-726-yard/dj726/djangosite/blogappm2m/migrations/0002_posttbl_pic.py
++django-726-yard/dj726/djangosite/blogappm2m/migrations/0003_alter_posttbl_pic_alter_posttbl_tags.py
++django-726-yard/dj726/djangosite/blogappm2m/migrations/__init__.py
++django-726-yard/dj726/djangosite/blogappm2m/migrations/0001_initial.py
++django-726-yard/dj726/djangosite/blogappm2m/views.py
++django-726-yard/dj726/djangosite/blogappm2m/forms.py
++django-726-yard/dj726/djangosite/db.sqlite3
++django-726-yard/dj726/djangosite/tests/toolbreakapp624c/test_views.py
++django-726-yard/dj726/djangosite/tests/toolbreakapp624c/__init__.py
++django-726-yard/dj726/djangosite/tests/__init__.py
++django-726-yard/dj726/djangosite/tests/blogappm2m/test_views.py
++django-726-yard/dj726/djangosite/tests/blogappm2m/__init__.py
++django-726-yard/dj726/djangosite/manage.py
++django-726-yard/dj726/djangosite/test_helpers.py
++django-726-yard/dj726/docker-compose.yml
++django-726-yard/dj726/htmvue/htm/testget.vue.js
++django-726-yard/dj726/htmvue/htm/index1.vue.js
++django-726-yard/dj726/htmvue/htm/home.vue.js
++django-726-yard/dj726/htmvue/htm/_source__.txt
++django-726-yard/dj726/htmvue/htm/index.html
++django-726-yard/dj726/htmvue/htm/main.js
++django-726-yard/dj726/htmvue/htm/about.vue.js
++django-726-yard/dj726/htmvue/conf/one.conf
++django-726-yard/dj726/.dockerignore
++django-726-yard/dj726/djangosite-startproject/djangoproject/urls.py
++django-726-yard/dj726/djangosite-startproject/djangoproject/__init__.py
++django-726-yard/dj726/djangosite-startproject/djangoproject/wsgi.py
++django-726-yard/dj726/djangosite-startproject/djangoproject/settings.py
++django-726-yard/dj726/djangosite-startproject/djangoproject/asgi.py
++django-726-yard/dj726/djangosite-startproject/_this_created-by-djangoadmin-startproject.txt
++django-726-yard/dj726/djangosite-startproject/manage.py
++django-726-yard/dj726/README-notes2.api.md
++django-726-yard/dj726/README.built-in.permissions.md
++django-726-yard/dj726/README-notes3.api.md
++django-726-yard/dj726/troubleshooting.md
++django-726-yard/dj726/__status.txt
++django-726-yard/dj726/docker-compose.prod.yml
++django-726-yard/dj726/_lineage.txt
++django-726-yard/dj726/docker/Dockerfile
++django-726-yard/dj726/docker/entrypoint.sh
++django-726-yard/dj726/docker/requirements.txt
++django-726-yard/dj726/README.md
++django-726-yard/dj726/.env
++django-726-yard/dj726/djangobuilder.io/djangoproj-blogappm2m-2023-10-30-pic.tar
++django-726-yard/dj726/README.change.project.name.md
++django-726-yard/dj726/_based.on.533-e7-django-2-admins-yard/notes/django.drf.api.curl.token.txt
++django-726-yard/dj726/_based.on.533-e7-django-2-admins-yard/notes/__status (9.25.2021 2.53.15 PM).txt
++django-726-yard/dj726/_based.on.533-e7-django-2-admins-yard/notes/_passwords.txt
++django-726-yard/dj726/_based.on.533-e7-django-2-admins-yard/notes/_app_naming.txt
++django-726-yard/dj726/_based.on.533-e7-django-2-admins-yard/notes/__status01.txt
++django-726-yard/dj726/_based.on.533-e7-django-2-admins-yard/notes/_this_example-django
++django-726-yard/dj726/_based.on.533-e7-django-2-admins-yard/notes/README.dg_roles.rbac-unused.md
++django-726-yard/dj726/_based.on.533-e7-django-2-admins-yard/notes/django.built-in.permissions.txt
++django-726-yard/dj726/nginx/conf.d/djangodocker.conf
+diff --git a/web618_a_yard/618phphtml/html/xataface b/web618_a_yard/618phphtml/html/xataface
+--- a/web618_a_yard/618phphtml/html/xataface
++++ b/web618_a_yard/618phphtml/html/xataface
+@@ -1 +1 @@
+-Subproject commit 44c1adde7c3c3ea50cddd8d3ed8fb2ea47751dad
++Subproject commit 44c1adde7c3c3ea50cddd8d3ed8fb2ea47751dad-dirty

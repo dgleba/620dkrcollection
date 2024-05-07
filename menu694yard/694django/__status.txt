@@ -1,0 +1,24 @@
+=================================================
+
+ref.
+D:\n\sfile\computer\0computersf\0-cm-notes-01\django.starter.dg.app.features.know.txt
+
+=================================================
+
+2023-03-02
+
+used whitenoise to fix it.
+
+
+(I believe the runserver static assets are broken.)
+
+
+2022-10-02
+I broke this.
+
+admin has no css.
+logs show 404 error.
+I have not been able to fix it yet.
+
+=================================================
+

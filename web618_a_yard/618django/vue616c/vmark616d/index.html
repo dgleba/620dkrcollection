@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Bmark616v creator</title>
+
+   <!-- Material Design styles for Vue.js  -->
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap@4.6.1/dist/css/bootstrap.min.css"> 
+
+ 
+  <!-- our styles -->
+  <link href="vmark616.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+   
+  <!-- vue.js app -->
+  <div id="app" class="app-viewport">
+    <h4>Create bmark616</h4>
+    <form @submit.prevent="addPost">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Post Title:</label>
+            <input type="text" class="form-control" v-model="post.title">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Post Body:</label>
+              <textarea class="form-control" v-model="post.body" rows="5"></textarea>
+            </div>
+          </div>
+        </div><br />
+        <div class="form-group">
+          <button class="btn btn-primary">Create</button>
+        </div>
+    </form> 
+  </div>
+
+
+  <!-- cuid - unique id generator
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cuid/1.3.8/browser-cuid.min.js"></script> 
+  -->
+
+  <!-- Vue.js - framework that handles DOM/Model interaction -->
+  <script src="https://unpkg.com/vue@2.6.14/dist/vue.min.js"></script>
+  
+  <!-- vue-material - Material Design for Vue.js 
+  <script src="https://unpkg.com/vue-material@0.7.4/dist/vue-material.js"></script>
+  -->
+  
+  <!-- our code -->
+  <script src="vmark616.js"></script>
+
+  </body>
+</html>

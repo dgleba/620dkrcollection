@@ -1,0 +1,6 @@
+
+2023-03-06_Mon_13.53-PM
+
+works, but has issue with alert.  see vued08 with toasts.
+
+based on. https://vuejs.org/examples/#simple-component

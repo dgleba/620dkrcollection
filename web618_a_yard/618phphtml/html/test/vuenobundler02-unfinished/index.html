@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="favicon.ico">
+
+  <title>vnb-02</title>
+
+  <script>var exports = {};</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+  <script src="https://unpkg.com/axios@^0.27/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.common.dev.min.js"></script>
+  <!-- <script src="https://unpkg.com/vue@^2"></script> -->
+  <script src="https://unpkg.com/http-vue-loader"></script>
+  <script src="https://unpkg.com/vue-router@^3"></script>
+  <script src="https://unpkg.com/bootstrap-vue@^2.22/dist/bootstrap-vue.common.js"></script>
+  <script type="module" src="./src/main.js"></script>
+</head>
+
+<body>
+
+  <noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+  </noscript>  
+
+  <!-- <h1>Static HTML With Vue.js Single File Component</h1> -->
+
+  <div id="app">
+    <!-- <span>Hello</span> -->
+    <app0></app0>
+  </div>
+
+  <script>
+    new window.Vue({
+      el: '#app',
+      
+      components: {
+        'app0': window.httpVueLoader('./src/App.vue')
+      },
+    })
+  </script>
+</body>
+
+</html>

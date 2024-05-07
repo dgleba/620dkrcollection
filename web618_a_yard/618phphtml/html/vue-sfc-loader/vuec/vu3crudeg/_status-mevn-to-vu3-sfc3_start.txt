@@ -1,0 +1,35 @@
+
+Status:
+
+tbd
+
+Goal:
+
+migrate to vue3:
+convert to use: vue3sfc with vue3
+
+_____________
+
+
+
+http://10.4.71.231:6611/vue/vu3crudeg
+
+
+Api url:
+http://10.4.71.231:6611/api/api.php/records/blogapp_post?search=&page=1,3
+
+http://10.4.71.231:6611/api/api.php/records/blogapp_post
+
+sftp://10.4.71.231/ap/620dkrcollection/web618_a_yard/618phphtml/html/api/api.php
+
+
+=================================================
+
+History:
+
+
+from:
+https://github.com/dgleba/MEVNCRUDExample
+
+
+=================================================

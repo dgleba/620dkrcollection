@@ -1,0 +1,78 @@
+
+<row class="row is-table-row" >
+
+  <div class="col-sm-1 ">
+    <%= link_to 'Create', new_project_path , class: "btn btn-success"%>
+  </div>
+
+  <div class="col-sm-2 ">
+    <h4>Listing Projects</h4>
+  </div>
+
+  <div class="col-sm-3">
+    <%= search_form_for @q, class: 'search-form' do |f| %>
+      <div class="input-group">
+        <%= f.search_field most_projects_cont, class: 'form-control' %>
+        <span class="input-group-btn">
+          <button class="btn btn-primary">Search <i class="fa fa-search"></i>
+          </button>
+        </span>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-sm-4 ">
+    <%= paginate @projects %>
+  </div>
+  
+  <div class="col-sm-2 ">
+    <%= page_entries_info @projects, :entry_name => 'item' %>
+  </div>
+  
+</row>
+
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th colspan="1"></th>
+      <th><%= sort_link(@q, :name, 'Name') %> </th>
+      <th><%= sort_link(@q, :number, 'Number') %></th>
+      <th><%= sort_link(@q, :tech_radar_num, 'Tech radar num') %></th>
+      <th><%= sort_link(@q, :active, 'Active') %></th>
+      <th><%= sort_link(@q, :priority, 'priority') %></th>
+      <th><%= sort_link(@q, :ae_lead, 'Ae lead') %></th>
+      <th><%= sort_link(@q, :bd_lead_si_customer, 'Bd lead si customer') %></th>
+      <th><%= sort_link(@q, :ae_objective, 'Ae objective') %></th>
+      <th><%= sort_link(@q, :sort_order, 'Sort order') %></th>
+      <th><%= sort_link(@q, :active_status, 'Active status') %></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @projects.each do |project| %>
+      <tr>
+        <td>
+          <div class="btn-group">
+          <%= link_to 'Show', project, class: "btn btn-info", :style=>'color:#FFFFFF;' %>
+          <%= link_to 'Edit', edit_project_path(project), class: "btn btn-primary", :style=>'color:#FFFFFF;' %>
+          <%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-warning", :style=>'color:#FFFFFF;' %>
+          </div>
+        </td>
+        
+        <td><%= project.name %></td>
+        <td><%= project.number %></td>
+        <td><%= project.tech_radar_num %></td>
+        <td><%= project.active %></td>
+        <td><%= project.priority %></td>
+        <td><%= project.ae_lead %></td>
+        <td><%= project.bd_lead_si_customer %></td>
+        <td><%= project.ae_objective %></td>
+        <td><%= project.sort_order %></td>
+        <td><%= project.active_status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

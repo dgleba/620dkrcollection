@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="favicon.ico">
+  
+  <title>vnb-02</title>
+  <meta name="description" content="">
+
+  <!-- <script>var exports = {};</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+  <script src="https://unpkg.com/axios@^0.27/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.common.dev.min.js"></script>
+  -->
+  <!-- <script src="https://unpkg.com/vue@^2"></script> -->
+  <!--
+    <script src="https://unpkg.com/http-vue-loader"></script>
+  <script src="https://unpkg.com/vue-router@^3"></script>
+  <script src="https://unpkg.com/bootstrap-vue@^2.22/dist/bootstrap-vue.common.js"></script> 
+  -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.2/vue-router.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+
+
+  <script type="module" src="./src/main.js"></script>
+</head>
+
+
+<body>
+
+  <noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+  </noscript>  
+
+  <!-- <h1>Static HTML With Vue.js Single File Component</h1> -->
+
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <h3>vuecdn3</h3>
+      </div>
+    </div>
+    <main id="app">
+      <div class="row">
+        <div class="col-md-3">
+          <menu-component v-if="definition!==null" :subjects="definition.tags"></menu-component>
+        </div>
+        <div class="col-md-9">
+          <router-view :key="$route.fullPath" v-if="definition!==null" :definition="definition"></router-view>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <template  id="postsManager">
+    <div class="container-fluid mt-9">
+    <div>  
+      <!-- <b-toast id="Post-toaster01">{{}}</b-toast> -->
+      <span class="mx-2 my-2" >Posts </span>
+  
+      <button v-if="Post_form_is_hidden"  class="btn btn-primary ml-4 mt-1 mb-1" @click="createPost()" >Create</button>
+      <!-- <a href="#" @click.prevent="createPost()">Create </a> -->
+      <!-- <button v-on:click="Post_form_is_hidden = false">Create</button> -->
+      <!-- <button v-on:click="Post_form_is_hidden = !Post_form_is_hidden">Toggle hide form</button> -->
+    </div>
+  
+      <!-- // error messages area. toast, alert, .. -->
+      <!-- <b-alert :show="loading" variant="info">Loading...</b-alert> -->
+      <!-- . -->
+      <!-- alert style here. toast style down in script. -->
+        <!-- <div v-if="t_errors && t_errors.length">
+          <div v-for="t_error of t_errors" v-bind:key="t_error">
+            <b-alert dismissible show>{{t_error.message}}</b-alert>
+          </div>
+        </div> -->
+  
+      <b-row>
+        <b-col v-if="!Post_form_is_hidden" lg="3">
+          <div :title="(model.id ? 'Edit ID#' + model.id : 'New') ">
+            <form @submit.prevent="savePost">
+              <b-btn  class="ml-1" type="submit" variant="success" >Save</b-btn> 
+              <button v-on:click="Post_form_is_hidden = !Post_form_is_hidden" class="btn btn-warning mr-2 float-right" style="color:red;" >Cancel</button>
+              <b-form-group label="Title">
+                <b-form-input type="text" v-model="model.title" required ></b-form-input>
+              </b-form-group>
+              <b-form-group label="Body">
+                <b-form-textarea rows="4" v-model="model.body"></b-form-textarea>
+              </b-form-group>
+            </form>
+          </div>
+        </b-col>
+      </b-row>
+  
+      <b-row>
+          <b-overlay :show="showoverlay" class="d-inline-block"  variant="info" opacity="0.27" >
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th class="text-center">Action:&nbsp;</th>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Updated At</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="post in posts" :key="post.id">
+                <td class="text-center">
+                  <a href="#" @click.prevent="populatePostToEdit(post)">Edit </a> &nbsp; &nbsp;  <span/>
+                </td>
+                <td>{{ post.id }}</td>
+                <td>{{ post.title }}</td>
+                <td>{{ post.last_updated }}</td>
+                <td><a href="#" @click.prevent="deletePost(post.id)"> &nbsp; Delete</a></td>
+              </tr>
+            </tbody>
+          </table>
+          </b-overlay>
+      </b-row>
+    </div>
+  </template>
+
+
+
+
+</body>
+
+</html>

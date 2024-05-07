@@ -1,0 +1,74 @@
+version: "3.6"
+
+networks:
+  sister:
+    name: sister
+
+services:
+  djdev:
+    # http://10.4.1.231:6461/
+    # http://10.4.71.231:6461/
+    # http://192.168.88.60:6461/
+    # http://192.168.88.60:6461/admin2323
+    build: ./docker
+    restart: on-failure
+    working_dir: /code
+    # set user to root, group to www-data. All files should be delete-able by www-data group.
+    # problem is that they are read only for group www-data. Use make perm to make them writable.
+    # user: "0:33"
+    env_file:
+      # .env.dev sets debug=True
+      # - ./.env.dev
+      - ./.env
+    # entrypoint: sh /code/entrypoint.sh
+    # entrypoint: /code/entrypoint.sh
+    #
+    #  to avoid running apscheduler twice use --noreload   https://stackoverflow.com/questions/33814615/how-to-avoid-appconfig-ready-method-running-twice-in-django
+    command: python manage.py runserver 0.0.0.0:8000 --noreload 
+    #
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./djangosite:/code
+      # - ../data/djangosite:/data
+      # use pip cache to reduce startup time..
+      # https://stackoverflow.com/questions/25305788/how-to-avoid-reinstalling-packages-when-building-docker-image-for-python-project
+      - ~/sysdata/python-dot-cache/pip/:/root/.cache/pip
+    ports:
+      - "6461:8000"
+    networks:
+      # - 499d-django_default      
+      - sister      
+    environment:
+      # - VIRTUAL_HOST=devdj.198.144.183.160.nip.io
+      # - VIRTUAL_PORT=8000
+      # - LETSENCRYPT_HOST=devdj.198.144.183.160.nip.io
+      - xLETSENCRYPT_EMAIL=dgleba@gmail.com
+
+
+  # adminerd:
+  #   # http://192.168.88.60:14123/
+  #   # http://10.4.1.231:6117/
+  #   # image: adminer:4.7
+  #   # image: dockette/adminer:full
+  #   image: dgleba/adminer-sqlite:one
+  #   # build: ./adminer-sqlite
+  #   restart: always
+  #   ports:
+  #     - 14123:80
+  #     # 8080 for regular adminer, 80 for dockette
+  #   volumes:
+  #     - ./djangosite/db.sqlite3:/db.sq3
+  #     - ./adminer-sqlite:/var/www/html
+  #   environment:
+  #     - ADMINER_DEFAULT_SERVER=srvr
+  #     - DB_PATH=/db.sq3
+  #     - DB_USER=user
+  #     - DB_PASS=apass
+  #     # - ADMINER_PLUGINS='tables-filter'
+
+
+# for redis, see django-select2 example.. https://github.com/codingjoe/django-select2/tree/master/example
+      # and  https://github.com/wildfish/wildfish-django-starter/blob/master/%7B%7Bcookiecutter.project_name%7D%7D/dev-docker-compose.yml.default
+
+
+

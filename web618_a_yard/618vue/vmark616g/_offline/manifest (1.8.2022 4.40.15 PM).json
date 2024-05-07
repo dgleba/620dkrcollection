@@ -1,0 +1,28 @@
+{
+  "short_name": "Mark616",
+  "name": "Mark616",
+  "dglebareference": "from unmark 2022-01-07",
+  "icons": [
+    {
+      "src": "/appimages/android-chrome-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+
+  ],
+  "share_target": {
+    "action": "/markcreate/",
+    "params": {
+      "url": "url",
+      "title": "title",
+      "text": "body"
+    }
+  },
+  "start_url": "/?source=pwa",
+  "background_color": "#13293d",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "theme_color": "#13293d"
+}
+

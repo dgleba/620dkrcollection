@@ -1,0 +1,14 @@
+
+
+
+sftp://192.168.88.60/srv/dkr/550dkrcolbrail/vue-eg-552-yards/vue-eg-552-b-yard/vue-eg-552cdjango/src/components/PostsManager.vue
+
+
+    //  poll the api every x seconds to get updated data.  2000 = 2 seconds.
+    // https://renatello.com/vue-js-polling-using-setinterval/
+    pollData () {
+      this.polling = setInterval(() => {
+        this.refreshPosts()
+      }, 2000)
+    }, 
+

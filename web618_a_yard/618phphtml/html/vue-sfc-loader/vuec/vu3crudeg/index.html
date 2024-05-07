@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!-- http://10.4.71.231:6611/vuec/vu3crudeg
+-->
+<html>
+
+<body>
+  <div id="app"></div>
+  <title>vu3crudeg</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/combine/npm/bootstrap@5/dist/css/bootstrap.min.css,npm/font-awesome@4/css/font-awesome.min.css">
+
+  <!-- <script src="https://unpkg.com/vue@next"></script> -->
+  <!-- <script src="https://unpkg.com/vue@3/dist/vue.js"> </script> -->
+  <script src="https://unpkg.com/vue@3.2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue3-sfc-loader/dist/vue3-sfc-loader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-router@4.1.5/dist/vue-router.global.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-vue/2.22.0/bootstrap-vue.min.js"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/combine/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js,npm/vue@3"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-vue-3@0.3.12/dist/bootstrap-vue-3.umd.min.js"></script>
+
+  <script>
+    // ver=08
+    const componentOptions = {
+      moduleCache: {
+        vue: Vue,
+        router: VueRouter,
+      },
+      async getFile(url) {
+        const res = await fetch(url);
+        if (!res.ok)
+          throw Object.assign(new Error(res.statusText + ' ' + url), { res });
+        return {
+          getContentData: asBinary => asBinary ? res.arrayBuffer() : res.text(),
+        }
+      },
+      addStyle(textContent) {
+        const style = Object.assign(document.createElement('style'), { textContent });
+        const ref = document.head.getElementsByTagName('style')[0] || null;
+        document.head.insertBefore(style, ref);
+      },
+    }
+
+    // edit routes here...
+
+    const { loadModule } = window["vue3-sfc-loader"];
+    const Home = () => loadModule('./home.vue', componentOptions)
+    const Contacts = () => loadModule('./list.vue', componentOptions)
+
+    const routes = [
+      { path: '/', name: 'home', component: Home },
+      { path: '/index', name: 'index', component: Contacts },
+    ]
+    const router = VueRouter.createRouter({
+      history: VueRouter.createWebHashHistory(),
+      routes
+    })
+
+    const RootComponent = {
+      components: {
+        'app': Vue.defineAsyncComponent(() => loadModule('./App.vue', componentOptions))
+      },
+      template: `<app></app>`
+    }
+
+    const app = Vue.createApp(RootComponent)
+    app.use(router)
+    const vm = app.mount('#app')
+
+
+    /*
+    notes:
+
+    https://github.com/FranckFreiburger/vue3-sfc-loader/discussions/89
+
+    https://www.vuemastery.com/blog/vue-router-a-tutorial-for-vue-3/
+    
+    https://stackoverflow.com/questions/71733145/how-do-i-use-dynamically-loaded-components-with-vue3
+    
+    bootstrap tags idea:
+    https://gist.github.com/marcop135/a836c1bd153f5c7a56813e0019117c7e
+
+    
+
+    */
+
+  </script>
+</body>
+
+</html>

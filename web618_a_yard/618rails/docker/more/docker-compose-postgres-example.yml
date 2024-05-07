@@ -1,0 +1,38 @@
+
+# ref..
+# https://gist.github.com/satendra02/1b335b06bfc5921df486f26bd98e0e89
+# https://www.reddit.com/r/docker/comments/7zjbe4/docker_rails_puma_nginx_postgres/
+# https://itnext.io/docker-rails-puma-nginx-postgres-999cd8866b18
+
+
+version: '3.6'
+
+volumes:
+  postgres_data: {}
+
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/app.DockerFile
+    volumes:
+      - .:/var/www/brail347a22
+    # depends_on:
+      # - db
+      
+  db:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/web.DockerFile
+    depends_on:
+      - app
+    ports:
+      - 6031:80
+      
+      

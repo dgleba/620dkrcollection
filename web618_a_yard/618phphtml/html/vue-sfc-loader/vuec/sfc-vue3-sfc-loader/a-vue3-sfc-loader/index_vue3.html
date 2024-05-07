@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<!-- http://10.4.71.231:6611/vue/vue-cdn6-vue3-sfc-loader/index_vue3.html 
+
+error: Uncaught (in promise) TypeError: (0 , _vue.createTextVNode) is not a function
+
+-->
+
+<html>
+<body>
+  <div id="app"></div>
+  <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue3-sfc-loader/dist/vue3-sfc-loader.js"></script>
+  <!-- <script src="https://unpkg.com/vue-router/vue-router.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/vue-router@4.1.5/dist/vue-router.global.min.js"></script>
+  <script>
+
+    /* <!-- */
+    const config = {
+      files: {
+        '/app.vue': `
+          <template>
+            <div>
+              <div><router-link to="/foo">go to /foo</router-link></div>
+              <div><router-link to="/bar">go to /bar</router-link></div>
+              <router-view/>
+            </div>
+          </template>
+       `,
+        '/foo.vue': `
+        <template>
+          <div>
+            foo route
+            <div>got to <router-link to="/">root</router-link></div>
+          </div>
+        </template>
+       `,
+        '/bar.vue': `
+        <template>
+          <div>
+            bar route
+            <div>got to <router-link to="/">root</router-link></div>
+          </div>
+        </template>
+       `,
+      }
+    };
+    /* --> */
+
+    const options = {
+      moduleCache: { vue: Vue },
+      getFile: url => config.files[url],
+      addStyle: () => { },
+    }
+
+    function load(path) {
+      return window['vue3-sfc-loader'].loadModule(path, options);
+    }
+
+    Vue.use(VueRouter);
+
+    load('/app.vue')
+      .then(app => {
+
+        const router = new VueRouter({
+          //mode: 'history',
+          mode: 'hash',
+          routes: [
+            { path: '/foo', component: () => load('/foo.vue') },
+            { path: '/bar', component: () => load('/bar.vue') },
+          ]
+        })
+        new Vue({ ...app, router }).$mount('#app')
+      });
+    
+
+  =================================================
+
+
+    const routes = [
+      {
+        path: "/",
+        name: "Home",
+        component: Home,
+      },
+      {
+        path: "/about",
+        name: "About",
+        component: About,
+      },
+    ];
+
+    const router = createRouter({
+      routes,
+    });
+
+    const { loadModule } = window['vue3-sfc-loader'];
+
+    const app = Vue.createApp.use(router);
+    app.mount('#app');
+
+
+  =================================================
+
+
+    const { loadModule } = window['vue3-sfc-loader'];
+    const myComponent = loadModule('/myComponent.vue', options);
+
+    const app = Vue.createApp({
+      components: {
+        'my-component': Vue.defineAsyncComponent(() => myComponent),
+      },
+      template: 'Hello <my-component></my-component>'
+    });
+    app.mount('#app');
+
+  =================================================
+
+/*
+https://www.vuemastery.com/blog/vue-router-a-tutorial-for-vue-3/
+
+https://stackoverflow.com/questions/71733145/how-do-i-use-dynamically-loaded-components-with-vue3
+
+
+
+*/
+
+  </script>
+</body>
+</html>

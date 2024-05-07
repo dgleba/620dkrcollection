@@ -1,0 +1,13 @@
+
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#@  
+#@  
+#@  
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@   2023-03-06[Mar-Mon]15-36PM 
+
+
+this series works, but i think the sfc-loader makes it hard to debug.
+It doesn't seem to give a line number to code I have written.
+
+See vued series.
+
