@@ -1,0 +1,11 @@
+<!-- formsapp/templates/formsapp/render_form.html -->
+<h1>{{ form.name }}</h1>
+<p>{{ form.description }}</p>
+<form method="post" action="{% url 'submit_form' form.id %}">
+    {% csrf_token %}
+    {% for field in form.fields %}
+        <label>{{ field.name }}</label>
+        <input type="{{ field.type }}" name="{{ field.name }}" required><br>
+    {% endfor %}
+    <button type="submit">Submit</button>
+</form>

@@ -1,0 +1,55 @@
+
+
+cd jsig
+
+
+git clone https://github.com/fle/django-jsignature.git
+cd django-jsignature
+python -m venv venv
+d:
+cd D:\code\pyprj\jsig\django-jsignature
+	.\venv\Scripts\activate.bat
+rem source venv/bin/activate
+pip install -r requirements.txt
+pip install -e .
+cd example_project
+python manage.py migrate
+
+python manage.py createsuperuser
+
+
+
+C:\prg\gitwin\usr\bin\grep.exe -rin example_project
+
+
+
+------------
+
+
+(venv) d:\code\pyprj\jsig\django-jsignature\example_project>python manage.py migrate
+Traceback (most recent call last):
+  File "d:\code\pyprj\jsig\django-jsignature\example_project\manage.py", line 10, in <module>
+    execute_from_command_line(sys.argv)
+  File "C:\prg\python128\Lib\site-packages\django\core\management\__init__.py", line 442, in execute_from_command_line
+    utility.execute()
+  File "C:\prg\python128\Lib\site-packages\django\core\management\__init__.py", line 416, in execute
+    django.setup()
+  File "C:\prg\python128\Lib\site-packages\django\__init__.py", line 24, in setup
+    apps.populate(settings.INSTALLED_APPS)
+  File "C:\prg\python128\Lib\site-packages\django\apps\registry.py", line 91, in populate
+    app_config = AppConfig.create(entry)
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\prg\python128\Lib\site-packages\django\apps\config.py", line 193, in create
+    import_module(entry)
+  File "C:\prg\python128\Lib\importlib\__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1140, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'example_project'
+
+
+
+------------
+
