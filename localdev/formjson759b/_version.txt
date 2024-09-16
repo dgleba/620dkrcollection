@@ -1,0 +1,16 @@
+
+#################################################################
+#@  
+#@  new at top
+#@  
+####################################  
+
+
+2024-09-12 - blogapp: made admin simpler, less stuff on it. add home page
+
+2024-09-09_Mon_16.22-PM - changed blogapp so list has htmx search
+
+
+
+------------
+

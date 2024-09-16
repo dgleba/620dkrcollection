@@ -1,0 +1,19 @@
+
+blogapp
+  simple blogapp, converted to htmx list view with sticky search using cookie
+  
+  
+JSON forms
+  
+  formsapp
+    the simplest implementation of json forms app - meant to be very skiny on features so the concepts are more easy to see.
+  
+  jsurveyapp
+    uses a class to display the form and gather the data on POST
+      still skinny on features so the core ideas are more easy to see
+      - added homepage, navbars, python-dotenv for local dev.
+
+  formbuilderapp
+    an attempt that doesnt work as expected
+    
+
