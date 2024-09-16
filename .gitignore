@@ -1,3 +1,14 @@
+*.pyc
+
+staticfiles/
+mediafiles/
+djangosite/static/
+postgres/data/
+datasys/
+venv0/
+
+*.7z
+*.zip
 
 .env
 .env.*

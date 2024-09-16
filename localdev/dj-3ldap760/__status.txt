@@ -1,0 +1,15 @@
+
+#################################################################
+#@  
+#@  
+#@  
+####################################   2024-09-12
+
+
+
+I had trouble installing the packages on windows.
+
+I decided to switch to doing this on docker in linux.
+
+see:
+sftp://10.4.71.231/ap/test/django-763-ldap-yard/
