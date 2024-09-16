@@ -1,0 +1,8 @@
+<!-- formsapp/templates/formsapp/form_list.html -->
+<h1>Forms</h1>
+<ul>
+    {% for form in forms %}
+        <li><a href="{% url 'render_form' form.id %}">{{ form.name }}</a></li>
+    {% endfor %}
+</ul>
+<a href="{% url 'create_form' %}">Create a New Form</a>

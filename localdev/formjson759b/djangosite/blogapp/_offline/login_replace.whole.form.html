@@ -1,0 +1,37 @@
+{% extends "admin/login.html" %}
+
+{% block content %}
+<div id="content-main">
+    <h1>{{ title }}</h1>
+    
+    <!-- Display any login errors -->
+    {% if form.errors %}
+    <p class="errornote">{{ form.errors }}</p>
+    {% endif %}
+
+    <!-- Custom message for username and password -->
+    <p>Login using username = <strong>aa</strong>, password = <strong>aa</strong></p>
+
+    <!-- Existing login form -->
+    <form method="post" id="login-form" novalidate>
+        {% csrf_token %}
+        <div class="field">
+            {{ form.username.label_tag }}
+            {{ form.username }}
+        </div>
+        <br>
+        <div class="field">
+            {{ form.password.label_tag }}
+            {{ form.password }}
+        </div>
+
+        {% if next %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {% endif %}
+
+        <div class="submit-row">
+            <input type="submit" value="Log in">
+        </div>
+    </form>
+</div>
+{% endblock %}

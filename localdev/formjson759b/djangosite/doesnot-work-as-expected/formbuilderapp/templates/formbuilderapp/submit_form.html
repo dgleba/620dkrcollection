@@ -1,0 +1,6 @@
+<h1>Submit Form: {{ form_instance.title }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ response_form.as_p }}
+    <button type="submit">Submit</button>
+</form>

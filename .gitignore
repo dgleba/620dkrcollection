@@ -6,6 +6,7 @@ djangosite/static/
 postgres/data/
 datasys/
 venv0/
+venv/
 
 *.7z
 *.zip

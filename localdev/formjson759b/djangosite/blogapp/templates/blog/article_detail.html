@@ -1,0 +1,16 @@
+<!-- templates/blog/article_detail.html -->
+
+{% extends 'base-blog.html' %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ article.title }}</h1>
+<p>{{ article.body }}</p>
+<p>Published on: {{ article.published_at }}</p>
+<p>Tags: 
+    {% for tag in article.tags.all %}
+        {{ tag.name }}
+    {% endfor %}
+</p>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "admin/base_site.html" %}
+
+
+<!-- change page name in top left -->
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">adminPanel</a>
+</h1>
+{% endblock %}
+
+
+<!-- collapse left side panel on page load -->
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+    /* Hide the sidebar initially */
+    body .app-admin.nav-open #nav-sidebar {
+        display: none;
+    }
+    /* Adjust the width of the main content */
+    body .app-admin.nav-open #content {
+        margin-left: 0;
+    }
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Automatically trigger a click on the toggle button to collapse the sidebar
+        var navSidebar = document.getElementById("nav-sidebar");
+        var toggleBtn = document.querySelector(".toggle-nav-sidebar");
+
+        if (navSidebar && toggleBtn) {
+            // Check if the sidebar is open and collapse it
+            if (!navSidebar.classList.contains('collapsed')) {
+                toggleBtn.click();  // Programmatically click the button to collapse the sidebar
+            }
+        }
+    });
+</script>
+{% endblock %}
