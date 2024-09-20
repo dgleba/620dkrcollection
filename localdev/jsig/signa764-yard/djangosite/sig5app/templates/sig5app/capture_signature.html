@@ -1,0 +1,47 @@
+<!-- sig5app/templates/sig5app/capture_signature.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signature Capture</title>
+    <!-- https://github.com/szimek/signature_pad -->
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h1>Draw your signature</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <canvas id="signature-pad" width="400" height="200"></canvas>
+        <button type="button" id="clear">Clear</button>
+        <input type="hidden" name="signature_image" id="signature_image">
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        const canvas = document.getElementById('signature-pad');
+        const signaturePad = new SignaturePad(canvas);
+        const clearButton = document.getElementById('clear');
+        const signatureImageInput = document.getElementById('signature_image');
+
+        clearButton.addEventListener('click', function () {
+            signaturePad.clear();
+        });
+
+        document.querySelector('form').addEventListener('submit', function (event) {
+            if (!signaturePad.isEmpty()) {
+                const dataURL = signaturePad.toDataURL();
+                signatureImageInput.value = dataURL;
+            } else {
+                event.preventDefault();
+                alert("Please provide a signature.");
+            }
+        });
+    </script>
+</body>
+</html>

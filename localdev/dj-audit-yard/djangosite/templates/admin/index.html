@@ -1,0 +1,17 @@
+{% extends "admin/index.html" %}
+
+
+{% block content %}
+
+
+<!-- Add a custom button that links to another page on the site -->
+
+  <div style="margin-bottom: 10px;">
+      <a href="/forms/" class="button" style="background-color: green; color: white; padding: 8px 10px; text-align: center; text-decoration: none; display: inline-block; font-size: 14px; border-radius: 4px;">
+          Custom Link 3
+      </a>
+  </div>
+  
+  {{ block.super }}  <!-- This will render the original content -->
+  
+{% endblock %}

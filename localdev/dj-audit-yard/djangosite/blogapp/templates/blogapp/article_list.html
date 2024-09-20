@@ -1,0 +1,58 @@
+<!-- templates/blog/article_list.html -->
+
+{% extends 'base-blog.html' %}
+
+{% block title %}Articles{% endblock %}
+
+{% block content %}
+<h1>Articles</h1>
+
+<!-- Search box with sticky value  
+notes -  mb-3  -->
+<div class="input-group ">
+
+    <!-- gpt had this included in the input. I removed it to make it work....    class="form-control" -->
+    <input 
+        type="text" 
+        id="article-search" 
+        name="search" 
+        placeholder="Search ..." 
+        value="{{ search_query }}" 
+        hx-get="{% url 'article_search' %}" 
+        hx-trigger="keyup changed delay:500ms" 
+        hx-target="#article-table-body" 
+        hx-indicator=".htmx-indicator"
+    >
+
+    <!-- Clear button -->
+        <button class="btn btn-outline-secondary" type="button" id="clear-search"
+            hx-get="{% url 'article_clear_search' %}" 
+            hx-target="#article-table-body" 
+            hx-swap="innerHTML"  
+            hx-indicator=".htmx-indicator"
+            hx-on="htmx:afterRequest: document.getElementById('article-search').value = ''"
+        >
+            Clear
+        </button>
+
+
+<!-- Loading indicator -->
+<div class="htmx-indicator" style="display:none;">
+    <strong>Loading...</strong>
+</div>
+
+<!-- Table for displaying articles  notes: not-needed= style="width: 100%"  -->
+<table class="table table-striped table-bordered table-sm"   ">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Published At</th>
+            <th>Tags</th>
+        </tr>
+    </thead>
+    <tbody id="article-table-body">
+        {% include 'blogapp/article_table_rows.html' with articles=articles %}
+    </tbody>
+</table>
+{% endblock %}
