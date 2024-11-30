@@ -1,0 +1,5 @@
+# Auto detect text files and perform LF normalization
+# was-2024-09-09   * text=auto
+
+# ignore all lineendings..
+*  -crlf

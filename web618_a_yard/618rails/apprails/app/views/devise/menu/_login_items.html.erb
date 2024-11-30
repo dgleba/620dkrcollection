@@ -1,0 +1,14 @@
+<%# views/devise/menu/_login_items.html.erb %>
+<% if user_signed_in? %>
+  <li>
+    <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>   
+  </li>
+  <li  
+  <span class="label label-default" style="color:blue;margin-top: 15px;"><%= current_user.email %>,<%= current_user.name %></span>   
+  </li>
+
+<% else %>
+  <li>
+  <%= link_to('Login', new_user_session_path)  %>  
+  </li>
+<% end %>

@@ -1,0 +1,7 @@
+
+[_database]
+    host=10.4.71.231:6608
+    name=dkrdbm
+    user=x
+    password=x
+    

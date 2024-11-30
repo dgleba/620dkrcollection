@@ -1,0 +1,54 @@
+
+<p>
+  <strong>Name:</strong>
+  <%= @project.name %>
+</p>
+
+<p>
+  <strong>Number:</strong>
+  <%= @project.number %>
+</p>
+
+<p>
+  <strong>Tech radar num:</strong>
+  <%= @project.tech_radar_num %>
+</p>
+
+<p>
+  <strong>Active:</strong>
+  <%= @project.active %>
+</p>
+
+<p>
+  <strong>Priority:</strong>
+  <%= @project.priority %>
+</p>
+
+<p>
+  <strong>Ae lead:</strong>
+  <%= @project.ae_lead %>
+</p>
+
+<p>
+  <strong>Bd lead si customer:</strong>
+  <%= @project.bd_lead_si_customer %>
+</p>
+
+<p>
+  <strong>Ae objective:</strong>
+  <%= @project.ae_objective %>
+</p>
+
+<p>
+  <strong>Sort order:</strong>
+  <%= @project.sort_order %>
+</p>
+
+<p>
+  <strong>Active status:</strong>
+  <%= @project.active_status %>
+</p>
+
+<br>
+<%= link_to 'Edit', edit_project_path(@project), class: "btn btn-primary", :style=>'color:#FFFFFF;' %> &nbsp &nbsp
+<%= link_to 'Back', projects_path, class: "btn btn-default" %>

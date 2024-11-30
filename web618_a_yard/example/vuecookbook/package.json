@@ -1,0 +1,36 @@
+{
+  "name": "cookbook",
+  "version": "0.6.11",
+  "description": "Fullstack JS Application Cookbook",
+  "author": "aaronjxz@gmail.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ais-one/cookbook.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ais-one/cookbook/issues"
+  },
+  "homepage": "https://github.com/ais-one/cookbook#readme",
+  "keywords": [
+    "nodejs",
+    "nestjs",
+    "vuejs",
+    "reactjs"
+  ],
+  "scripts": {
+    "prepare": "git config core.hooksPath ./git-hooks || echo 'Can not set git hooks'",
+    "git:hash": "git rev-parse --verify --short HEAD",
+    "git:branch": "git rev-parse --abbrev-ref HEAD"
+  },
+  "engines": {
+    "node": ">=16",
+    "npm": ">=8"
+  },
+  "workspaces": [
+    "@es-labs/*",
+    "js-node/*",
+    "js-web/*"
+  ],
+  "private": true
+}

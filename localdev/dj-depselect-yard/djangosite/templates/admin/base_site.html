@@ -1,0 +1,73 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+<!-- browser tab title -->
+
+{% block title %}site23{% endblock %}
+
+
+<!--  remove SIDEBAR - Override to remove the sidebar completely -->
+
+{% block nav-sidebar %}
+        <!-- Override to remove the sidebar completely -->
+{% endblock %}
+
+
+<!--  Remove "site administration"  --  In django admin, in which template is the "site administration" string defined? -->
+
+{% block content_title %}
+        <!-- Removed the "Site administration" title -->
+{% endblock %}
+
+
+<!-- Add LINKS to the top navbar -->
+
+{% block nav-global %}
+<ul class="nav-global">
+    <a href="/forms/">Custom Link</a> &nbsp 
+    <a href="/jsurvey1/">Custom Link2</a>
+</ul>
+{% endblock %}
+
+
+<!-- change SITE NAME in top left -->
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">Site_23</a>
+</h1>
+{% endblock %}
+
+
+<!-- Not sure this one works totally correctly..  collapse left side panel on page load -->
+
+{% block extrahead %}
+{{ block.super }}
+
+<style>
+    .dashboard #content, 
+    .app-index #content {
+        margin-left: 0;
+    }
+    .dashboard #nav-sidebar,
+    .app-index #nav-sidebar {
+        display: none;
+    }
+</style>
+<script>
+        
+        // Automatically trigger a click on the toggle button to collapse the sidebar
+        var navSidebar = document.getElementById("nav-sidebar");
+        var toggleBtn = document.querySelector(".toggle-nav-sidebar");
+
+        if (navSidebar && toggleBtn) {
+            // Check if the sidebar is open and collapse it
+            if (!navSidebar.classList.contains('collapsed')) {
+                toggleBtn.click();  // Programmatically click the button to collapse the sidebar
+            }
+        }
+        
+    });
+</script>
+
+{% endblock %}

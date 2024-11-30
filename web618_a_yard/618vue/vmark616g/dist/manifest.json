@@ -1,0 +1,29 @@
+{
+  "short_name": "Mark616",
+  "name": "Mark616",
+  "dglebareference": "manifest.from-unmark 2022-01-07. mark616 = ver 20",
+  "icons": [
+    {
+      "src": "/appimages/android-chrome-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+
+  ],
+  "share_target": {
+    "action": "/pwamarkcreate/",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "text"
+    }
+  },
+  "start_url": "/?sourcei=pwa",
+  "id": "/?sourcei=pwa",
+  "background_color": "#13293d",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "theme_color": "#13293d"
+}
+

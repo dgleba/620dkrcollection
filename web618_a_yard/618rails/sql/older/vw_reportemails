@@ -1,0 +1,65 @@
+
+----------------------------------------------------
+Title:  .
+-----------------------2019-06-19[Jun-Wed]10-45AM
+
+current..
+
+CREATE OR REPLACE
+  VIEW vw_reportemails
+  AS 
+  Select 
+      e.email as email, r.name reportname, er.when_to_send, er.active_status, er.id erid,  er.elist_id, er.report_id, e.id eid ,r.id rid
+    FROM elist_reports as er
+     left join    elists as e  on e.id=er.elist_id
+     left join reports as r   on r.id=er.report_id
+   order by email
+   
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+_____________
+
+
+
+older items...
+
+
+_____________
+
+
+ref.
+
+CREATE OR REPLACE
+  VIEW vw_parts_w_steps
+  AS 
+  Select 
+      p.name partname, o.name procesname, p.id partid,  j.part_number_id, j.process_step_id, o.id processid
+    FROM part_numbers as p
+     left join    part_numbers_process_steps as j  on p.id=j.part_number_id
+     left join process_steps as o   on o.id=j.process_step_id
+   order by p.name,o.name
+
+
+   
+----------------------------------------------------
+

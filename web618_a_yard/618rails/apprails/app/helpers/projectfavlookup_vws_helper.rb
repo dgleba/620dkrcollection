@@ -1,0 +1,2 @@
+module ProjectfavlookupVwsHelper
+end

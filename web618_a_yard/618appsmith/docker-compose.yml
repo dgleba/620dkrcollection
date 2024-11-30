@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  appsmith:
+  # from: http://10.4.71.231:8031
+    image: index.docker.io/appsmith/appsmith-ce
+    # container_name: appsmith
+    ports:
+      - "8031:80"
+      - "4431:443"
+      - "9031:9001"
+    volumes:
+      - ../sysdata/appsmith-stacks:/appsmith-stacks
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+    restart: unless-stopped  
+
+  auto_update:
+    image: containrrr/watchtower:latest-dev
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    # Update check interval in seconds.
+    command: --interval 300 --label-enable --cleanup
+    restart: unless-stopped

@@ -1,0 +1,131 @@
+<html lang="en">
+
+<!--  started from https://github.com/nlware/vue-crud-ui  see main.js -->
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>vcdn3</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.2/vue-router.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-vue/2.22.0/bootstrap-vue.min.js"></script> 
+  <script src="https://unpkg.com/http-vue-loader"></script>
+
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+
+  <script type="module" src="./main.js"></script>
+</head>
+
+<body>
+
+<!-- ================================================= -->
+
+<main id="app">
+  <div>
+    <b-navbar toggleable="md" type="dark" variant="dark">
+      <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+      <b-navbar-brand to="/">Vuecdn3</b-navbar-brand>
+      <b-collapse is-nav id="nav_collapse">
+        <b-navbar-nav>
+          <b-nav-item to="/">Home</b-nav-item>
+          <b-nav-item to="/pm">Posts</b-nav-item>
+        </b-navbar-nav>
+
+           <b-navbar-nav class="ml-auto">
+             <b-nav-item >  [ {{ this.activeUsername }} ]  </b-nav-item>
+          <b-nav-item class="ml-auto" href="#" @click.prevent="login" v-if="!activeUser">Login</b-nav-item>
+          <b-nav-item class="ml-auto" href="#" @click.prevent="logout" v-else>Logout </b-nav-item>
+        </b-navbar-nav>
+
+      </b-collapse>
+    </b-navbar>
+    <!-- routes will be rendered here -->
+    <router-view />
+  </div>
+  <hello01></hello01>
+</main>
+
+<!-- ================================================= -->
+
+
+<template id="home">
+  <div>Home view</div>
+</template>
+
+
+<!-- ================================================= -->
+
+<template id="postsMgr">
+  <div class="container-fluid mt-9">
+  <div>  
+    <!-- <b-toast id="Post-toaster01">{{}}</b-toast> -->
+    <span class="mx-2 my-2" >Posts </span>
+
+    <button v-if="Post_form_is_hidden"  class="btn btn-primary ml-4 mt-1 mb-1" @click="createPost()" >Create</button>
+    <!-- <a href="#" @click.prevent="createPost()">Create </a> -->
+    <!-- <button v-on:click="Post_form_is_hidden = false">Create</button> -->
+    <!-- <button v-on:click="Post_form_is_hidden = !Post_form_is_hidden">Toggle hide form</button> -->
+  </div>
+
+    <!-- // error messages area. toast, alert, .. -->
+    <!-- <b-alert :show="loading" variant="info">Loading...</b-alert> -->
+    <!-- . -->
+    <!-- alert style here. toast style down in script. -->
+      <!-- <div v-if="t_errors && t_errors.length">
+        <div v-for="t_error of t_errors" v-bind:key="t_error">
+          <b-alert dismissible show>{{t_error.message}}</b-alert>
+        </div>
+      </div> -->
+
+    <b-row>
+      <b-col v-if="!Post_form_is_hidden" lg="3">
+        <div :title="(model.id ? 'Edit ID#' + model.id : 'New') ">
+          <form @submit.prevent="savePost">
+            <b-btn  class="ml-1" type="submit" variant="success" >Save</b-btn> 
+            <button v-on:click="Post_form_is_hidden = !Post_form_is_hidden" class="btn btn-warning mr-2 float-right" style="color:red;" >Cancel</button>
+            <b-form-group label="Title">
+              <b-form-input type="text" v-model="model.title" required ></b-form-input>
+            </b-form-group>
+            <b-form-group label="Body">
+              <b-form-textarea rows="4" v-model="model.body"></b-form-textarea>
+            </b-form-group>
+          </form>
+        </div>
+      </b-col>
+    </b-row>
+
+    <b-row>
+        <b-overlay :show="showoverlay" class="d-inline-block"  variant="info" opacity="0.27" >
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th class="text-center">Action:&nbsp;</th>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Updated At</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="post in posts" :key="post.id">
+              <td class="text-center">
+                <a href="#" @click.prevent="populatePostToEdit(post)">Edit </a> &nbsp; &nbsp;  <span/>
+              </td>
+              <td>{{ post.id }}</td>
+              <td>{{ post.title }}</td>
+              <td>{{ post.last_updated }}</td>
+              <td><a href="#" @click.prevent="deletePost(post.id)"> &nbsp; Delete</a></td>
+            </tr>
+          </tbody>
+        </table>
+        </b-overlay>
+    </b-row>
+  </div>
+</template>
+
+<!-- ================================================= -->
+
+</body>
+</html>

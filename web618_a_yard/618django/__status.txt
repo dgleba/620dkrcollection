@@ -1,0 +1,21 @@
+
+=================================================
+
+2023-03-02
+
+used whitenoise to fix it.
+
+
+(I believe the runserver static assets are troubled. Everytime I copied an app i broke it.)
+
+
+2022-10-02
+
+I broke this.
+
+admin has no css.
+logs show 404 error.
+I have not been able to fix it yet.
+
+=================================================
+

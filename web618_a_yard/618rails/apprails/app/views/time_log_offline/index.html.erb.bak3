@@ -1,0 +1,77 @@
+
+<row class="row is-table-row" >
+
+  <div class="col-sm-1 ">
+    <%= link_to 'Create', new_time_log_path , class: "btn btn-success"%>
+  </div>
+
+  <div class="col-sm-1 ">
+    <h5>Time Logs</h5>
+  </div>
+
+  <div class="col-sm-2">
+    <%= search_form_for @q, class: 'search-form' do |f| %>
+      <div class="input-group">
+        <%= f.search_field :detail_cont, class: 'form-control' %>
+        <span class="input-group-btn">
+          <button class="btn btn-primary">Search <i class="fa fa-search"></i>
+          </button>
+        </span>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-sm-4 ">
+    <%= paginate @time_logs %>
+  </div>
+  
+  <div class="col-sm-2 ">
+    <%= page_entries_info @time_logs, :entry_name => 'item' %>
+  </div>
+  
+  <div class="col-sm-3 ">
+    This week:
+    <%= number_with_precision(TimeLog.this_week_hours(current_user) , :precision => 1) %>
+  </div>
+  
+</row>
+
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th colspan="1"></th>
+            <th>Project (sorted by name for each date)</th>
+      <th>Log date</th>
+      <th>Log hours</th>
+
+      <th>SumHrs(date)</th>
+      <th>User</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @time_logs.each do |time_log| %>
+      <tr>
+        <td>
+          <div class="btn-group">
+          <%= link_to 'Show', time_log, class: "btn btn-info", :style=>'color:#FFFFFF;' %>
+          <%= link_to 'Edit', edit_time_log_path(time_log), class: "btn btn-primary", :style=>'color:#FFFFFF;' %>
+          <%= link_to 'Destroy', time_log, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-warning", :style=>'color:#FFFFFF;' %>
+          </div>
+        </td>
+        
+        <td><%= time_log.project %></td>
+        
+        <td> <div class="<%= style_by_week(time_log.log_date) %>"> <%= time_log.log_date.strftime("%a %m-%d") if time_log.log_date.present? %> </div> </td>
+        
+        <td><%= time_log.log_hours %></td>
+
+        <td><%= number_with_precision(time_log.daily_total_hours(time_log.log_date,time_log.user) , :precision => 1) %></td>
+        <td><%= time_log.user %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

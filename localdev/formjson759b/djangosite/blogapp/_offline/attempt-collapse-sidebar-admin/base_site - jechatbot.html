@@ -1,0 +1,56 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+<!-- browser tab title -->
+{% block title %}site23{% endblock %}
+
+
+<!-- In django admin, in which template is the "site administration" string defined? -->
+
+{% block content_title %}
+<!-- Removed the "Site administration" title -->
+{% endblock %}
+
+
+<!-- Add links to the top navbar -->
+
+{% block nav-global %}
+<ul class="nav-global">
+    <a href="/forms/">Custom Link</a> &nbsp 
+    <a href="/jsurvey1/">Custom Link2</a>
+</ul>
+{% endblock %}
+
+
+<!-- change page name in top left -->
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">Site_23</a>
+</h1>
+{% endblock %}
+
+
+<!-- collapse left side panel on page load -->
+
+{% block extrahead %}
+{{ block.super }}
+<script>
+    // jechat 
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if the side panel is visible
+        if (document.body.classList.contains('collapsed')) {
+            // If the side panel is already collapsed, do nothing
+            return;
+        }
+        // Find the double left chevron button and click it
+        var chevronButton = document.querySelector('.nav-sidebar .toggle-nav-sidebar');
+        if (chevronButton) {
+            chevronButton.click();
+        }
+        
+    });
+    
+</script>
+{% endblock %}
+

@@ -1,0 +1,33 @@
+
+#################################################################
+#@  
+#@  
+#@  
+####################################   2024-09-12[Sep-Thu]11-19AM 
+
+
+
+List of possible question types.
+
+charfield
+textarea
+number with # decimal places, 0,1,2,3,4,5
+options (custom comma sep list by poweruser)
+
+searchable select of a table-column
+dependant select ( eg: part number select limited to the selected machine )
+part/machine dependant select ( eg: part number select limited to the selected machine )
+
+prefer to use current timestamp at time of entry.
+  date
+  datetime
+
+radio button
+
+checkboxes
+multi-select, tags field (like searchable select, but allow multiple entries)
+
+
+
+------------
+

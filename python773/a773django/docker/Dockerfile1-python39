@@ -1,0 +1,88 @@
+
+
+
+
+#################################################################
+#@  
+#@  
+#@  
+####################################   2024-10-24[Oct-Thu]09-19AM 
+
+#0 28.52       copying Lib/slapdtest/certs/gencerts.sh -> build/lib.linux-x86_64-cpython-39/slapdtest/certs
+#0 28.52       copying Lib/slapdtest/certs/gennssdb.sh -> build/lib.linux-x86_64-cpython-39/slapdtest/certs
+#0 28.52       copying Lib/slapdtest/certs/server.conf -> build/lib.linux-x86_64-cpython-39/slapdtest/certs
+#0 28.52       copying Lib/slapdtest/certs/server.key -> build/lib.linux-x86_64-cpython-39/slapdtest/certs
+#0 28.52       copying Lib/slapdtest/certs/server.pem -> build/lib.linux-x86_64-cpython-39/slapdtest/certs
+#0 28.52       running build_ext
+#0 28.52       building '_ldap' extension
+#0 28.52       creating build/temp.linux-x86_64-cpython-39/Modules
+#0 28.52       gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_SASL -DHAVE_TLS -DLDAPMODULE_VERSION=3.4.4 "-DLDAPMODULE_AUTHOR=python-ldap project" "-DLDAPMODULE_LICENSE=Python style" -IModules -I/usr/local/include/python3.9 -c Modules/LDAPObject.c -o build/temp.linux-x86_64-cpython-39/Modules/LDAPObject.o
+#0 28.52       In file included from Modules/LDAPObject.c:3:
+#0 28.52       Modules/common.h:15:10: fatal error: lber.h: No such file or directory
+#0 28.52          15 | #include <lber.h>
+#0 28.52             |          ^~~~~~~~
+#0 28.52       compilation terminated.
+#0 28.52       error: command '/usr/bin/gcc' failed with exit code 1
+#0 28.52       [end of output]
+#0 28.52
+#0 28.52   note: This error originates from a subprocess, and is likely not a problem with pip.
+#0 28.52   ERROR: Failed building wheel for python-ldap
+#0 28.52 Successfully built mysqlclient
+#0 28.52 Failed to build python-ldap
+#0 28.52 ERROR: Could not build wheels for python-ldap, which is required to install pyproject.toml-based projects
+#0 28.53
+#0 28.53 [notice] A new release of pip is available: 23.0.1 -> 24.2
+#0 28.53 [notice] To update, run: pip install --upgrade pip
+------
+failed to solve: process "/bin/sh -c pip install  -r requirements.txt" did not complete successfully: exit code: 1
+albe@pmdm-apps-01:/ap/test/python1001$
+
+
+#################################################################
+#@  
+#@  
+#@  
+####################################   2024-10-24[Oct-Thu]09-19AM 
+
+
+
+FROM python:3.9
+WORKDIR /code
+
+# RUN  mkdir -p /pipcache 
+# RUN  chown -R "0:33"  /rootzzz
+# USER "0:33"
+
+
+# add zscaler cert..
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    apt-get update && \
+    apt-get install -y ca-certificates 
+# RUN apt-get install -y ca-certificates;
+ADD zscaler-rc.crt /usr/local/share/ca-certificates/ 
+RUN update-ca-certificates
+
+
+# Install cron
+RUN apt-get install -y cron 
+
+ADD requirements.txt /code/
+RUN pip install  -r requirements.txt
+
+RUN  chmod -R g+rws  /code
+
+# ADD  --chmod=0755  entrypoint.sh /code/
+
+# ERROR: for 3574e78ff45a_dj616b_djdev_1  Cannot start service djdev: OCI runtime create failed: container_linux.go:380: starting container process caused: exec: "/code/entrypoint.sh": permission denied: unknown
+    # https://stackoverflow.com/questions/54336677/error-starting-container-process-caused-exec-docker-entrypoint-sh-permi
+    # First, you need to copy entrypoint.sh file into other directory instead of same your source code (Eg. /home/entrypoint.sh), then grant permission to execute entrypoint script:
+    # RUN ["chmod", "+x", "/home/entrypoint.sh"]
+ADD  entrypoint.sh /home
+RUN  chmod  +x  /home/entrypoint.sh
+
+# use volume in docker-compose..
+# COPY . /code/
+
+ENTRYPOINT ["/home/entrypoint.sh"]
+                

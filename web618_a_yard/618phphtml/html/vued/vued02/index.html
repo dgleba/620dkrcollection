@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+  <!-- http://10.4.71.231:6611/vued/vued02 -->
+  
+<html>
+<head>
+	<title>Vue3-cdn-router-import-sfc.js</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<script src="https://unpkg.com/vue-router"></script>
+</head>
+<body>
+
+<script type="module">
+//import { createApp } from 'vue'
+import TodoItem from './TodoItem.js'
+
+Vue.createApp({
+  components: {
+    TodoItem
+  },
+  data() {
+    return {
+      groceryList: [
+        { id: 0, text: 'Vegetables' },
+        { id: 1, text: 'Cheese' },
+        { id: 2, text: 'Whatever else humans are supposed to eat' }
+      ]
+    }
+  }
+}).mount('#app')
+</script>
+
+<div id="app">
+  <ol>
+    <!--
+      We are providing each todo-item with the todo object
+      it's representing, so that its content can be dynamic.
+      We also need to provide each component with a "key",
+      which is explained in the guide section on v-for.
+    -->
+    <todo-item
+      v-for="item in groceryList"
+      :todo="item"
+      :key="item.id"
+    ></todo-item>
+  </ol>
+</div>
+
+</body>
+</html>

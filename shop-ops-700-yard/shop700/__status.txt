@@ -1,0 +1,33 @@
+=================================================
+
+2023-03-19
+
+add martor markdown editor
+
+
+
+=================================================
+
+
+2023-03-18 email password reset works.
+
+
+=================================================
+
+2023-03-02
+
+used whitenoise to fix it.
+
+
+(I believe the runserver static assets are broken.)
+
+
+2022-10-02
+I broke this.
+
+admin has no css.
+logs show 404 error.
+I have not been able to fix it yet.
+
+=================================================
+

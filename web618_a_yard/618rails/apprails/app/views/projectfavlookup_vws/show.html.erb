@@ -1,0 +1,29 @@
+
+<p>
+  <strong>Name:</strong>
+  <%= @projectfavlookup_vw.name %>
+</p>
+
+<p>
+  <strong>Number:</strong>
+  <%= @projectfavlookup_vw.number %>
+</p>
+
+<p>
+  <strong>Active:</strong>
+  <%= @projectfavlookup_vw.active %>
+</p>
+
+<p>
+  <strong>Fave num:</strong>
+  <%= @projectfavlookup_vw.fave_num %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @projectfavlookup_vw.user_id %>
+</p>
+
+<br>
+<%= link_to 'Edit', edit_projectfavlookup_vw_path(@projectfavlookup_vw), class: "btn btn-primary", :style=>'color:#FFFFFF;' %> &nbsp &nbsp
+<%= link_to 'Back', projectfavlookup_vws_path, class: "btn btn-default" %>

@@ -1,0 +1,18 @@
+
+
+    {
+      path: "/logout",
+      name: "Logout",
+      component: Logout
+    },
+
+
+          <!-- <b-nav-item to="/login">Login-Explicit</b-nav-item> -->
+          <!-- <b-nav-item href="#" @click.prevent="logoutex">Logout-Explicit</b-nav-item> -->
+
+              async logoutex () {
+      // await this.$auth.logout()
+      // await this.refreshActiveUser()
+      localStorage.removeItem("jwtToken");
+      this.$router.push('/')
+    },    

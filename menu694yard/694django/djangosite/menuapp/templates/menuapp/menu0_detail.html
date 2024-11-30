@@ -1,0 +1,24 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    
+<p>
+    <a class="btn btn-light" href="{% url 'menuapp_Menu0_list' %}">
+    Menu0 Listing
+    </a>
+</p>
+    
+<table class="table">
+    <tr><td>mapplication</td><td>{{ object.mapplication }}</td></tr>
+    <tr><td>mstatus</td><td>{{ object.mstatus }}</td></tr>
+    <tr><td>created_at</td><td>{{ object.created_at }}</td></tr>
+    <tr><td>mdescription</td><td>{{ object.mdescription }}</td></tr>
+    <tr><td>mcomment</td><td>{{ object.mcomment }}</td></tr>
+    <tr><td>updated_at</td><td>{{ object.updated_at }}</td></tr>
+    <tr><td>msort</td><td>{{ object.msort }}</td></tr>
+    <tr><td>mlink</td><td>{{ object.mlink }}</td></tr>
+</table>
+<a class="btn btn-primary" href="{{object.get_update_url}}">Edit</a>
+
+{% endblock %}

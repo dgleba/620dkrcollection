@@ -1,0 +1,24 @@
+# https://github.com/mdobydullah/laravel-docker-apache-mariadb/blob/main/.docker/Dockerfile
+
+FROM php:8.2-apache-buster
+
+USER root
+
+RUN apt update && apt install -y \
+        curl \
+        unzip mc 
+
+RUN mkdir -p /var/www/html; chown -R 1000:www-data /var/www/html  &&  chmod -R 777 /var/www/html
+WORKDIR /var/www/html
+
+# RUN pwd; ls -la; docker-php-ext-install -j$(nproc) gd 
+# RUN docker-php-ext-configure gd 
+RUN docker-php-ext-install pdo_mysql 
+RUN docker-php-ext-install mysqli 
+# RUN docker-php-source delete
+
+RUN a2enmod rewrite
+
+RUN docker-php-ext-install exif
+# RUN docker-php-ext-install sodium
+

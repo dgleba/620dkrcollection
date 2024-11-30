@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="./assets/ico/favicond.ico">
+
+    <title>PMDS-data Server Menu</title>
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="theme.css" rel="stylesheet">
+
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	
+ 	
+ 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+	<!-- Important script below... this section is JavaScript to watch for hashchange. When you press a button that jumps to an anchor
+		 this code is run and scrolls the page back up 50 px. This way, the heading is not hidden under the NavBar. In addition, every
+		 time a hash change is called (indicating a navbar button was pressed), JS checks to see if the screen is mobile. If so, it 
+		 hides the navbar again because otherwise it would get in the way.
+		 https://github.com/twbs/bootstrap/issues/1768 
+		 http://stackoverflow.com/questions/14441456/how-to-detect-which-device-view-youre-on-using-twitter-bootstrap-api -->
+		 
+	<script>
+		var shiftWindow = function() { 
+     		scrollBy(0, -70); 
+			<!-- this hides the menu after click on a touch device -->
+    		if ($('#desktopTest').is(':hidden')) 
+			{
+				$("#nav-main").collapse('hide');
+			}
+		};
+		if (location.hash) shiftWindow();
+		window.addEventListener("hashchange", shiftWindow);
+	</script>
+	
+	<!--<script type="text/javascript">     try to hide menu after click on touch device - no success
+   (function($){
+   $(document).ready(function() {
+   $('.dropdown-toggle[href="#apps"]').dropdown();
+   });
+   })(jQuery);
+   </script>-->
+	
+	<!--<script>    try to hide menu after click on touch device - no success
+		$(function(){ 
+			var navMain = $("#nav-main");
+			navMain.on("click", "a", null, function () {
+				navMain.collapse('hide');
+			});
+		});
+	</script>-->
+
+  </head>
+
+   <body role="document">
+
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-main">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">PMDS-Data</a>
+        </div>
+		
+        <div class="collapse navbar-collapse" id="nav-main">
+          <ul class="nav navbar-nav">
+            <li><a href="#">Home</a></li>
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu<b class="caret"></b></a>
+				<ul class="dropdown-menu">
+					<li><a href="#apps">Apps</a></li>
+					<li class="divider"></li>
+					<li class="dropdown-header">Training</li>
+						<li><a href="#training">Compacting</a></li>
+					<li class="divider"></li>
+					<li class="dropdown-header">Other</li>
+						<li><a href="#news">News</a></li>
+				</ul>
+			</li>
+            <li><a href="#howto">How to get to this Menu</a></li>
+            <li><a href="#instructions">Instructions</a></li>
+            <li><a href="#about">About</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+	
+	<div id="desktopTest" class="visible-sm visible-md visible-lg"></div> <!--declares a variable only visible when in mobile view (used in JS above)-->	
+
+    <div class="container bs-docs-container">
+
+		<div class="row">
+	  
+			<div class="col-md-9" role="main">
+
+				
+				<div class="container theme-showcase" class="page-section" style="padding-bottom:1500px">
+				
+					<h2 id ="apps" class="page-header">Applications</h2>
+					<!-- <a href="#"><p><small>Back to Top</small><br><br></p></a> -->
+					
+					<div class="col-sm-4" class="list-group">
+						
+						<a href="/leanmfg/" target="_blank"  class="list-group-item list-group-item-success"><b>SWI Numbers</b></a>
+						<a href="/prodrpt/" target="_blank"  class="list-group-item"><b>Prodigy - (Production Status App)</b></a>
+						<a href="/shiftcsd1/" target="_blank"  class="list-group-item list-group-item-success"><b>CSD1 Shift Reports</b></a>
+						<a href="/shiftcsd1sup/" target="_blank"  class="list-group-item"><b>CSD1 Supervisor Shift Reports</b></a>
+						<a href="/shiftsmsmeer/" target="_blank"  class="list-group-item list-group-item-success"><b>SMS Meer Press Shift Report</b></a>
+						<a href="/shiftcsd2/" target="_blank"  class="list-group-item"><b>CSD2 Shift Reports</b></a>
+						<a href="/shiftcsd2sup/" target="_blank"  class="list-group-item list-group-item-success"><b>CSD2 Supervisor Shift Reports</b></a>
+						<a href="" target="_blank"  class="list-group-item "><b> </b></a>
+						<a href="/index1orig.html" target="_blank"  class="list-group-item list-group-item-warning"><b>...The Original Menu...</b></a>
+						
+					</div>
+					
+				</div> 
+				
+				<div class="container theme-showcase" class="page-section" style="padding-bottom:1500px">
+				
+					<h2 id="training" class="page-header">Training</h2>
+					<!-- <a href="#"><p><small>Back to Top</small><br><br></p></a> -->
+					
+					<h4 class="page-header">Compacting</h4>
+				
+					<div class="col-sm-4" class="list-group">
+						
+						<a href="/training/Compacting/Assembler-Load/" target="_blank"  class="list-group-item list-group-item-success"><b>Assembler Load</b></a>
+						<a href="/training/Compacting/Press-Unload/" target="_blank"  class="list-group-item"><b>Press Unload</b></a>
+				
+					</div>
+
+				</div> 
+				
+				<div class="container theme-showcase" class="page-section" style="padding-bottom:1500px">
+					
+					<h2 class="page-header">Other</h2>
+					<!-- <a href="#"><p><small>Back to Top</small><br><br></p></a> -->
+					
+					<h4 id="news" class="page-header">News</h4>
+					
+					<div class="well" style="vertical-align:text-top">
+					
+						<p><big><big><b><u>June 26, 2014</u></b></big></big></p>
+						
+						<p>
+						
+						Server Restarts: please remember that the PMDS-Data Server will 
+						restart <b>every Tuesday</b> from 11:30 AM to 11:40 AM. During this 
+						time, you will not be able to save or edit entries in any applications 
+						run from the server (SWI Numbers, Shift Reports, etc). During this 
+						time, please leave your screen alone and you can continue where you have
+						left off after the restart is complete.
+						
+						</p> 
+					
+					</div>
+					
+					<div class="well" style="vertical-align:text-top">
+					
+						<p><big><big><b><u>June 26, 2014</u></b></big></big></p>
+						
+						<p>
+						
+						We are experimenting with this new PMDS-Data Menu. 
+						All buttons/links from the original can be found in the 
+						Navigation Bar at the top. Please contact <b>Dave Gleba
+						</b> at either <b>extension 232</b> or <b>dgleba@stackpole.com
+						</b> if you have any issues.
+						
+						</p> 
+					
+					</div>
+
+				</div> 
+				
+				<div class="container theme-showcase" class="page-section" style="padding-bottom:1500px">
+					
+					<h2 id="howto" class="page-header">How to get to this Menu</h2>
+					<!-- <a href="#"><p><small>Back to Top</small><br><br></p></a> -->
+						
+					<p>The guide below outlines how to reach this menu page. There are several URLs, addresses, and shortcut links 
+							that can be used to reach this server.<br><br></p>
+					<a href="http://pmds-data/menu/guide.jpg"><img src="guide.jpg" class="img-responsive"></a>
+					<p>Note that you can always access this menu by typing <b>10.4.1.245/menu</b> into your browser address bar, so 
+							long as you are connected to the Stackpole network.</p>
+
+				</div> 
+				
+				<div class="container theme-showcase" class="page-section" style="padding-bottom:1500px">
+					
+					<h2 id="instructions" class="page-header">Instructions</h2>
+					<!-- <a href="#"><p><small>Back to Top</small><br><br></p></a> -->
+						
+					<p>Instructions for using the various applications on this server can be found here: <b>S:\GPS\Info\Apps\instructions</b></p>
+
+				</div> 
+				
+				<div class="container theme-showcase" class="page-section" style="padding-bottom:1500px">
+					
+					<h2 id="about" class="page-header">About</h2>
+					<!-- <a href="#"><p><small>Back to Top</small><br><br></p></a> -->
+						
+					<p>This server menu and applications are usually managed by the SPS Department.<br><br></p>
+					<p>If you are having difficulties with accessing applications, using this menu, or other issues, please 
+							contact either <b>Dave Gleba (x232)</b> or the <b>SPS Coop Student (x465)</b></p>
+
+				</div> 
+			</div> 
+		</div> 	
+	</div>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+   
+    <script src="js/bootstrap.min.js"></script>
+    <script src="assets/js/docs.min.js"></script>
+  </body>
+</html>

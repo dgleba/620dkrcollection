@@ -1,0 +1,46 @@
+
+#################################################################
+#@  
+#@  
+#@  
+####################################   2024-05-15[May-Wed]13-52PM 
+
+Purpose: convert django-signature example_project to site/app structure like django official tutorial -- startproject/startapp structure.
+
+works - 2024-05-15_Wed_13.53-PM.
+
+
+------------
+
+
+
+d:
+cd D:\code\pyprj\jsig\egjsig\djangosite
+cd D:\code\pyprj\jsig\eg-dj-signature\djangosite
+
+C:\prg\gitwin\usr\bin\grep.exe -rin example_project
+
+
+python manage.py migrate
+
+
+D:\code\pyprj\jsig\egjsig\djangosite>python manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, jsig, sessions
+Running migrations:
+  Applying jsig.0001_initial... OK
+D:\code\pyprj\jsig\egjsig\djangosite>
+
+
+set DJANGO_SUPERUSER_PASSWORD=a2
+   C:\prg\python128\python.exe manage.py createsuperuser --noinput --username a2  --email=a2@a.com
+
+python.exe  manage.py runserver 
+
+
+http://127.0.0.1:8000/
+http://127.0.0.1:8000/admin
+
+
+=================================================
+

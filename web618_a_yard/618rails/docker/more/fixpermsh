@@ -1,0 +1,4 @@
+#!/bin/bash
+umask 0002
+fold=/myproject
+chmod -R g+rws,o-w  ${fold}

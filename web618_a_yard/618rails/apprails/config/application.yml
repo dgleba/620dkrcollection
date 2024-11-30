@@ -1,0 +1,36 @@
+# Figaro: Add configuration values here, as shown below.
+#
+# pusher_app_id: ""
+# pusher_key: 
+# pusher_secret: 
+# stripe_api_key: 
+# stripe_publishable_key: 
+#
+# production:
+#   stripe_api_key: 
+#   stripe_publishable_key: 
+
+# dotenv.. Copy this file into a new file called ".env" in the root of the project.
+# The dotenv gem will load the contents of .env into the environment when
+# Rails starts. Access values like this: ENV["SECRET_KEY_BASE"]
+#
+# The purpose of this file is to keep secrets out of source control.
+# For more information, see: https://github.com/bkeepers/dotenv
+# gem 'dotenv-rails', '>= 2.0.0'
+
+
+
+DATABASE_USERNAME: 
+DATABASE_PASSWORD: 
+DBPASS1: 
+SECRET_KEY_BASE: 
+
+# Intercept mail on staging, to be sent to the following recipients
+# Example: "user@domain.tld,other-user@domain.tld"
+#STAGING_MAIL_INTERCEPT_EMAIL_RECIPIENTS=
+
+#ERRBIT_PROJECT_KEY=
+#ERRBIT_HOST=https://example.host.tld:8080
+
+#Rails.env=Production
+#FOO=test23

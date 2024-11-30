@@ -1,0 +1,4 @@
+
+Create a simple Django blog app using function-based views (FBV) without using modelform. handle the form data manually. Call the model article. write the admin showing all fields.
+
+

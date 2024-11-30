@@ -1,0 +1,31 @@
+
+albe@pmadata01:
+
+
+/ap/620dkrcollection
+
+# new app name
+apn=cp-djtest04
+
+rsync -av menu694yard/ $apn/
+ 
+rm -rf $apn/694django/djangobuilder.io/*
+
+ll -r ./$apn/694django/x/*
+
+rm -rf ./$apn/x/*
+rm -rf ./$apn/sysdata/*
+
+
+ cd 694django/djangobuilder.io/
+
+# move tar file from djangobuilder to server.
+
+ tar -xvf djangoproj.tar
+
+ dc build
+
+ git init
+ git ca init
+ git ca 2023-10-27a
+

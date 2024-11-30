@@ -1,0 +1,124 @@
+
+status. works.
+
+2019-06-16
+
+https://anonoz.github.io/tech/2019/03/10/rails-docker-compose-yml.html
+
+
+
+
+  careful..   docker volume rm -f $( docker volume ls |    grep bundle_cache       | awk '{print $2}' )
+  
+  dkd -v
+  docker rm -f $(docker ps -a |    grep rail467c_web         | awk '{print $1}')
+  docker rm -f $(docker ps -a |    grep rail467_dev         | awk '{print $1}')
+  docker rm -f $(docker ps -a |    grep suspic       | awk '{print $1}')
+	make clean
+  docker images | grep prod466_ | awk '{print $1 ":" $2}' | xargs docker rmi 
+  docker images | grep prod467_ | awk '{print $1 ":" $2}' | xargs docker rmi 
+  docker images | grep rail467_ | awk '{print $1 ":" $2}' | xargs docker rmi 
+	
+	
+	
+docker-compose build
+
+
+echo -e "source 'https://rubygems.org' \ngem 'rails', '~>5'"> Gemfile
+
+
+docker-compose run --rm web bundle install 
+ 
+  
+noneed... 
+ docker-compose run --rm web bundle install -j8
+ 
+
+
+docker-compose run --rm web  rails new .  --no-deps
+
+# don't use  force??  docker-compose run --rm web  rails new . --force --no-deps
+
+
+docker-compose run --rm web bundle exec  rails g scaffold ReportName name clock active_status:integer sort_order:integer 
+
+docker-compose run --rm web bundle exec  rails destroy  scaffold ReportName 
+
+docker-compose run --rm web bundle exec  rails destroy  scaffold RptElist 
+
+docker-compose run --rm web bundle exec  rails destroy  scaffold MorningMeeting 
+
+\
+  -f
+
+
+
+docker-compose run --rm web bundle exec rails db:migrate RAILS_ENV=development
+
+docker-compose run --rm web bundle exec rails db:setup
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+prod 467 error
+
+
+web_1  | /usr/local/bundle/gems/activesupport-5.0.7.2/lib/active_support/dependencies.rb:287:in `load': 
+/app/spec/factories/rpt_elists.rb:5: syntax error, unexpected when, expecting end (SyntaxError)
+web_1  |     when "MyString"
+web_1  |     ^~~~
+web_1  | /app/spec/factories/rpt_elists.rb:9: syntax error, unexpected end, expecting end-of-input
+
+
+gem 'rspec-rails', '~> 3.5'
+
+docker-compose run --rm web bundle update
+
+docker-compose run --rm web bundle update --source rspec-rails
+
+
+
+docker-compose run --rm web bundle exec rails generate autocomplete:install
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+other stuff..
+
+
+
+
+
+echo -e "gem 'tzinfo-data'">> Gemfile
+
+worked. in suresh.
+docker-compose run --rm web  rails new . --force --no-deps
+
+
+
+
+
+docker-compose run --rm app bundle exec rails new . --force --no-deps 
+
+docker-compose run --rm app  bundle install
+
+docker-compose run --rm web  rails new . --force --no-deps 
+
+docker-compose run app  rails new  --force --no-deps 
+
+docker-compose build
+
+
+no.. docker build -t r467 .
+
+docker-compose run web 
+
+
+
+worked. in suresh.
+docker-compose run --rm web  rails new . --force --no-deps
+
+docker-compose run --rm web bundle install -j8

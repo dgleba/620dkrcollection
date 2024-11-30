@@ -1,0 +1,19 @@
+<!-- templates/blog/article_table_rows.html -->
+
+{% for article in articles %}
+<tr>
+    <td>{{ forloop.counter }}</td>
+    <td><a href="{% url 'article_detail' article.id %}">{{ article.title }}</a></td>
+    <td>{{ article.published_date|date:"Y-m-d H:i" }}</td>
+    <td>
+        {% for tag in article.tags.all %}
+            {{ tag.name }}
+            {% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="4">No results found.</td>
+</tr>
+{% endfor %}

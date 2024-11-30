@@ -1,0 +1,14 @@
+python.exe  manage.py startapp sig5app
+
+
+http://127.0.0.1:8000/sig5app/capture/
+
+http://127.0.0.1:8000/admin
+
+http://127.0.0.1:8000/sig5app/
+
+
+a2 a2
+
+
+

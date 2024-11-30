@@ -1,0 +1,35 @@
+version: "3.6"
+
+networks:
+  sister:
+    name: sister
+
+services:
+
+  php:
+    # http://10.4.1.245:6611/    
+    # http://192.168.88.60:6611/exampleapp    
+    # http://192.168.88.60:6611/dgnote130    
+    # http://10.4.1.231:6611/exampleapp    
+    # https://php.198.144.183.160.nip.io/
+    restart: unless-stopped
+    # image: php:7.3-apache
+    build:
+      context: ./php
+      dockerfile: Dockerfile-php8-api2
+    ports:
+      - 6711:80
+    volumes:
+      - ../618phphtml/html:/var/www/html
+      - ./php/apache_allow.conf:/etc/apache2/conf-enabled/apache_allow.conf
+    env_file:
+      - .env
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+      # - VIRTUAL_HOST=php.198.144.183.160.nip.io
+      # - VIRTUAL_PORT=80
+      # - LETSENCRYPT_HOST=php.198.144.183.160.nip.io
+      # - LETSENCRYPT_EMAIL=dgleba@gmail.com
+    networks:
+      - sister
+

@@ -1,0 +1,26 @@
+<h2>Log in</h2>
+
+<%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <div class="form-inputs">
+    <br> Enter your Stackpole Windows Username/email here - Like: jsmith  -- Not like: jsmith@stackpole.com <br><br>
+    <%= f.input :email, required: false, autofocus: true %>  
+    <%= f.input :password, required: false %>
+    </div>
+    
+    <div>
+    Login using your Stackpole Windows Domain username and password, like you login 
+    to your Windows computer here at work. Enter username/email like:  jsmith     &nbsp -- Not like: jsmith@stackpole.com 
+    <br>
+    <br>
+    </div>
+    
+    
+    <div class="form-actions">
+    <%= f.button :submit, "Log in" , class: "btn btn-primary"%>
+    </div>
+    <br>
+    <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
+    <br>
+    <%= render "devise/shared/links" %>
+<% end %>
+

@@ -1,0 +1,21 @@
+
+How to make a new rails app using docker. This will not use any packages locally installed.
+
+# ref.. https://docs.docker.com/samples/rails/
+
+   docker-compose -f docker-compose-rails-new.yml build  
+
+   docker-compose -f docker-compose-rails-new.yml run --rm  web  bundle install
+
+   docker-compose -f docker-compose-rails-new.yml  run --rm --no-deps web rails new . --force --database=mysql 
+
+
+
+
+
+
+
+
+
+
+

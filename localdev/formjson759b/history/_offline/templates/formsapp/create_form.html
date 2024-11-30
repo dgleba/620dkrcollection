@@ -1,0 +1,8 @@
+<!-- formsapp/templates/formsapp/create_form.html -->
+<form method="post">
+  {% csrf_token %}
+  <input type="text" name="name" placeholder="Form Name" required><br>
+  <textarea name="description" placeholder="Form Description"></textarea><br>
+  <textarea name="fields" placeholder='Form Fields JSON, e.g., [{"name": "question1", "type": "text"}]' required></textarea><br>
+  <button type="submit">Create Form</button>
+</form>

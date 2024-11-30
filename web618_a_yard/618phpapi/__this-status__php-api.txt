@@ -1,0 +1,52 @@
+---
+
+goal:
+
+for https://github.com/mevdschee/php-crud-api
+
+---
+
+status:
+
+use 618php8 instead.
+
+
+  works.
+
+  {"records":[{"id":0,"name":"dg","numb1":453.1234,"num2":12.1235567,"adate":"2022-12-14 20:34:51","bdate":"2022-12-15 20:34:51","txt":"I have a large markdown. database using Joplin 11"}]}
+
+
+  noworky:
+
+  but has warnings displayed.
+
+
+Ref:
+
+  started from 618php8
+
+  /ap/test/620dkrcollection/web618_a_yard/618phphtml/html/618phpapi/api6711testa.php
+
+_____________
+
+
+http://192.168.88.80:6711/618phpapi/api6711testa.php/records/file689c
+
+
+
+Deprecated: Creation of dynamic property Tqdev\PhpCrudApi\OpenApi\OpenApiBuilder::$status is deprecated in /var/www/html/618phpapi/api6711testa.php on line 9630
+Warning: Cannot modify header information - headers already sent by (output started at /var/www/html/618phpapi/api6711testa.php:9630) in /var/www/html/618phpapi/api6711testa.php on line 12301
+Warning: Cannot modify header information - headers already sent by (output started at /var/www/html/618phpapi/api6711testa.php:9630) in /var/www/html/618phpapi/api6711testa.php on line 12301
+
+{"records":[{"id":0,"name":"dg","numb1":453.1234,"num2":12.1235567,"adate":"2022-12-14 20:34:51","bdate":"2022-12-15 20:34:51","txt":"I have a large markdown. database using Joplin 11"}]}
+
+_____________
+
+_____________
+
+other one works.
+
+http://192.168.88.80:6811/618phpapi/api6711testa.php/records/file689c
+
+_____________
+

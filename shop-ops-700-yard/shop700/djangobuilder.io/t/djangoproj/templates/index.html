@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="m-2"><h4>blogapp</h4></div>
+<div class="m-2"><a class="btn btn-light" href="{% url 'blogapp_Mpost_list' %}">Mpost Listing</a></div>
+<div class="m-2"><h4>mcpunchapp</h4></div>
+<div class="m-2"><a class="btn btn-light" href="{% url 'mcpunchapp_MCpunch_list' %}">MCpunch Listing</a></div>
+<div class='container'>
+<div class='card'>
+<div class='card-body'>
+<div><a href="{% url 'htmx' %}">HTMX UI</a></div>
+</div>
+</div>
+</div>
+{% endblock %}

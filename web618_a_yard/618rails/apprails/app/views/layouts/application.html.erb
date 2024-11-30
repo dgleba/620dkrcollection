@@ -1,0 +1,83 @@
+<!DOCTYPE html >
+<html>
+  <head>
+    <meta charset="utf-8">
+      <meta content="IE=edge" http-equiv="X-UA-Compatible">
+        <meta content="width=device-width, initial-scale=1" name="viewport">
+          <title><%= Rails.application.class.parent_name %></title>
+          <%= stylesheet_link_tag    'application', media: 'all' %>
+          <%= javascript_include_tag 'application' %>
+          <%= javascript_include_tag "autocomplete-rails.js" %>
+  
+          <%= csrf_meta_tags %>
+        </meta>
+      </meta>
+    </meta>
+  </head>
+  <body class="<%= controller.controller_name %>">
+    <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button aria-controls="navbar" aria-expanded="false" class="navbar-toggle collapsed" data-target="#navbar" data-toggle="collapse" type="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <%= link_to 'Home', root_path, class: 'navbar-brand' %>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar">
+
+            <ul class="nav navbar-nav">
+            <li>
+              <%= link_to "TimeLog", time_logs_path, :class => "btn btn-secondary " %>
+              </li>
+              <li>
+              <%= link_to "FavoriteProjects", favorite_projects_path, :class => "btn btn-secondary " %>
+            </li>
+            </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <%# views/devise/menu/_login_items.html.erb %>
+            <% if user_signed_in? %>
+                <li>
+                  <%#= link_to "Parkingpass", pp_parkingpasses_path, :class => "btn btn-secondary " %>
+                  <%= link_to 'Projects', projects_path %> 
+                  </li>				
+               <li data-toggle="tooltip" title="Administration screens">
+                  <%= link_to "Admin", rails_admin.dashboard_path, :class => "btn btn-secondary " %>
+               </li>
+               <li>
+                  <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
+                </li>
+                <li class="dropdown" id="menu212">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-target="#menu212" role="button" aria-haspopup="true" aria-expanded="false" ><%= current_user.email %> <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+				    <%#  https://stackoverflow.com/questions/11867091/rails-bootstrap-and-dropdown-not-working %>
+                    <li> <%= link_to "Administer", rails_admin.dashboard_path, :class => "btn btn-secondary " %> </li>
+                    <li> <%= link_to 'Logout', destroy_user_session_path, :method => :delete %> </li>
+                  </ul>
+                </li>
+            <% else %>
+                <li>
+                  <%= link_to('Login', new_user_session_path)  %>
+                </li>
+            <% end %>
+            </ul>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <% flash.each do |type, msg| %>
+        <div class="alert alert-<%= type == 'alert' ? 'danger' : 'success' %> alert-dismissable" role="alert">
+          <button class="close"> .. </button>
+          <%= msg if msg.is_a?(String) %>
+        </div>
+      <% end %>
+      <%= yield %>
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,22 @@
+
+{% extends "base.html" %}
+{% block content %}
+
+
+<form method="GET" action="{{ request.path }}">
+  <input type="text" name="q" placeholder="Search posts" value="{{ request.GET.q }}">
+  <button type="submit">Search</button>
+</form>
+
+<ul>
+  {% for post in post_list %}
+    <li> <a href="{{post.get_absolute_url}}">Id: {{post}}</a> {{ post.title }} {{ post.body }}  <div class="m-2"><a href="{{object.get_absolute_url}}">{{object}}</a></div> </li>
+    <hr>
+  {% empty %}
+    <li>No posts found.</li>
+  {% endfor %}
+</ul>
+
+
+<div><a class="btn btn-primary" href="{% url 'blogapp_Post_create' %}">Create a new Post</a></div>
+{% endblock %}

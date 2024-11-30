@@ -1,0 +1,30 @@
+
+prod367 app history.
+
+_____________
+
+
+This from lpa346 - 8f115ad\ 2017-05-03\ New, Before any changes. Created using github.com/dgleba/bashrail.\ [albe]
+
+copied hrapp361 from lpa346 app.
+  b2c0f2b\ 2017-12-09\ remove history before last 30 commits. This project was LPA346 - now it is HRapp361.\ [David Gleba]
+  
+  
+hrapp361
+ 
+e892658\ 2017-12-21 (HEAD, origin/master, master)\ added documenst_on_file 2017-12-21\ [albe]
+
+
+2018-03-03 copied hrapp361 to prod367
+
+13cd32f\ 2018-03-04 (HEAD, master)\ starter app with jq-autocomplete, 2018-03-04\ [albe]
+ebf67d2\ 2018-03-04\ 2018-03-04 scaffold morningmeeting\ [albe]
+e0dfc1c\ 2018-03-04\ 2018-03-04\ [albe]
+86af0e9\ 2018-03-03\ Start prod367 app. It was hrapp361. 2018-03-03\ [albe]
+e892658\ 2017-12-21\ added documenst_on_file 2017-12-21\ [albe]
+b2c0f2b\ 2017-12-09\ remove history before last 30 commits. This project was LPA346 - now it is HRapp361.\ [David Gleba]
+6ff3675\ 2017-12-09\ 2017-12-09 start hrapp361\ [David Gleba]
+
+
+
+_____________

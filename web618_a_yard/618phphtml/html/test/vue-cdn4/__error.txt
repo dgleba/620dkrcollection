@@ -1,0 +1,38 @@
+
+error:
+
+2022-10-01
+
+
+main.js:52 Uncaught ReferenceError: postsManager is not defined
+    at main.js:52:29
+(anonymous) @ main.js:52
+
+
+
+const routes= [
+  { path: '/', component: Home},
+>>>>>>>>>>>>>>>>>>>>>  { path: '/pm', component: postsManager},
+  // , name: 'postsManager'
+]
+
+const router = new VueRouter({
+  routes // short for `routes: routes`
+})
+
+// =================================================
+
+var app = new Vue({
+  router: router,
+  el: '#app',
+  components: {
+    'hello01': window.httpVueLoader('./hello.vue'),
+    'postsManager': window.httpVueLoader('./postsManager.vue'),
+  },  
+  data: function () {
+    return {
+      activeUser: 'aba',
+
+
+_____________
+

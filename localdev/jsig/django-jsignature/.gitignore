@@ -1,0 +1,8 @@
+*.pyc
+.coverage
+htmlcov
+*.egg-info
+.tox
+example.db
+/dist
+/build

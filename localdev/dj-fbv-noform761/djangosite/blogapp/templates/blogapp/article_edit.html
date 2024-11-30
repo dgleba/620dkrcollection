@@ -1,0 +1,16 @@
+<h1>Edit Article</h1>
+<form method="post">
+    {% csrf_token %}
+    <label for="title">Title:</label><br>
+    <input type="text" id="title" name="title" value="{{ article.title }}"><br>
+    
+    <label for="body">Body:</label><br>
+    <textarea id="body" name="body">{{ article.body }}</textarea><br>
+    
+    <label for="author">Author:</label><br>
+    <input type="text" id="author" name="author" value="{{ article.author }}"><br><br>
+    
+    <input type="submit" value="Update">
+</form>
+
+<a href="{% url 'article_detail' article.id %}">Cancel</a>

@@ -1,0 +1,30 @@
+
+<%= form_for(@time_log, remote: true) do |f| %>
+  <% if @time_log.errors.any? %>
+    <div class="alert alert-danger alert-dismissable" role="alert">
+      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      <h4><%= pluralize(@time_log.errors.count, "error") %> prohibited this time_log from being saved:</h4>
+      <ul>
+      <% @time_log.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <span>
+  <%#= f.label :project_id %>
+  <%= f.collection_select :project_id, ProjectfavlookupVw.where(user_id: current_user).or(ProjectfavlookupVw.where(user_id: nil)).all,
+   :id, :to_s,  { prompt: true }, { :class => 'dgselect2', "style" => "width:40%", required: 'true'}  %>
+
+  <%#= f.label :log_date %>
+  <%= f.date_select :log_date, class: "form-control" %>
+
+  <%#= f.label :log_hours %> 
+  Hours:
+  <%= f.text_field :log_hours, style: 'width: 47px;',  required: 'true' %>
+
+  <%= f.submit class: "btn btn-primary" %>
+  </span>
+
+<% end %>

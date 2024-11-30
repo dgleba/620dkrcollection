@@ -1,0 +1,9 @@
+
+http://localhost:8080/api.php/records/posts/1
+
+http://10.4.71.231:6611/ripr/api-ripr.php/records/ripr/42
+
+http://10.4.71.231:6611/ripr/api-ripr.php/records/ripr/
+
+
+https://stackoverflow.com/questions/9733638/how-to-post-json-data-with-python-requests

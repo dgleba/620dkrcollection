@@ -1,0 +1,39 @@
+
+Status:
+
+works.
+
+Goal:
+
+combine edit and create component 2022-10-19
+
+_____________
+
+
+
+History:
+converted. mevn eg to sfc
+
+from:
+https://github.com/dgleba/MEVNCRUDExample
+
+convert to use:
+https://github.com/FranckFreiburger/vue3-sfc-loader/discussions/74
+
+
+=================================================
+
+
+http://10.4.71.231:6611/vue/vuecrudeg2
+
+
+App url:
+http://10.4.71.231:6611/api/api.php/records/blogapp_post?search=&page=1
+
+http://10.4.71.231:6611/api/api.php/records/blogapp_post
+
+sftp://10.4.71.231/ap/620dkrcollection/web618_a_yard/618phphtml/html/api/api.php
+
+
+=================================================
+

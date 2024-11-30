@@ -1,0 +1,26 @@
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $("#id_province").change(function () {
+        var url = "{% url 'load_cities' %}";  // get the url for loading cities
+        var provinceId = $(this).val();  // get the selected province ID
+
+        $.ajax({
+            url: url,
+            data: {
+                'province_id': provinceId
+            },
+            success: function (data) {
+                $("#id_written_from").html('');  // clear the city select
+                $.each(data, function (key, value) {
+                    $("#id_written_from").append('<option value="' + value.id + '">' + value.name + '</option>');
+                });
+            }
+        });
+    });
+</script>

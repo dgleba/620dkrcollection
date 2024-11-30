@@ -1,0 +1,30 @@
+2023-03-06_Mon_13.55-PM
+
+Purpose:
+
+use vue 3, bootstrap 5, vue-router, axios,  error messages bs5 toasts, login, 
+
+use cdn - not build step like webpack.
+
+import js files with components.
+
+
+Goal:
+
+Try to make something simple to create vue apps with.
+
+
+
+=================================================
+
+
+ref: Features list:
+
+y bootstrap5
+y router
+y api data get put
+y error messages
+y search
+y login
+y polling (sftp://albe@10.4.71.231/ap/620dkrcollection/web618_a_yard/618phphtml/html/vue-sfc-loader/vuea/vue-cdn667g/src/postsManager.vue)
+

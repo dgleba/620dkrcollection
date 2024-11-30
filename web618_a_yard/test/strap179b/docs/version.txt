@@ -1,0 +1,12 @@
+version 
+
+14 - 2015-07-19  minor changes to 'about' wording.
+12 - 2015-07-06  minor changes
+11 - 2015-06-29  change footer text color.
+
+10 - 2015-06-27  changed naming convention.
+
+9b - 2015-06-29 - add  padding-top to about section.
+
+9 - 2015-06-26  removed startbootstrap.zip file this came from.
+4 - 2015-06-22  add spacer.php

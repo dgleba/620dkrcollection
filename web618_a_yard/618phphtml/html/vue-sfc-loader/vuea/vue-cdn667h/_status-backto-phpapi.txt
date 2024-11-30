@@ -1,0 +1,32 @@
+
+Goal:
+looking for a way to organize vue app without bundler
+
+Purpose:
+
+use 667g on php api again.
+
+https://github.com/mevdschee/php-crud-api
+
+
+
+_____________
+
+
+
+
+=================================================
+
+
+http://10.4.71.231:6611/vue/vue-cdn667h
+
+
+App url:
+http://10.4.71.231:6611/api/api.php/records/blogapp_post?search=&page=1
+
+
+=================================================
+
+
+=================================================
+

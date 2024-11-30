@@ -1,0 +1,37 @@
+
+Goal:
+looking for a way to organize vue app without bundler
+
+Purpose:
+
+Add search  2022-10-02
+
+_____________
+
+
+back api:
+
+php api 
+sftp://10.4.71.231/ap/620dkrcollection/web618_a_yard/618phphtml/html/api/api.php
+
+http://10.4.71.231:6611/api/api.php/records/blogapp_post?search=&page=1
+
+adminer:
+http://10.4.71.231:6607/ 
+
+
+http://10.4.71.231:6611/vue/vue-cdn667f
+
+
+http://10.4.71.231:6611/xatapost
+
+
+http://10.4.71.231:6611/api/vuecrudui.html
+
+
+
+sftp://10.4.71.231/ap/620dkrcollection/web618_a_yard/618phphtml/html/vue
+
+
+=================================================
+

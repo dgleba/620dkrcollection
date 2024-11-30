@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block extrahead %}
+<script src="https://unpkg.com/htmx.org@1.8.4"></script>
+<script>
+  htmx.config.useTemplateFragments = true;
+</script>
+{% endblock %}
+{% block allcontent %}
+<div id="content" class="container">
+  <h2>Home: <a href="{% url 'index' %}">Project1233</a></h2>
+  <div class="container">
+    <div class="row">
+    
+      <div class="col col-lg-6">
+        <h5>Add A Mpost</h5>
+        <div hx-get="{% url 'blogapp_Mpost_htmx_create' %}" hx-trigger="load" hx-swap="outerHTML"></div>
+        <h4>Mpost List</h4>
+        <div hx-get="{% url 'blogapp_Mpost_htmx_list' %}" hx-trigger="load">
+        </div>
+      </div>
+      <div class="col col-lg-6">
+        <h5>Add A MCpunch</h5>
+        <div hx-get="{% url 'mcpunchapp_MCpunch_htmx_create' %}" hx-trigger="load" hx-swap="outerHTML"></div>
+        <h4>MCpunch List</h4>
+        <div hx-get="{% url 'mcpunchapp_MCpunch_htmx_list' %}" hx-trigger="load">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

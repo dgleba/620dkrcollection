@@ -1,0 +1,31 @@
+
+<turbo-stream action="prepend" target="posts">
+<template>
+  <turbo-frame id="posts1">
+  
+  <div id="<%= dom_id post %>">
+  <p>
+    <strong>Title:</strong>
+    <%= post.title %>
+  </p>
+
+  <p>
+    <strong>Body:</strong>
+    <%= post.body %>
+  </p>
+
+  <p>
+    <strong>Sort order:</strong>
+    <%= post.sort_order %>
+  </p>
+
+  <p>
+    <strong>Active status:</strong>
+    <%= post.active_status %>
+  </p>
+
+</div>
+
+</turbo-frame>
+</template>
+</turbo-stream>

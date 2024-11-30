@@ -1,0 +1,10 @@
+<h1>{{ form_instance.title }}</h1>
+<p>{{ form_instance.description }}</p>
+
+<h2>Responses:</h2>
+<ul>
+    {% for response in responses %}
+    <li>{{ response.user }}: {{ response.response_data }}</li>
+    {% endfor %}
+</ul>
+

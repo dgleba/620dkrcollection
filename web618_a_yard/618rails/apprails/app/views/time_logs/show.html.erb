@@ -1,0 +1,29 @@
+
+<p>
+  <strong>Project:</strong>
+  <%= @time_log.project %>
+</p>
+
+<p>
+  <strong>Log date:</strong>
+  <%= @time_log.log_date %>
+</p>
+
+<p>
+  <strong>Log hours:</strong>
+  <%= @time_log.log_hours %>
+</p>
+
+<p>
+  <strong>Detail:</strong>
+  <%= @time_log.detail %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @time_log.user %>
+</p>
+
+<br>
+<%= link_to 'Edit', edit_time_log_path(@time_log), class: "btn btn-primary", :style=>'color:#FFFFFF;' %> &nbsp &nbsp
+<%= link_to 'Back', time_logs_path, class: "btn btn-default" %>

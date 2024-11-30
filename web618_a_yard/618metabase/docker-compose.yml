@@ -1,0 +1,46 @@
+# ref..
+
+version: "3.6"
+
+networks:
+  sister:
+    name: sister
+    
+    # networks:
+    #   - sister
+
+services:
+
+  mb:
+    # http://10.4.1.232:6547/ 
+    image: metabase/metabase:v0.41.5
+    restart: unless-stopped
+    ports:
+      - "6547:3000"
+    volumes:
+      - ../data/mbdata:/mbdata
+    env_file:
+      - .env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "8"
+    networks:
+      - sister
+
+
+
+    # depends_on:
+    #   - dbm
+
+#     networks:
+#       - net535
+  
+# networks:
+#   net535:
+#     name: net535
+
+# volumes:
+#   bundle_cache:
+#   mysqldata:

@@ -1,0 +1,147 @@
+
+#################################################################
+#@  
+#@  
+#@  
+####################################   2024-08-29[Aug-Thu]09-49AM 
+
+
+note. settings has a db password right now 2024-08-29_Thu_09.54-AM.
+
+
+=================================================
+
+pip install
+
+django
+mysqlclient
+
+
+=================================================
+
+
+
+C:\copyof\formjson759__20240831_203440\formjson759\djangosite\formbuilderapp
+
+cd /c/copyof/formjson759__20240831_203440/formjson759/djangosite/formbuilderapp
+
+
+
+
+general notes.
+
+	https://hedge.daveg.win/s/yss3nf3v3
+	
+
+------------
+
+
+
+
+sql 
+192.168.88.103:13306/
+
+
+adminer
+http://192.168.88.103:18080/
+
+yes
+http://127.0.0.1:8000/
+http://127.0.0.1:8000/forms	
+http://127.0.0.1:8000/admin
+
+no
+http://192.168.88.87:8080/
+
+
+------------
+
+
+2024-09-03
+
+http://127.0.0.1:8000/admin/jsurveyapp/
+http://127.0.0.1:8000/jsurvey1/survey/1/
+http://127.0.0.1:8000/jsurvey1/survey/2
+
+https://chatgpt.com/share/728c34b8-5709-4340-9ea7-e2bdca6e45d0
+
+https://www.w3schools.com/html/html_form_input_types.asp
+
+
+
+------------
+
+
+
+[{"name":"question1", "type": "text"}]
+
+
+[
+	{"name":"question1", "type": "text"},
+	{"name":"partnum", "type": "text"},
+	{"name":"feat23", "type": "number"}
+]
+
+
+------------
+
+
+[
+    {"name": "name", "type": "text", "label": "Your Name"},
+    {"name": "age", "type": "number", "label": "Your Age"},
+    {"name": "favorite_color", "type": "choice", "label": "Favorite Color", "choices": ["Red", "Green", "Blue"]}
+]
+
+
+------------
+
+=================================================
+
+db:
+
+MYSQL_USER=muser
+MYSQL_PASSWORD=j.
+
+
+
+
+------------
+
+
+10.4.71.231:7412/
+
+        'USER':  'muser',
+        'PASSWORD': 'jkq.zs3.ls4',
+        'HOST': '10.4.71.231',   # Or an IP Address that your DB is hosted on
+        'PORT': '7411',
+    },
+
+=================================================
+
+
+
+d:
+cd D:\code\pyprj\formjson759
+
+python.exe manage.py startapp jsurveyapp
+
+
+
+
+=================================================
+
+
+write django app with user configureable forms storing answers as json in a json field. Allow text, number, and choice fields. 
+The choice field should be from a nested json list of choices.
+
+
+write django app with user configureable forms storing answers as json in a json field.
+
+ Allow text, number, and choice fields. 
+The choice field should be from a nested json list of choices.
+
+
+
+=================================================
+
+

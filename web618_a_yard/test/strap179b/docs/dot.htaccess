@@ -1,0 +1,26 @@
+<FilesMatch "\.ini$">
+Deny from all
+</FilesMatch>
+
+
+ ErrorDocument 503 "<div style='background-color: red;'> &nbsp </div> <h1 style='color:Red; text-align: center;'>Attention!</h1> <h3 style='background-color#e0ffff;'> Message: PMDSdata/ server is currently down for an hour. </h3> <h3 style='color:blue'>2015-06-19: Call David Gleba at x232</h3>  <div style='background-color: red;'> &nbsp </div> <hr>"
+
+   # ErrorDocument 503 "Our website is temporarily closed for maintenance. It should reopen by in a few minutes"
+ RewriteEngine On
+   # TO ALLOW YOURSELF TO VISIT THE SITE, CHANGE 111 222 333 444 TO YOUR IP ADDRESS. 
+   # RewriteCond %{REMOTE_ADDR} !^111\.222\.333\.444$
+ RewriteCond %{REMOTE_ADDR} !^127\.0\.0\.1$
+ RewriteRule .* - [R=503,L]
+ 
+
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+#
+#
+ 
